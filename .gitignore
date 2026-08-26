@@ -1,27 +1,93 @@
-*.log
-.DS_Store
+# ==========================================
+# Laravel & Environment
+# ==========================================
 .env
 .env.backup
+.env.local
+.env.*.local
 .env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
+.env.staging
+.env.testing
+
+/public/storage
+/public/hot
 /public/build
 /public/fonts-manifest.dev.json
-/public/hot
-/public/storage
 /storage/*.key
 /storage/pail
-/vendor
+/auth.json
+
+# Laravel IDE Helper / Tools
 _ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
 Homestead.json
 Homestead.yaml
+
+# ==========================================
+# Dependencies
+# ==========================================
+/vendor/
+/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# Databases & SQLite
+# ==========================================
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+
+# ==========================================
+# Testing, Code Quality & Cache
+# ==========================================
+/.phpunit.cache/
+.phpunit.result.cache
+/.pest/
+/coverage/
+/.coverage/
+/.php-cs-fixer.cache
+/.phpstan.cache/
+/reports/
+
+# ==========================================
+# Logs & Temp Files
+# ==========================================
+*.log
+*.tmp
+*.temp
+
+# ==========================================
+# IDEs, Editors & AI Assistants
+# ==========================================
+/.idea/
+/.vscode/
+/.fleet/
+/.nova/
+/.zed/
+/.cursor/
+/.cursorrules.local
+/.codex/
+/.windsurf/
+/.claude/
+/.gemini/
+/.antigravity/
+.phpactor.json
+*.sublime-project
+*.sublime-workspace
+
+# ==========================================
+# OS Generated Files
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
