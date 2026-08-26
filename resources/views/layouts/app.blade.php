@@ -185,6 +185,11 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}">
+                                {{ $isEn ? 'Projects & Cases' : 'مشاريعنا' }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
                                 {{ $isEn ? 'Contact' : 'تواصل معنا' }}
                             </a>
@@ -348,6 +353,7 @@
                             <a class="footer-link" href="{{ route('about') }}">{{ $isEn ? 'About Us' : 'من نحن' }}</a>
                             <a class="footer-link" href="{{ route('products.index') }}">{{ $isEn ? 'Products' : 'المنتجات' }}</a>
                             <a class="footer-link" href="{{ route('services.index') }}">{{ $isEn ? 'Services' : 'الخدمات' }}</a>
+                            <a class="footer-link" href="{{ route('projects.index') }}">{{ $isEn ? 'Our Projects' : 'مشاريع الصيانة' }}</a>
                             <a class="footer-link" href="{{ route('contact') }}">{{ $isEn ? 'Contact' : 'تواصل معنا' }}</a>
                             <a class="footer-link" href="{{ route('quote.index') }}">{{ $isEn ? 'Request Quote' : 'طلب عرض سعر' }}</a>
                         </nav>

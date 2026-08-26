@@ -33,6 +33,32 @@
                             @endforeach
                         </div>
                     @endif
+                    @if($service->maintenanceProjects && $service->maintenanceProjects->count() > 0)
+                        <div class="mt-5 pt-4 border-top">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <h4 class="fw-bold text-dark fs-5 m-0"><i class="bi bi-tools text-warning me-2"></i>مشاريع وحالات صيانة منفذة لهذه الخدمة</h4>
+                                <a href="{{ route('projects.index', ['service' => $service->slug]) }}" class="text-primary fw-bold fs-7 text-decoration-none">عرض الكل &larr;</a>
+                            </div>
+                            <div class="row g-3">
+                                @foreach($service->maintenanceProjects as $mProj)
+                                    <div class="col-md-6">
+                                        <a href="{{ route('projects.show', $mProj->slug) }}" class="card border rounded-3 overflow-hidden text-decoration-none h-100 shadow-sm hover-shadow transition-all">
+                                            <div style="height: 140px;" class="position-relative">
+                                                <img src="{{ $mProj->main_image_url }}" alt="{{ $mProj->title_ar }}" class="w-100 h-100 object-fit-cover">
+                                                @if(!empty($mProj->before_image) && !empty($mProj->after_image))
+                                                    <span class="badge bg-dark bg-opacity-75 text-warning position-absolute bottom-0 start-0 m-2 fs-9">Before / After</span>
+                                                @endif
+                                            </div>
+                                            <div class="p-3 bg-white">
+                                                <h6 class="fw-bold text-dark fs-7 mb-1 line-clamp-2">{{ $mProj->title_ar }}</h6>
+                                                <span class="text-muted fs-8"><i class="bi bi-geo-alt me-1 text-danger"></i>{{ $mProj->location_ar }}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
 
@@ -43,6 +69,10 @@
                     
                     <a href="https://wa.me/201200001122?text={{ urlencode('مرحباً، أود الاستفسار عن خدمة: ' . $service->name_ar) }}" target="_blank" class="btn btn-success w-100 btn-lg mb-3">
                         <i class="bi bi-whatsapp me-2"></i> طلب الخدمة عبر الواتساب
+                    </a>
+
+                    <a href="{{ route('quote.index') }}?service={{ $service->slug }}" class="btn btn-warning w-100 btn-lg mb-3 fw-bold text-dark">
+                        <i class="bi bi-file-earmark-text me-2"></i> طلب عرض سعر فني (RFQ)
                     </a>
 
                     <a href="{{ route('contact') }}" class="btn btn-outline-light w-100 btn-lg">

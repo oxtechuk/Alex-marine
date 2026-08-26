@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
@@ -25,4 +26,18 @@ class Service extends Model
         'features' => 'array',
         'is_active' => 'boolean',
     ];
+
+    public function maintenanceProjects(): HasMany
+    {
+        return $this->hasMany(MaintenanceProject::class);
+    }
+
+    public function getNameAttribute(): string
+    {
+        if (app()->getLocale() === 'en' && ! empty($this->name_en)) {
+            return $this->name_en;
+        }
+
+        return $this->name_ar ?? '';
+    }
 }

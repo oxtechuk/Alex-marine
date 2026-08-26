@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Certificate;
+use App\Models\MaintenanceProject;
 use App\Models\NewsArticle;
 use App\Models\Product;
 use App\Models\Service;
@@ -42,8 +43,9 @@ class HomeController extends Controller
         $services = Service::where('is_active', true)->take(4)->get();
         $certificates = Certificate::where('is_active', true)->take(3)->get();
         $news = NewsArticle::where('is_published', true)->orderBy('published_at', 'desc')->take(3)->get();
+        $maintenanceProjects = MaintenanceProject::with('service')->where('is_active', true)->orderBy('sort_order', 'asc')->latest()->take(3)->get();
 
-        return view('home', compact('categories', 'featureCategories', 'fleetProducts', 'featuredProducts', 'services', 'certificates', 'news', 'selectedCategorySlug', 'settings'));
+        return view('home', compact('categories', 'featureCategories', 'fleetProducts', 'featuredProducts', 'services', 'certificates', 'news', 'maintenanceProjects', 'selectedCategorySlug', 'settings'));
     }
 
     public function about()

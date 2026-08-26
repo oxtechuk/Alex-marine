@@ -251,6 +251,12 @@
             </li>
 
             <li>
+                <a href="{{ route('admin.projects.index') }}" class="nav-link {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
+                    <i class="bi bi-tools me-2 text-warning"></i> مشاريع الصيانة
+                </a>
+            </li>
+
+            <li>
                 <a href="{{ route('admin.cms.index') }}" class="nav-link {{ request()->routeIs('admin.cms.*') ? 'active' : '' }}">
                     <i class="bi bi-sliders me-2"></i> الهوم بيج
                 </a>

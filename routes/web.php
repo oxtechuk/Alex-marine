@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminMaintenanceProjectController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +18,10 @@ Route::get('/lang/{locale}', [LanguageController::class, 'switchLanguage'])->nam
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+
+// Maintenance Projects & Case Studies Routes
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
 
 // Product Catalog Routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -67,6 +73,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/categories/store', [AdminController::class, 'storeCategory'])->name('categories.store');
     Route::post('/categories/{id}/update', [AdminController::class, 'updateCategory'])->name('categories.update');
     Route::delete('/categories/{id}/delete', [AdminController::class, 'deleteCategory'])->name('categories.delete');
+
+    // Maintenance Projects / Cases Management
+    Route::get('/projects', [AdminMaintenanceProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects/create', [AdminMaintenanceProjectController::class, 'create'])->name('projects.create');
+    Route::post('/projects/store', [AdminMaintenanceProjectController::class, 'store'])->name('projects.store');
+    Route::get('/projects/{id}/edit', [AdminMaintenanceProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{id}/update', [AdminMaintenanceProjectController::class, 'update'])->name('projects.update');
+    Route::delete('/projects/{id}/delete', [AdminMaintenanceProjectController::class, 'destroy'])->name('projects.destroy');
 
     // Products
     Route::get('/products', [AdminController::class, 'products'])->name('products.index');

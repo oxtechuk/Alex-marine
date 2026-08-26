@@ -274,100 +274,124 @@
 
 
 {{-- ═══════════════════════════════════════════════
-     3. ABOUT US & DEPARTMENTS (CLICKABLE CATEGORIES)
-═══════════════════════════════════════════════ --}}
-{{-- ═══════════════════════════════════════════════
-     3. ABOUT US & DEPARTMENTS (INTERACTIVE COVER CARDS)
+     3. ABOUT US & DEPARTMENTS (FIXED & POLISHED)
 ═══════════════════════════════════════════════ --}}
 @if($secFeature)
-<section class="section-py" style="background:#ffffff;" id="about-departments-section">
+<section class="section-py position-relative overflow-hidden" style="background:#F8FAFC;" id="about-departments-section">
     <div class="container">
-        <div class="row align-items-center g-5">
+        <div class="row align-items-center g-4 g-lg-5">
 
-            {{-- Left Content: About Us --}}
+            {{-- Right Content (in RTL): Rich About Us, Vision, Pillars & Animated Arrow --}}
             <div class="col-lg-5" data-aos="fade-right">
                 @php
-                    $aboutTagline = !empty($settings['about_tagline_'.$locale]) ? trim($settings['about_tagline_'.$locale], " .\t\n\r\0\x0B") : '';
-                    $aboutTitle   = !empty($settings['about_title_'.$locale]) ? trim($settings['about_title_'.$locale], " .\t\n\r\0\x0B") : '';
-                    $aboutDesc    = !empty($settings['about_desc_'.$locale]) ? trim($settings['about_desc_'.$locale], " .\t\n\r\0\x0B") : '';
+                    $aboutTagline = !empty($settings['about_tagline_'.$locale]) ? trim($settings['about_tagline_'.$locale], " .\t\n\r\0\x0B") : ($isEn ? 'About Alex Marine' : 'من نحن ورؤيتنا');
+                    $aboutTitle   = !empty($settings['about_title_'.$locale]) ? trim($settings['about_title_'.$locale], " .\t\n\r\0\x0B") : ($isEn ? 'Alex Marine for Marine Supplies & Industrial Safety' : 'شركة أليكس مارين للتوريدات البحرية والأمن الصناعي');
+                    $aboutDesc    = !empty($settings['about_desc_'.$locale]) ? trim($settings['about_desc_'.$locale], " .\t\n\r\0\x0B") : ($isEn ? 'We provide certified marine equipment, offshore supplies, SOLAS life-saving gear, and specialized maintenance for shipping lines and industrial facilities across all ports.' : 'شريكك المعتمد لحلول التوريدات البحرية المتكاملة، مهمات الأمن الصناعي، وصيانة معدات السلامة ومحطات الإطفاء للسفن والموانئ والشركات الملاحية بأعلى معايير الجودة العالمية.');
+                    $aboutLogo    = !empty($settings['about_section_image']) ? $settings['about_section_image'] : (!empty($settings['site_logo_header']) ? $settings['site_logo_header'] : 'uploads/Alex-marin.svg');
                 @endphp
 
-                @if(!empty($aboutTagline))
-                <div class="section-tag section-tag-gold mb-2">
-                    <i class="bi bi-building"></i>
-                    {{ $aboutTagline }}
-                </div>
-                @endif
-
-                {{-- Custom Logo / Section Image from Settings --}}
-                @php
-                    $aboutLogo = !empty($settings['about_section_image'])
-                        ? $settings['about_section_image']
-                        : (!empty($settings['site_logo_header']) ? $settings['site_logo_header'] : null);
-                @endphp
-                @if($aboutLogo)
-                    <div class="my-2">
-                        <img src="{{ \Illuminate\Support\Str::startsWith($aboutLogo, ['http://', 'https://']) ? $aboutLogo : asset($aboutLogo) }}"
-                             alt="Company Logo"
-                             class="img-fluid"
-                             style="max-height: 52px; width: auto; object-fit: contain;">
+                <!-- Top Badge & Company Brand Logo -->
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                    <div class="section-tag section-tag-gold m-0">
+                        <i class="bi bi-shield-check text-warning"></i>
+                        {{ $aboutTagline }}
                     </div>
-                @endif
+                    @if($aboutLogo)
+                        <img src="{{ \Illuminate\Support\Str::startsWith($aboutLogo, ['http://', 'https://']) ? $aboutLogo : asset($aboutLogo) }}"
+                             alt="ALEX MARINE"
+                             class="img-fluid"
+                             style="max-height: 38px; width: auto; object-fit: contain;"
+                             onerror="this.style.display='none'">
+                    @endif
+                </div>
 
-                @if(!empty($aboutTitle))
-                <h2 class="display-section mt-2 mb-3">
+                <!-- Main Heading -->
+                <h2 class="display-section text-navy fw-extrabold mb-3" style="line-height: 1.35; letter-spacing: -0.5px;">
                     {{ $aboutTitle }}
                 </h2>
-                @endif
 
-                @if(!empty($aboutDesc))
-                <p class="mb-4 text-muted" style="line-height:1.75;">
+                <!-- Core Description & Vision -->
+                <p class="text-secondary leading-relaxed mb-4" style="font-size: 0.95rem; line-height: 1.75;">
                     {{ $aboutDesc }}
                 </p>
-                @endif
 
-                {{-- Benefit Points --}}
+                <!-- 3 Key Value Pillars (Clean & Well-Spaced) -->
                 <div class="d-flex flex-column gap-3 mb-4">
-                    @foreach([
-                        [$isEn ? 'Direct B2B Pricing' : 'تسعير مباشر ومنافس', $isEn ? 'Official itemized quotation sheets.' : 'عروض أسعار رسمية فورية وموثقة.', 'bi-tag-fill', 'var(--alex-gold)'],
-                        [$isEn ? 'Port Emergency Supply' : 'ضمان التوريد السريع', $isEn ? 'Direct delivery to all Egyptian ports and zones.' : 'توصيل طوارئ مباشر لكافة الموانئ والمواقع الجمركية.', 'bi-truck-front-fill', 'var(--alex-navy-dark)'],
-                        [$isEn ? 'Certified to SOLAS & ISO' : 'معايير دولية معتمدة', $isEn ? 'Fully compliant with SOLAS and ISO quality systems.' : 'مطابقة تامة لمواصفات SOLAS و ISO الدولية.', 'bi-patch-check-fill', '#047857'],
-                    ] as [$title, $desc, $icon, $color])
-                    <div class="d-flex align-items-start gap-3">
-                        <div class="d-flex align-items-center justify-content-center rounded flex-shrink-0"
-                             style="width:38px;height:38px;background:#F2F4F7;border:1px solid #E5E7EB;">
-                            <i class="bi {{ $icon }}" style="color:{{ $color }};font-size:1rem;"></i>
+                    
+                    <!-- Item 1 -->
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
+                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: #0A1D37; color: #E5A919;">
+                            <i class="bi bi-anchor fs-5"></i>
                         </div>
-                        <div>
-                            <div class="fw-bold mb-0 text-dark" style="font-size:0.92rem;">{{ $title }}</div>
-                            <div class="text-muted" style="font-size:0.82rem;">{{ $desc }}</div>
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Certified Marine Supplies & Deck Gear' : 'توريدات بحرية ومعدات سطح معتمدة' }}</h6>
+                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Mooring ropes, anchors, navigational & deck tools ready for prompt port delivery.' : 'حبال رسو، مراسي، ومستلزمات ملاحية جاهزة للتسليم الفوري بالأرصفة والموانئ.' }}</p>
                         </div>
                     </div>
-                    @endforeach
+
+                    <!-- Item 2 -->
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
+                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: #1E6FAE; color: #ffffff;">
+                            <i class="bi bi-shield-shaded fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Industrial Safety & SOLAS PPE' : 'مهمات الأمن الصناعي والسلامة SOLAS & ISO' }}</h6>
+                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Certified life jackets, SCBA breathing apparatus, and personal protective equipment.' : 'سترات وطوافات نجاة، أجهزة تنفس SCBA، ومعدات وقاية شخصية معتمدة دولياً.' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
+                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, #FAD961, #E5A919); color: #0A1D37;">
+                            <i class="bi bi-tools fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Certified Inspection & Maintenance' : 'صيانة وتفتيش فني معتمد لمحطات الإطفاء' }}</h6>
+                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Hydrostatic testing & annual recertification for CO2 systems and life-saving craft.' : 'إعادة تأهيل واختبارات هيدروستاتيكية معتمدة لمنظومات الإطفاء والإنقاذ.' }}</p>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="d-flex gap-3 flex-wrap">
-                    <a href="{{ route('about') }}" class="btn-alex-primary px-4 py-2.5">
-                        <i class="bi bi-info-circle"></i>
-                        {{ $isEn ? 'More About Us' : 'تعرف علينا أكثر' }}
-                    </a>
-                    <a href="{{ route('quote.index') }}" class="btn-alex-gold px-4 py-2.5">
-                        <i class="bi bi-file-earmark-plus"></i>
-                        {{ $isEn ? 'Request Quote' : 'اطلب عرض سعر' }}
+                <!-- Action Buttons & Animated Directional Link -->
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 pt-1">
+                    <div class="d-flex gap-2.5 flex-wrap">
+                        <a href="{{ route('about') }}" class="btn-alex-primary px-4 py-2.5 rounded-pill shadow-sm text-decoration-none fw-bold fs-7">
+                            <i class="bi bi-info-circle me-1"></i>
+                            {{ $isEn ? 'More About Us' : 'تعرف علينا أكثر' }}
+                        </a>
+                        <a href="{{ route('quote.index') }}" class="btn-alex-gold px-4 py-2.5 rounded-pill shadow-sm text-decoration-none fw-bold fs-7">
+                            <i class="bi bi-file-earmark-plus me-1"></i>
+                            {{ $isEn ? 'Request Quote' : 'اطلب عرض سعر' }}
+                        </a>
+                    </div>
+
+                    <!-- Animated Arrow pointing to Left -->
+                    <a href="{{ route('products.index') }}" class="explore-arrow-link d-inline-flex align-items-center gap-2 text-decoration-none py-1">
+                        <span class="fw-bold text-dark fs-8">{{ $isEn ? 'Explore Departments' : 'استكشف أقسامنا' }}</span>
+                        <svg class="animated-arrow-icon" width="28" height="20" viewBox="0 0 28 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            @if($isEn)
+                                <path d="M2 10H24M24 10L16 3M24 10L16 17" stroke="#E5A919" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            @else
+                                <path d="M26 10H4M4 10L12 3M4 10L12 17" stroke="#E5A919" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            @endif
+                        </svg>
                     </a>
                 </div>
+
             </div>
 
-            {{-- Right: Interactive Category Cover Cards (Hover reveals details) --}}
-            <div class="col-lg-7">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h5 class="fw-bold m-0 text-dark">
-                        <i class="bi bi-grid-fill text-warning me-2"></i>
-                        {{ $isEn ? 'Our Product Departments' : 'أقسام التوريدات والمنتجات' }}
+            {{-- Left: Clean & High-Clarity Category Cards --}}
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="d-flex align-items-center justify-content-between mb-3.5 pb-2 border-bottom">
+                    <h5 class="fw-extrabold m-0 text-navy fs-6 d-flex align-items-center gap-2">
+                        <i class="bi bi-grid-3x3-gap-fill text-warning"></i>
+                        <span>{{ $isEn ? 'Our Product & Supply Departments' : 'أقسام التوريدات والمنتجات الرئيسية' }}</span>
                     </h5>
-                    <span class="text-muted fs-8">
-                        <i class="bi bi-cursor-fill me-1"></i> {{ $isEn ? 'Hover or click to explore' : 'مرر الماوس أو اضغط لاستكشاف القسم' }}
-                    </span>
+                    <a href="{{ route('products.index') }}" class="text-navy fs-8 fw-bold text-decoration-none hover-gold d-flex align-items-center gap-1">
+                        <span>{{ $isEn ? 'View Full Catalog' : 'عرض الكتالوج بالكامل' }}</span>
+                        <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                    </a>
                 </div>
 
                 <div class="row g-3">
@@ -395,39 +419,36 @@
                         @endphp
                         <div class="col-sm-6" data-aos="fade-up" data-aos-delay="{{ $idx * 80 }}">
                             <a href="{{ route('products.index', ['category' => $cat->slug]) }}"
-                               class="category-cover-card"
+                               class="category-cover-card-clean rounded-4 overflow-hidden position-relative d-block text-decoration-none shadow-sm"
                                title="{{ $isEn ? 'View ' . ($cat->name_en ?: $cat->name_ar) . ' Products' : 'عرض منتجات ' . $cat->name_ar }}">
                                 
-                                {{-- Background Cover Image --}}
+                                {{-- Background Cover Image (Clear & High Contrast) --}}
                                 <img src="{{ \Illuminate\Support\Str::startsWith($coverImg, ['http://', 'https://']) ? $coverImg : asset($coverImg) }}"
                                      alt="{{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}"
-                                     class="category-cover-bg"
+                                     class="category-cover-bg-clean w-100 h-100 object-fit-cover"
                                      loading="lazy">
                                 
-                                {{-- Dark Overlay Gradient --}}
-                                <div class="category-cover-overlay"></div>
+                                {{-- Subtle Bottom Gradient for Maximum Photo Clarity --}}
+                                <div class="category-cover-overlay-clean position-absolute inset-0"></div>
 
-                                {{-- Top Badge --}}
-                                <span class="category-cover-badge">
-                                    <i class="bi bi-patch-check-fill text-warning me-1"></i>{{ $isEn ? 'Certified' : 'قسم معتمد' }}
-                                </span>
-
-                                {{-- Content & On-Hover Details --}}
-                                <div class="category-cover-content">
-                                    <div class="category-cover-icon">
-                                        <i class="bi {{ $icon }}"></i>
-                                    </div>
-                                    <h5 class="category-cover-title">
-                                        {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
-                                    </h5>
-                                    
-                                    {{-- Hidden Details (Revealed on Hover) --}}
-                                    <div class="category-cover-details">
-                                        <p class="category-cover-desc">{{ $desc }}</p>
-                                        <div class="category-cover-cta">
-                                            <span>{{ $isEn ? 'Browse Products' : 'تصفح منتجات القسم' }}</span>
-                                            <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                                {{-- Content: Clean bottom title and icon --}}
+                                <div class="category-cover-content-clean position-absolute bottom-0 inset-x-0 p-3 z-2 d-flex flex-column justify-content-end">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="category-cover-mini-icon d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 32px; height: 32px; background: #E5A919; color: #0A1D37;">
+                                            <i class="bi {{ $icon }} fs-6"></i>
                                         </div>
+                                        <h5 class="category-cover-title-clean fw-bold text-white m-0 fs-6" style="text-shadow: 0 2px 4px rgba(0,0,0,0.85);">
+                                            {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+                                        </h5>
+                                    </div>
+                                    
+                                    {{-- Smooth Slide-Up Details on Hover --}}
+                                    <div class="category-cover-hover-details">
+                                        <p class="text-white text-opacity-90 fs-8 m-0 mt-1 mb-1 line-clamp-2" style="line-height: 1.4; text-shadow: 0 1px 2px rgba(0,0,0,0.8);">{{ $desc }}</p>
+                                        <span class="text-warning fs-8 fw-bold d-inline-flex align-items-center gap-1">
+                                            <span>{{ $isEn ? 'Explore Catalog' : 'استكشف المنتجات' }}</span>
+                                            <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                                        </span>
                                     </div>
                                 </div>
                             </a>
@@ -444,45 +465,112 @@
 
 
 {{-- ═══════════════════════════════════════════════
-     5. OPERATIONS / FIELD SHOWCASE
+     5. MAINTENANCE PROJECTS & CASE STUDIES SHOWCASE
 ═══════════════════════════════════════════════ --}}
 @if($secGallery)
-<section class="section-py" style="background:var(--alex-light-bg);" id="gallery-section">
+<section class="section-py" style="background: linear-gradient(180deg, #0A1D37 0%, #060E1A 100%); color: #F0F4F8;" id="gallery-section">
     <div class="container">
-        <div class="section-header" data-aos="fade-up">
-          
-            <h2>{{ $isEn ? 'Operational Excellence at Sea & Docks' : 'عملياتنا وتجهيز السفن والموانئ' }}</h2>
-            <div class="section-divider"></div>
-            <p>{{ $isEn ? 'Technical inspections, port deliveries, and marine safety maintenance operations.' : 'لقطات من تجهيز الموانئ والتفتيش البحري الفني على معدات السلامة.' }}</p>
+        
+        <!-- Section Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
+            <div>
+               
+                <h2 class="display-section text-white mt-1 mb-2 fw-extrabold" style="letter-spacing: -0.5px;">
+                    {{ $isEn ? 'Marine Maintenance & Inspection Cases' : 'مشاريع وحالات الصيانة البحرية المعتمدة' }}
+                </h2>
+                <p class="text-white-50 m-0 fs-6" style="max-width: 620px;">
+                    {{ $isEn ? 'Technical inspections, life raft servicing, CO2 suppression overhauls, and SOLAS certifications executed by our marine engineers.' : 'توثيق لمشاريع الصيانة والتفتيش البحري وإعادة تأهيل معدات السلامة ومحطات الإطفاء لسفن وموانئ كبرى.' }}
+                </p>
+            </div>
+            
+            <a href="{{ route('projects.index') }}" class="btn btn-case-gold rounded-pill px-4 py-2.5 fw-bold mt-3 mt-md-0 shadow-lg text-decoration-none d-flex align-items-center gap-2 align-self-start align-self-md-auto">
+                <span>{{ $isEn ? 'View All Projects' : 'استعراض كافة المشاريع' }}</span>
+                <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+            </a>
         </div>
 
+        <!-- Maintenance Cases Cards Grid -->
         <div class="row g-4">
-            @php
-            $galleryItems = [
-                ['https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80', $isEn ? 'Commercial Vessel Supply' : 'تجهيز السفن التجارية', $isEn ? 'Complete mooring, safety, and operational deck equipment.' : 'تجهيز متكامل لحبال الرسو ومعدات السطح وسلامة الطاقم.', 'bi-anchor'],
-                ['https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80', $isEn ? 'Technical SCBA Inspection' : 'فحص وصيانة أجهزة التنفس', $isEn ? 'Certified hydrostatic testing & pressure calibration.' : 'اختبارات الضغط والمعايرة المعتمدة لأجهزة التنفس الإطفائية.', 'bi-mask'],
-                ['https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80', $isEn ? 'SOLAS Rescue Gear' : 'معدات الإنقاذ SOLAS', $isEn ? 'Certified life jackets, lifebuoys, and emergency beacons.' : 'سترات وطوافات نجاة معتمدة دولياً مع أجهزة الاستغاثة.', 'bi-life-preserver'],
-            ];
-            @endphp
+            @forelse($maintenanceProjects as $i => $proj)
+                @php
+                    $projTitle = $proj->title;
+                    $hasBA = !empty($proj->before_image) && !empty($proj->after_image);
+                @endphp
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
+                    <div class="card h-100 border border-secondary border-opacity-25 rounded-4 overflow-hidden shadow-2xl project-card-hover" style="background: #101926;">
+                        
+                        <!-- Media Cover Box -->
+                        <div class="position-relative overflow-hidden" style="height: 240px;">
+                            <img src="{{ $proj->main_image_url }}" alt="{{ $projTitle }}" class="w-100 h-100 object-fit-cover transition-transform" loading="lazy">
+                            <div class="position-absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(6,14,26,0.9) 100%);"></div>
 
-            @foreach($galleryItems as $i => [$img, $title, $desc, $icon])
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $i * 80 }}">
-                <div class="alex-card overflow-hidden h-100">
-                    <div style="height:200px; overflow:hidden; border-bottom:1px solid var(--alex-border);">
-                        <img src="{{ $img }}" class="w-100 h-100" style="object-fit:cover;"
-                             alt="{{ $title }}" loading="lazy">
-                    </div>
-                    <div class="p-4">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                            <i class="bi {{ $icon }} text-warning fs-5"></i>
-                            <h5 class="fw-bold m-0 text-dark">{{ $title }}</h5>
+                            @if($proj->service)
+                                <span class="position-absolute top-0 start-0 m-3 badge bg-black bg-opacity-75 text-warning border border-warning border-opacity-40 px-2.5 py-1.5 rounded-pill fs-8">
+                                    <i class="bi {{ $proj->service->icon ?? 'bi-gear' }} me-1"></i> {{ $proj->service->name }}
+                                </span>
+                            @endif
+
+                            @if($hasBA)
+                                <span class="position-absolute top-0 end-0 m-3 badge bg-warning text-dark px-2.5 py-1 rounded-pill fs-9 fw-bold shadow-sm">
+                                    <i class="bi bi-sliders me-1"></i> Before / After
+                                </span>
+                            @endif
+
+                            @if($proj->video_url)
+                                <span class="position-absolute bottom-0 end-0 m-3 badge bg-danger text-white px-2 py-1 rounded-pill fs-9 shadow-sm">
+                                    <i class="bi bi-play-fill me-1"></i> Video
+                                </span>
+                            @endif
                         </div>
-                        <p class="m-0 text-muted" style="font-size:0.87rem; line-height:1.6;">{{ $desc }}</p>
+
+                        <!-- Content Body -->
+                        <div class="card-body p-4 d-flex flex-column justify-content-between">
+                            <div>
+                                <!-- Location & Vessel Subtitle -->
+                                <div class="d-flex align-items-center justify-content-between text-white-50 fs-8 mb-2 pb-2 border-bottom border-secondary border-opacity-25">
+                                    @if($proj->location)
+                                        <span><i class="bi bi-geo-alt-fill text-warning me-1"></i> {{ $proj->location }}</span>
+                                    @endif
+                                    @if($proj->duration)
+                                        <span><i class="bi bi-stopwatch text-warning me-1"></i> {{ $proj->duration }}</span>
+                                    @endif
+                                </div>
+
+                                <!-- Project Title -->
+                                <h5 class="fw-bold text-white mb-2 leading-snug">
+                                    <a href="{{ route('projects.show', $proj->slug) }}" class="text-white text-decoration-none hover-gold transition-colors">
+                                        {{ $projTitle }}
+                                    </a>
+                                </h5>
+
+                                <!-- Short Description -->
+                                <p class="text-white-50 fs-7 line-clamp-2 mb-0" style="line-height: 1.6;">
+                                    {{ $proj->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($proj->description), 110) }}
+                                </p>
+                            </div>
+
+                            <!-- Card Footer Button -->
+                            <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
+                                <a href="{{ route('projects.show', $proj->slug) }}" class="btn btn-outline-warning btn-sm rounded-pill px-3.5 py-1.5 fw-bold fs-7 d-flex align-items-center gap-1.5 hover-glow">
+                                    <span>{{ $isEn ? 'View Case Details' : 'عرض دراسة الحالة' }}</span>
+                                    <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                                </a>
+
+                                @if($proj->vessel_type)
+                                    <span class="text-white-50 fs-8"><i class="bi bi-shield-check text-warning me-1"></i> {{ \Illuminate\Support\Str::limit($proj->vessel_type, 18) }}</span>
+                                @endif
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-            @endforeach
+            @empty
+                <div class="col-12 py-4 text-center text-white-50">
+                    <p>{{ $isEn ? 'No maintenance cases published yet.' : 'جاري إضافة وتوثيق مشاريع الصيانة قريباً.' }}</p>
+                </div>
+            @endforelse
         </div>
+
     </div>
 </section>
 @endif
@@ -650,4 +738,124 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<style>
+.btn-case-gold {
+    background: linear-gradient(135deg, #FAD961 0%, #F7B731 35%, #D49B23 70%, #B37D14 100%);
+    color: #061325 !important;
+    border: none;
+    transition: all 0.3s ease;
+}
+.btn-case-gold:hover {
+    background: linear-gradient(135deg, #FFF0B3 0%, #FCD04B 40%, #E5A315 75%, #C48712 100%);
+    color: #000000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(229, 169, 25, 0.4) !important;
+}
+.project-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.project-card-hover:hover {
+    transform: translateY(-6px);
+    border-color: rgba(229, 169, 25, 0.5) !important;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.6) !important;
+}
+.project-card-hover:hover .transition-transform {
+    transform: scale(1.06);
+}
+.hover-gold:hover {
+    color: #E5A919 !important;
+}
+.hover-glow:hover {
+    box-shadow: 0 0 14px rgba(229, 169, 25, 0.5);
+    background-color: #E5A919;
+    color: #0A1D37 !important;
+}
+.transition-transform {
+    transition: transform 0.4s ease;
+}
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Redesigned Clean Category Cards with High Photo Clarity */
+.category-cover-card-clean {
+    height: 240px;
+    background-color: #0A1D37;
+    border: 1px solid rgba(10, 29, 55, 0.12);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.category-cover-bg-clean {
+    transition: transform 0.5s ease, filter 0.4s ease;
+}
+/* Subtle low-opacity gradient so photos are crisp and vibrant */
+.category-cover-overlay-clean {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(6, 19, 37, 0.45) 65%, rgba(6, 19, 37, 0.9) 100%);
+    transition: background 0.35s ease;
+}
+.category-cover-hover-details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.35s ease, margin-top 0.35s ease;
+    margin-top: 0;
+}
+.category-cover-card-clean:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(10, 29, 55, 0.28) !important;
+    border-color: var(--alex-gold) !important;
+}
+.category-cover-card-clean:hover .category-cover-bg-clean {
+    transform: scale(1.08);
+}
+.category-cover-card-clean:hover .category-cover-overlay-clean {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 15%, rgba(6, 19, 37, 0.6) 55%, rgba(6, 19, 37, 0.95) 100%);
+}
+.category-cover-card-clean:hover .category-cover-hover-details {
+    max-height: 80px;
+    opacity: 1;
+    margin-top: 0.35rem;
+}
+
+.hover-translate {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.hover-translate:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(10, 29, 55, 0.08) !important;
+}
+
+/* Animated Directional SVG Arrow */
+.explore-arrow-link:hover .animated-arrow-icon {
+    transform: translateX(-5px);
+}
+[dir="ltr"] .explore-arrow-link:hover .animated-arrow-icon {
+    transform: translateX(5px);
+}
+.animated-arrow-icon {
+    animation: arrowPulse 1.4s infinite ease-in-out;
+    transition: transform 0.2s ease;
+}
+@keyframes arrowPulse {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-6px);
+    }
+}
+[dir="ltr"] .animated-arrow-icon {
+    animation: arrowPulseLtr 1.4s infinite ease-in-out;
+}
+@keyframes arrowPulseLtr {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(6px);
+    }
+}
+</style>
 @endpush
