@@ -1,55 +1,68 @@
 @extends('layouts.app')
 
-@section('title', 'إنشاء حساب جديد — أليكس مارين')
+@php
+    $isEn = app()->getLocale() == 'en';
+@endphp
+
+@section('title', ($isEn ? 'Create Client Account' : 'إنشاء حساب جديد') . ' — ' . ($isEn ? 'ALEX MARINE' : 'أليكس مارين'))
 
 @section('content')
 <section class="py-5 bg-light">
     <div class="container">
         <div class="alex-card p-4 mx-auto" style="max-width: 520px;">
             <div class="text-center mb-4">
-                <i class="bi bi-person-plus text-primary fs-1"></i>
-                <h3 class="fw-bold text-dark mt-2">حساب جديد للشركات والعملاء</h3>
-                <p class="text-muted small">قم بالتسجيل لمتابعة طلبات عروض الأسعار السابقة وحالة التوريد</p>
+                @php
+                    $logoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
+                @endphp
+                <a href="{{ route('home') }}" class="d-inline-block mb-3 text-decoration-none">
+                    <img src="{{ $logoSrc }}" alt="ALEX MARINE" style="max-height: 52px; width: auto; object-fit: contain;"
+                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-inline-flex');">
+                    <div class="d-none rounded-4 align-items-center justify-content-center p-3" style="background-color: #0A192F; width: 64px; height: 64px;">
+                        <i class="bi bi-anchor fs-2" style="color: #D4AF37;"></i>
+                    </div>
+                </a>
+                <h3 class="fw-bold text-dark mt-1">{{ $isEn ? 'Corporate Client Registration' : 'حساب جديد للشركات والعملاء' }}</h3>
+                <p class="text-muted small">{{ $isEn ? 'Register to manage RFQ quotations, download certified specs, and track delivery status.' : 'قم بالتسجيل لمتابعة طلبات عروض الأسعار السابقة وحالة التوريد' }}</p>
             </div>
 
             <form action="{{ route('register') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label class="form-label fw-bold">الاسم بالكامل <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" required value="{{ old('name') }}" placeholder="أدخل اسمك بالكامل">
+                    <label class="form-label fw-bold">{{ $isEn ? 'Full Name' : 'الاسم بالكامل' }} <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" required value="{{ old('name') }}" placeholder="{{ $isEn ? 'e.g. John Doe' : 'أدخل اسمك بالكامل' }}">
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label fw-bold">اسم الشركة / الجهة <span class="text-danger">*</span></label>
-                    <input type="text" name="company_name" class="form-control" required value="{{ old('company_name') }}" placeholder="شركة الملاحة الوطنية">
+                    <label class="form-label fw-bold">{{ $isEn ? 'Company / Organization' : 'اسم الشركة / الجهة' }} <span class="text-danger">*</span></label>
+                    <input type="text" name="company_name" class="form-control" required value="{{ old('company_name') }}" placeholder="{{ $isEn ? 'e.g. National Maritime Corp.' : 'شركة الملاحة الوطنية' }}">
                 </div>
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">البريد الإلكتروني <span class="text-danger">*</span></label>
+                        <label class="form-label fw-bold">{{ $isEn ? 'Email' : 'البريد الإلكتروني' }} <span class="text-danger">*</span></label>
                         <input type="email" name="email" class="form-control" required value="{{ old('email') }}" placeholder="name@company.com">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">رقم الهاتف / الواتساب <span class="text-danger">*</span></label>
+                        <label class="form-label fw-bold">{{ $isEn ? 'Phone / WhatsApp' : 'رقم الهاتف / الواتساب' }} <span class="text-danger">*</span></label>
                         <input type="text" name="phone" class="form-control" required value="{{ old('phone') }}" placeholder="+20 100 000 0000">
                     </div>
                 </div>
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">كلمة المرور <span class="text-danger">*</span></label>
+                        <label class="form-label fw-bold">{{ $isEn ? 'Password' : 'كلمة المرور' }} <span class="text-danger">*</span></label>
                         <input type="password" name="password" class="form-control" required placeholder="••••••••">
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label fw-bold">تأكيد كلمة المرور <span class="text-danger">*</span></label>
+                        <label class="form-label fw-bold">{{ $isEn ? 'Confirm Password' : 'تأكيد كلمة المرور' }} <span class="text-danger">*</span></label>
                         <input type="password" name="password_confirmation" class="form-control" required placeholder="••••••••">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-alex-gold w-100 btn-lg mb-3">إنشاء الحساب</button>
+                <button type="submit" class="btn btn-alex-gold w-100 btn-lg mb-3">{{ $isEn ? 'Create Account' : 'إنشاء الحساب' }}</button>
 
                 <div class="text-center small text-muted">
-                    لديك حساب بالفعل؟ <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">تسجيل الدخول</a>
+                    {{ $isEn ? 'Already have an account?' : 'لديك حساب بالفعل؟' }} <a href="{{ route('login') }}" class="text-primary fw-bold text-decoration-none">{{ $isEn ? 'Sign In' : 'تسجيل الدخول' }}</a>
                 </div>
             </form>
         </div>

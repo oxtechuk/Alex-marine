@@ -67,6 +67,252 @@
         .font-inter button, .font-inter input {
             font-family: var(--font-en) !important;
         }
+
+        /* Luxury WhatsApp Floating Widget */
+        .alex-wa-widget {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [dir="ltr"] .alex-wa-widget {
+            left: auto;
+            right: 25px;
+            flex-direction: row-reverse;
+        }
+        .alex-wa-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.85rem;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .alex-wa-btn::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #25D366;
+            opacity: 0.7;
+            animation: waPulse 2s infinite cubic-bezier(0.24, 0, 0.38, 1);
+            z-index: -1;
+        }
+        @keyframes waPulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            70% { transform: scale(1.4); opacity: 0; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+        .alex-wa-badge {
+            background: #ffffff;
+            color: #0A192F;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        .alex-wa-badge .wa-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #25D366;
+            display: inline-block;
+            box-shadow: 0 0 6px #25D366;
+        }
+        .alex-wa-widget:hover .alex-wa-btn {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+        }
+        .alex-wa-widget:hover .alex-wa-badge {
+            background: #0A192F;
+            color: #ffffff;
+            border-color: #D4AF37;
+            transform: translateY(-2px);
+        }
+        /* Luxury Header Action Buttons (Uniform Sizing, Pixel-Perfect Padding) */
+        .alex-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .no-caret::after {
+            display: none !important;
+        }
+        .alex-nav-btn {
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            border-radius: 8px;
+            background: #F8FAFC;
+            color: #0A192F;
+            border: 1px solid #E2E8F0;
+            font-size: 0.84rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            line-height: 1;
+        }
+        .alex-nav-btn i {
+            font-size: 1.05rem;
+            color: #475569;
+            transition: color 0.2s ease;
+        }
+        .alex-nav-btn:hover {
+            background: #FFFFFF;
+            color: #0A192F;
+            border-color: #D4AF37;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(10, 25, 47, 0.06);
+        }
+        .alex-nav-btn:hover i {
+            color: #D4AF37;
+        }
+        .alex-nav-btn-icon {
+            width: 38px;
+            padding: 0;
+        }
+        .alex-nav-btn-lang {
+            padding: 0 12px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .alex-nav-cart {
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 14px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #E5C058 0%, #D4AF37 100%);
+            color: #0A192F !important;
+            border: 1px solid #D4AF37;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.2);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            line-height: 1;
+        }
+        .alex-nav-cart i {
+            font-size: 1.05rem;
+            color: #0A192F;
+        }
+        .alex-nav-cart:hover {
+            background: linear-gradient(135deg, #F3D270 0%, #E5C058 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 14px rgba(212, 175, 55, 0.35);
+            color: #000000 !important;
+        }
+        .alex-nav-cart-badge {
+            background: #0A192F;
+            color: #FFFFFF;
+            font-size: 0.72rem;
+            font-weight: 800;
+            height: 20px;
+            min-width: 20px;
+            padding: 0 5px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Luxury Mega Menu Refinements */
+        .freshio-mega-menu {
+            border-radius: 16px !important;
+            background: #FFFFFF !important;
+            box-shadow: 0 20px 50px rgba(10, 25, 47, 0.12) !important;
+            border: 1px solid #E2E8F0 !important;
+            margin-top: 0.5rem;
+            z-index: 1100;
+        }
+        .mega-cat-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mega-cat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #D4AF37;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+        .mega-cat-card:hover {
+            background-color: #FFFFFF;
+            border-color: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(10, 25, 47, 0.08);
+        }
+        .mega-cat-card:hover .mega-cat-icon {
+            background: #0A192F;
+            color: #D4AF37;
+            border-color: #0A192F;
+        }
+        .mega-cat-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #0A192F;
+            margin-bottom: 2px;
+            transition: color 0.2s ease;
+        }
+        .mega-cat-card:hover .mega-cat-title {
+            color: #B8860B;
+        }
+        .mega-cat-desc {
+            font-size: 0.76rem;
+            color: #64748B;
+            line-height: 1.35;
+        }
+
+        @media (max-width: 576px) {
+            .alex-wa-widget {
+                bottom: 18px;
+                left: 18px;
+            }
+            [dir="ltr"] .alex-wa-widget {
+                right: 18px;
+            }
+            .alex-wa-badge {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="{{ $isEn ? 'font-inter' : '' }}">
@@ -140,24 +386,32 @@
                                         </a>
                                     </div>
 
-                                    {{-- Dynamic Categories Grid (Icon-Free) --}}
+                                    {{-- Dynamic Categories Grid (Luxury Icon Cards) --}}
                                     @php
                                         $catsToDisplay = isset($navCategories) && count($navCategories) > 0
                                             ? $navCategories
-                                            : \App\Models\Category::where('is_active', true)->orderBy('sort_order')->get();
+                                            : \App\Models\Category::where('is_active', true)->whereNull('parent_id')->orderBy('sort_order')->get();
+                                        if($catsToDisplay->isEmpty()) {
+                                            $catsToDisplay = \App\Models\Category::where('is_active', true)->orderBy('sort_order')->take(6)->get();
+                                        }
                                     @endphp
                                     <div class="row g-3">
                                         @foreach($catsToDisplay as $navCat)
                                             <div class="col-md-6 col-lg-4">
-                                                <a href="{{ route('products.index', ['category' => $navCat->slug]) }}" class="mega-cat-item">
-                                                    <div class="mega-cat-title">
-                                                        {{ $isEn ? ($navCat->name_en ?: $navCat->name_ar) : $navCat->name_ar }}
+                                                <a href="{{ route('products.index', ['category' => $navCat->slug]) }}" class="mega-cat-card">
+                                                    <div class="mega-cat-icon">
+                                                        <i class="bi {{ $navCat->icon ?: 'bi-box-seam' }}"></i>
                                                     </div>
-                                                    @if(!empty($navCat->description_ar) || !empty($navCat->description_en))
-                                                        <div class="mega-cat-desc">
-                                                            {{ Str::limit($isEn ? ($navCat->description_en ?: $navCat->description_ar) : $navCat->description_ar, 55) }}
+                                                    <div class="text-truncate" style="min-width: 0;">
+                                                        <div class="mega-cat-title text-truncate">
+                                                            {{ $isEn ? ($navCat->name_en ?: $navCat->name_ar) : $navCat->name_ar }}
                                                         </div>
-                                                    @endif
+                                                        @if(!empty($navCat->description_ar) || !empty($navCat->description_en))
+                                                            <div class="mega-cat-desc text-truncate">
+                                                                {{ Str::limit($isEn ? ($navCat->description_en ?: $navCat->description_ar) : $navCat->description_ar, 45) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </a>
                                             </div>
                                         @endforeach
@@ -165,10 +419,6 @@
 
                                     {{-- Mega Menu Bottom Info Bar --}}
                                     <div class="mega-bottom-bar mt-3 pt-3 border-top d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted fs-8">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">{{ $isEn ? 'Certified' : 'معتمد دولياً' }}</span>
-                                            <span>{{ $isEn ? 'Compliant with SOLAS, ISO 9001 and International Maritime Standards' : 'مطابق للمواصفات الدولية البحرية وأنظمة SOLAS' }}</span>
-                                        </div>
                                         <div>
                                             <a href="{{ route('quote.index') }}" class="text-primary text-decoration-none fw-bold">
                                                 {{ $isEn ? 'Need Custom Order? Request Quote' : 'طلب توريد خاص؟ اطلب عرض سعر' }} &larr;
@@ -197,19 +447,19 @@
                     </ul>
                 </div>
 
-                <!-- Right Action Circular Buttons (Search, User, Lang, Basket) -->
-                <div class="d-flex align-items-center gap-2">
+                <!-- Right Action Buttons (Search, User, Lang, Basket) — Circle-Free Luxury Design -->
+                <div class="alex-nav-actions">
 
                     <!-- Search Button Trigger -->
-                    <button type="button" class="freshio-circle-btn freshio-btn-search" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}">
+                    <button type="button" class="alex-nav-btn alex-nav-btn-icon" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}">
                         <i class="bi bi-search"></i>
                     </button>
 
                     <!-- User / Account Button -->
                     @auth
                         <div class="dropdown">
-                            <button class="freshio-circle-btn freshio-btn-user dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" title="{{ Auth::user()->name }}">
-                                <i class="bi bi-person"></i>
+                            <button class="alex-nav-btn alex-nav-btn-icon dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" title="{{ Auth::user()->name }}">
+                                <i class="bi bi-person-fill" style="color: #D4AF37;"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg rounded-4 py-2" style="min-width:210px;">
                                 <li class="px-3 py-2 border-bottom">
@@ -230,27 +480,22 @@
                             </ul>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="freshio-circle-btn freshio-btn-user" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
+                        <a href="{{ route('login') }}" class="alex-nav-btn alex-nav-btn-icon" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
                             <i class="bi bi-person"></i>
                         </a>
                     @endauth
 
-                    <!-- Language Switcher Pill -->
-                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="freshio-circle-btn freshio-btn-lang" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
+                    <!-- Language Switcher -->
+                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
                         <span>{{ $isEn ? 'عربي' : 'EN' }}</span>
                     </a>
 
-                    <!-- Quote Cart / Basket (Matching Freshio Style: Clean Circle + Adjacent Total Text) -->
+                    <!-- Quote Cart / RFQ Button (Luxury Gold Pill with Count Badge) -->
                     @php $quoteCount = count(session('quote_cart', [])); @endphp
-                    <a href="{{ route('quote.index') }}" class="freshio-basket-group" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}">
-                        <div class="freshio-circle-btn freshio-btn-basket">
-                            <i class="bi bi-basket2"></i>
-                            <span class="freshio-badge-count">{{ $quoteCount }}</span>
-                        </div>
-                        <div class="freshio-basket-text d-none d-md-flex flex-column">
-                            <span class="freshio-basket-subtitle">{{ $isEn ? 'Quote Cart' : 'سلة التسعير' }}</span>
-                            <span class="freshio-basket-title">{{ $quoteCount > 0 ? ($isEn ? $quoteCount.' Items' : $quoteCount.' منتجات') : ($isEn ? 'Request RFQ' : 'طلب تسعير') }}</span>
-                        </div>
+                    <a href="{{ route('quote.index') }}" class="alex-nav-cart" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}">
+                        <i class="bi bi-basket2-fill"></i>
+                        <span class="d-none d-sm-inline">{{ $isEn ? 'Quote Cart' : 'طلب تسعير' }}</span>
+                        <span class="alex-nav-cart-badge">{{ $quoteCount }}</span>
                     </a>
                 </div>
             </nav>
@@ -396,14 +641,6 @@
                             @endif
                         </div>
 
-                        <!-- Certifications Badge Strip -->
-                        <div class="d-flex flex-wrap gap-2 mt-3">
-                            @foreach(['SOLAS','ISO','MED','EN'] as $cert)
-                                <span class="badge" style="background:rgba(212,160,23,0.12); color:var(--alex-gold); border:1px solid rgba(212,160,23,0.25); border-radius:6px; font-weight:800; font-size:0.72rem; padding:4px 10px;">
-                                    {{ $cert }}
-                                </span>
-                            @endforeach
-                        </div>
                     </div>
                 </div>
             </div>
@@ -514,6 +751,22 @@
             </div>
         </div>
     </div>
+
+    @php
+        $waHomeMsg = $isEn ? "Hello ALEX MARINE, I would like to inquire about marine supplies and services." : "مرحباً بكم في أليكس مارين، أود الاستفسار عن التوريدات والمهمات والخدمات البحرية.";
+        $waHomeLink = \App\Helpers\WhatsAppHelper::link($contactWhatsapp ?: $contactPhone, $waHomeMsg);
+    @endphp
+
+    <!-- Floating WhatsApp Luxury Widget -->
+    <a href="{{ $waHomeLink }}" target="_blank" class="alex-wa-widget" title="{{ $isEn ? 'Chat with us on WhatsApp' : 'تحدث معنا مباشرة عبر الواتساب' }}" aria-label="WhatsApp Chat">
+        <div class="alex-wa-badge">
+            <span class="wa-dot"></span>
+            <span>{{ $isEn ? 'Chat with us' : 'تواصل معنا واتساب' }}</span>
+        </div>
+        <div class="alex-wa-btn">
+            <i class="bi bi-whatsapp"></i>
+        </div>
+    </a>
 
     @stack('scripts')
 </body>

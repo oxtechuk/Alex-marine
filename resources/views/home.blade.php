@@ -292,10 +292,7 @@
 
                 <!-- Top Badge & Company Brand Logo -->
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                    <div class="section-tag section-tag-gold m-0">
-                        <i class="bi bi-shield-check text-warning"></i>
-                        {{ $aboutTagline }}
-                    </div>
+                  
                     @if($aboutLogo)
                         <img src="{{ \Illuminate\Support\Str::startsWith($aboutLogo, ['http://', 'https://']) ? $aboutLogo : asset($aboutLogo) }}"
                              alt="ALEX MARINE"
@@ -584,10 +581,7 @@
     <div class="container">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4" data-aos="fade-up">
             <div>
-                <div class="section-tag section-tag-gold">
-                    <i class="bi bi-star-fill"></i>
-                    {{ $isEn ? 'Featured Products' : 'منتجات مختارة' }}
-                </div>
+             
                 <h2 class="display-section mt-1 mb-0">
                     {{ $isEn ? 'Top-Rated Marine & Safety Products' : 'أبرز المنتجات المعتمدة للتوريد' }}
                 </h2>
@@ -600,16 +594,21 @@
 
         <div class="row g-4">
             @foreach($featuredProducts as $i => $prod)
+            @php
+                $prodCatSlug = $prod->category?->slug ?? 'general';
+                $prodCatName = $prod->category ? ($isEn ? ($prod->category->name_en ?: $prod->category->name_ar) : $prod->category->name_ar) : ($isEn ? 'Marine Supplies' : 'توريدات بحرية');
+                $prodUrl = route('products.show', ['category_slug' => $prodCatSlug, 'product_slug' => $prod->slug]);
+            @endphp
             <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 80 }}">
                 <div class="product-card">
                     <div class="product-card-img-wrap">
-                        <span class="product-badge-category">{{ $isEn ? ($prod->category->name_en ?: $prod->category->name_ar) : $prod->category->name_ar }}</span>
+                        <span class="product-badge-category">{{ $prodCatName }}</span>
                         <img src="{{ $prod->image ?: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=500&q=80' }}"
                              alt="{{ $prod->name_ar }}"
                              loading="lazy">
                     </div>
                     <div class="product-card-body">
-                        <a href="{{ route('products.show', ['category_slug' => $prod->category->slug, 'product_slug' => $prod->slug]) }}"
+                        <a href="{{ $prodUrl }}"
                            class="product-card-title">
                             {{ $isEn ? ($prod->name_en ?: $prod->name_ar) : $prod->name_ar }}
                         </a>
@@ -619,7 +618,7 @@
                                 <i class="bi bi-check-circle-fill"></i>
                                 {{ $prod->availability_status }}
                             </span>
-                            <a href="{{ route('products.show', ['category_slug' => $prod->category->slug, 'product_slug' => $prod->slug]) }}"
+                            <a href="{{ $prodUrl }}"
                                class="btn-alex-primary py-1 px-2.5" style="font-size:0.8rem;">
                                 {{ $isEn ? 'Details' : 'تفاصيل' }}
                             </a>
@@ -642,10 +641,7 @@
 @if($secCta)
 <section class="cta-section" id="cta-section">
     <div class="container text-center" data-aos="fade-up">
-        <div class="section-tag section-tag-dark mb-3">
-            <i class="bi bi-chat-dots-fill"></i>
-            LETS TALK
-        </div>
+      
         <h2 class="cta-title">
             {{ $isEn ? 'Ready to Equip Your Vessel or Facility?' : 'جاهز لتجهيز سفينتك أو منشأتك الصناعية؟' }}
         </h2>

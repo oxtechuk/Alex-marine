@@ -11,10 +11,11 @@
             <div class="row g-3 g-lg-3 fleet-5col-row">
                 @foreach($chunk as $i => $product)
                 @php
-                    $productUrl = route('products.show', ['category_slug' => $product->category->slug, 'product_slug' => $product->slug]);
+                    $catSlug = $product->category?->slug ?? 'general';
+                    $productUrl = route('products.show', ['category_slug' => $catSlug, 'product_slug' => $product->slug]);
                     $productImage = $product->image ?: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80';
                     $productTitle = $isEn ? ($product->name_en ?: $product->name_ar) : $product->name_ar;
-                    $categoryName = $isEn ? ($product->category->name_en ?: $product->category->name_ar) : ($product->category->name_ar ?? 'توريدات بحرية');
+                    $categoryName = $product->category ? ($isEn ? ($product->category->name_en ?: $product->category->name_ar) : $product->category->name_ar) : ($isEn ? 'Marine Supplies' : 'توريدات بحرية');
                     $priceVal = $product->price > 0 ? number_format($product->price) : null;
                 @endphp
                 <div class="col-fleet-5">

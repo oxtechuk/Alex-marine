@@ -28,10 +28,7 @@
 
         <div class="row align-items-center">
             <div class="col-lg-8" data-aos="fade-right">
-                <div class="section-tag section-tag-gold mb-2">
-                    <i class="bi bi-building"></i>
-                    {{ $isEn ? 'Our Company' : 'عن الشركة' }}
-                </div>
+             
                 <h1 class="display-hero text-white mb-3">
                     {{ $isEn ? 'ALEX MARINE Supplies & Safety' : 'شركة أليكس مارين للتوريدات والأمن الصناعي' }}
                 </h1>
@@ -53,10 +50,7 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6" data-aos="fade-right">
-                <div class="section-tag section-tag-gold">
-                    <i class="bi bi-info-circle-fill"></i>
-                    {{ $isEn ? 'About Alex Marine' : 'نبذة عن أليكس مارين' }}
-                </div>
+              
                 <h2 class="display-section mt-2 mb-3">
                     {{ $isEn ? 'Commercial Marine & Industrial Supplies' : 'توريدات بحرية ومهمات أمن صناعي معتمدة' }}
                 </h2>
@@ -107,10 +101,7 @@
 <section class="section-py" style="background:var(--alex-light-bg);">
     <div class="container">
         <div class="section-header" data-aos="fade-up">
-            <div class="section-tag">
-                <i class="bi bi-check2-circle"></i>
-                {{ $isEn ? 'Our Principles' : 'مبادئنا ومعاييرنا' }}
-            </div>
+         
             <h2>{{ $isEn ? 'Quality & Reliability Commitment' : 'التزامنا بالجودة والموثوقية' }}</h2>
             <div class="section-divider"></div>
             <p>{{ $isEn ? 'Standard operational pillars governing our supply chain, customer service, and technical inspections.' : 'ركائز العمل التي تحكم عمليات التوريد وخدمة العملاء والفحص الفني.' }}</p>
@@ -143,45 +134,6 @@
     </div>
 </section>
 
-
-{{-- ═══════════════════════════════════════════════
-     CERTIFICATIONS & COMPLIANCE
-═══════════════════════════════════════════════ --}}
-<section class="section-py" style="background:#ffffff;">
-    <div class="container">
-        <div class="section-header" data-aos="fade-up">
-            <div class="section-tag section-tag-gold">
-                <i class="bi bi-award-fill"></i>
-                {{ $isEn ? 'Standards & Accreditations' : 'الاعتمادات والمعايير' }}
-            </div>
-            <h2>{{ $isEn ? 'Certifications & Marine Quality Standards' : 'الشهادات والمعايير الدولية' }}</h2>
-            <div class="section-divider"></div>
-            <p>{{ $isEn ? 'All items in our catalog are certified by accredited international maritime and safety authorities.' : 'كافة منتجاتنا ومعداتنا معتمدة من الهيئات والمؤسسات البحرية والصناعية الدولية.' }}</p>
-        </div>
-
-        <div class="row g-4">
-            @foreach([
-                ['SOLAS (Safety of Life at Sea)', $isEn ? 'International Maritime Organization' : 'المنظمة البحرية الدولية', $isEn ? 'Full compliance with SOLAS Chapter III rescue equipment and Chapter II-2 fire safety provisions.' : 'مطابقة تامة لمتطلبات الإنقاذ البحري (الفصل الثالث) ومكافحة الحرائق (الفصل الثاني-2).'],
-                ['ISO 9001:2015 Quality System', $isEn ? 'International Organization for Standardization' : 'المنظمة الدولية للمعايير', $isEn ? 'Quality management principles ensuring consistent procurement and customer satisfaction.' : 'نظام إدارة الجودة وضمان معايير الخدمة والتوريد المستمر.'],
-                ['MED (Marine Equipment Directive)', $isEn ? 'European Union Maritime Standard' : 'توجيه المعدات البحرية الأوروبي', $isEn ? 'Certified wheelmark safety items approved for international maritime vessels.' : 'اعتماد علامة Wheelmark للمعدات البحرية والسترات وأجهزة النجاة.'],
-                ['EN Standards / EN ISO PPE', $isEn ? 'European PPE Standards' : 'المعايير الأوروبية لمهمات الوقاية', $isEn ? 'Complete compliance for respiratory filters, helmets, safety footwear, and harnesses.' : 'مطابقة لمواصفات معدات الحماية الشخصية EN للأقنعة والأحذية والخوذ.'],
-            ] as $i => [$title, $authority, $desc])
-            <div class="col-md-6" data-aos="fade-up" data-aos-delay="{{ ($i % 2) * 80 }}">
-                <div class="cert-card">
-                    <div class="cert-icon-wrap">
-                        <i class="bi bi-patch-check-fill"></i>
-                    </div>
-                    <div>
-                        <h5 class="fw-bold mb-1 text-dark" style="font-size:0.95rem;">{{ $title }}</h5>
-                        <small class="d-block mb-2 text-muted fw-semibold">{{ $authority }}</small>
-                        <p class="m-0 text-muted" style="font-size:0.85rem; line-height:1.6;">{{ $desc }}</p>
-                    </div>
-                </div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
 
 
 {{-- ═══════════════════════════════════════════════

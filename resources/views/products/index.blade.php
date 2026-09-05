@@ -28,10 +28,7 @@
 
         <div class="row align-items-center">
             <div class="col-lg-7" data-aos="fade-right">
-                <div class="section-tag section-tag-gold mb-2">
-                    <i class="bi bi-grid-3x3-gap-fill"></i>
-                    {{ $isEn ? 'Products & Equipment' : 'المنتجات والمعدات' }}
-                </div>
+              
                 <h1 class="display-section text-white mb-2">
                     {{ $isEn ? 'Marine & Industrial Safety Catalog' : 'دليل المنتجات والتوريدات البحرية' }}
                 </h1>

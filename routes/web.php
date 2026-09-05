@@ -67,6 +67,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Orders
     Route::get('/orders', [AdminController::class, 'orders'])->name('orders.index');
     Route::get('/orders/{id}', [AdminController::class, 'showOrder'])->name('orders.show');
+    Route::post('/orders/{id}/update-items', [AdminController::class, 'updateOrderItems'])->name('orders.update-items');
+    Route::post('/orders/{id}/items/add', [AdminController::class, 'addOrderItem'])->name('orders.items.add');
+    Route::delete('/orders/{id}/items/{itemId}/delete', [AdminController::class, 'deleteOrderItem'])->name('orders.items.delete');
+    Route::post('/orders/{id}/complete-sale', [AdminController::class, 'completeOrderSale'])->name('orders.complete-sale');
 
     // Categories Management
     Route::get('/categories', [AdminController::class, 'categories'])->name('categories.index');
@@ -106,7 +110,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/customers', [AdminController::class, 'customers'])->name('customers.index');
     Route::post('/customers', [AdminController::class, 'storeCustomer'])->name('customers.store');
 
-    // Direct Sales / POS Order Creation
-    Route::get('/sales/create', [AdminController::class, 'createSale'])->name('sales.create');
-    Route::post('/sales/store', [AdminController::class, 'storeSale'])->name('sales.store');
+    // Direct Sales / POS Redirect to Unified Orders & Sales Management
+    Route::redirect('/sales/create', '/admin/orders')->name('sales.create');
 });

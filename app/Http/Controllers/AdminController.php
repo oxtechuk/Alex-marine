@@ -184,7 +184,10 @@ class AdminController extends Controller
 
     public function showQuote($id)
     {
-        $quote = QuoteRequest::with('items.product')->findOrFail($id);
+        $quote = QuoteRequest::with('items.product')->find($id);
+        if (! $quote) {
+            return redirect()->route('admin.quotes.index')->with('error', 'طلب عرض السعر غير موجود أو تم حذفه.');
+        }
 
         return view('admin.quotes.show', compact('quote'));
     }
@@ -275,16 +278,117 @@ class AdminController extends Controller
     // Orders Management
     public function orders()
     {
-        $orders = Order::latest()->paginate(15);
+        $orders = Order::with(['branch', 'user'])->latest()->paginate(15);
 
         return view('admin.orders.index', compact('orders'));
     }
 
     public function showOrder($id)
     {
-        $order = Order::with('items')->findOrFail($id);
+        $order = Order::with(['items.product', 'branch', 'user', 'quoteRequest'])->find($id);
+        if (! $order) {
+            return redirect()->route('admin.orders.index')->with('error', 'أمر الشراء المطلوب غير موجود.');
+        }
 
-        return view('admin.orders.show', compact('order'));
+        $products = Product::where('is_active', true)->orderBy('name_ar')->get(['id', 'name_ar', 'sku', 'price']);
+        $branches = Branch::where('is_active', true)->get();
+
+        return view('admin.orders.show', compact('order', 'products', 'branches'));
+    }
+
+    public function updateOrderItems(Request $request, $id)
+    {
+        $order = Order::with('items')->findOrFail($id);
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.unit_price' => 'required|numeric|min:0',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        $grandTotal = 0;
+        foreach ($request->items as $itemId => $itemData) {
+            $item = OrderItem::where('order_id', $order->id)->find($itemId);
+            if ($item) {
+                $unitPrice = (float) $itemData['unit_price'];
+                $qty = (int) $itemData['quantity'];
+                $totalPrice = $unitPrice * $qty;
+
+                $item->update([
+                    'unit_price' => $unitPrice,
+                    'quantity' => $qty,
+                    'total_price' => $totalPrice,
+                ]);
+
+                $grandTotal += $totalPrice;
+            }
+        }
+
+        $order->update([
+            'total_amount' => $grandTotal,
+        ]);
+
+        return redirect()->back()->with('success', 'تم تحديث أسعار وكميات الأصناف وإعادة احتساب الإجمالي بنجاح.');
+    }
+
+    public function addOrderItem(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'unit_price' => 'required|numeric|min:0',
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+        $qty = (int) $request->quantity;
+        $unitPrice = (float) $request->unit_price;
+        $totalPrice = $qty * $unitPrice;
+
+        OrderItem::create([
+            'order_id' => $order->id,
+            'product_id' => $product->id,
+            'product_name' => $product->name_ar,
+            'sku' => $product->sku,
+            'quantity' => $qty,
+            'unit_price' => $unitPrice,
+            'total_price' => $totalPrice,
+        ]);
+
+        $newTotal = OrderItem::where('order_id', $order->id)->sum('total_price');
+        $order->update(['total_amount' => $newTotal]);
+
+        return redirect()->back()->with('success', 'تمت إضافة المنتج إلى أمر الشراء بنجاح.');
+    }
+
+    public function deleteOrderItem($id, $itemId)
+    {
+        $order = Order::findOrFail($id);
+        $item = OrderItem::where('order_id', $order->id)->findOrFail($itemId);
+        $item->delete();
+
+        $newTotal = OrderItem::where('order_id', $order->id)->sum('total_price');
+        $order->update(['total_amount' => $newTotal]);
+
+        return redirect()->back()->with('success', 'تم حذف الصنف من أمر الشراء بنجاح.');
+    }
+
+    public function completeOrderSale(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $request->validate([
+            'payment_status' => 'required|string',
+            'branch_id' => 'nullable|exists:branches,id',
+            'notes' => 'nullable|string',
+        ]);
+
+        $order->update([
+            'status' => 'مكتمل (تم البيع)',
+            'payment_status' => $request->payment_status,
+            'branch_id' => $request->branch_id ?: $order->branch_id,
+            'notes' => $request->notes ?: $order->notes,
+        ]);
+
+        return redirect()->back()->with('success', 'تم تأكيد وإتمام عملية البيع وتحديث حالة السداد بنجاح!');
     }
 
     // Categories Management (Main Categories & Sub-Categories Hierarchy)

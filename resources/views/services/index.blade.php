@@ -1,13 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'الخدمات والصيانة الفنية — أليكس مارين')
+@php
+    $isEn = app()->getLocale() == 'en';
+@endphp
+
+@section('title', $isEn ? 'Technical Services & Marine Maintenance — ALEX MARINE' : 'الخدمات والصيانة الفنية — أليكس مارين')
 
 @section('content')
 <section class="py-5 bg-white border-bottom">
     <div class="container text-center">
-        <h1 class="fw-bold text-dark fs-1 mb-3">الخدمات والصيانة الفنية</h1>
+        <h1 class="fw-bold text-dark fs-1 mb-3">{{ $isEn ? 'Technical Services & Marine Maintenance' : 'الخدمات والصيانة الفنية' }}</h1>
         <p class="text-muted fs-5 mx-auto" style="max-width: 700px;">
-            نقدم خدمات صيانة، معايرة، واختبار كفاءة لمعدات الإطفاء وأجهزة التنفس ومعدات الإنقاذ مع إصدار شهادات صلاحية معتمدة.
+            {{ $isEn
+                ? 'We provide certified inspection, hydrostatic testing, calibration, and maintenance for marine fire systems, SCBA breathing apparatus, and life safety equipment with international compliance certificates.'
+                : 'نقدم خدمات صيانة، معايرة، واختبار كفاءة لمعدات الإطفاء وأجهزة التنفس ومعدات الإنقاذ مع إصدار شهادات صلاحية معتمدة.' }}
         </p>
     </div>
 </section>
@@ -24,12 +30,12 @@
                                     <i class="bi {{ $service->icon ?: 'bi-wrench' }} fs-2"></i>
                                 </div>
                                 <div>
-                                    <h3 class="fw-bold text-dark fs-4 m-0">{{ $service->name_ar }}</h3>
-                                    <small class="text-muted">{{ $service->name_en }}</small>
+                                    <h3 class="fw-bold text-dark fs-4 m-0">{{ $isEn ? ($service->name_en ?: $service->name_ar) : $service->name_ar }}</h3>
+                                    <small class="text-muted">{{ $isEn ? $service->name_ar : $service->name_en }}</small>
                                 </div>
                             </div>
                             <p class="text-secondary leading-relaxed mb-3 fs-6">
-                                {{ $service->short_desc_ar }}
+                                {{ $isEn ? ($service->short_desc_en ?: $service->short_desc_ar) : $service->short_desc_ar }}
                             </p>
 
                             @if(!empty($service->features))
@@ -42,7 +48,8 @@
                         </div>
                         <div>
                             <a href="{{ route('services.show', $service->slug) }}" class="btn btn-alex-primary">
-                                تفاصيل الخدمة وطرق الطلب <i class="bi bi-arrow-left ms-1"></i>
+                                <span>{{ $isEn ? 'Service Details & Inquiry' : 'تفاصيل الخدمة وطرق الطلب' }}</span>
+                                <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }} ms-1"></i>
                             </a>
                         </div>
                     </div>

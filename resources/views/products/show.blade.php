@@ -331,10 +331,11 @@
         <div class="row g-3 g-lg-3 fleet-5col-row">
             @foreach($relatedProducts as $relProduct)
             @php
-                $relUrl = route('products.show', ['category_slug' => $relProduct->category->slug, 'product_slug' => $relProduct->slug]);
+                $relCatSlug = $relProduct->category?->slug ?? ($category->slug ?? 'general');
+                $relUrl = route('products.show', ['category_slug' => $relCatSlug, 'product_slug' => $relProduct->slug]);
                 $relImage = $relProduct->image ?: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80';
                 $relTitle = $isEn ? ($relProduct->name_en ?: $relProduct->name_ar) : $relProduct->name_ar;
-                $relCatName = $isEn ? ($relProduct->category->name_en ?: $relProduct->category->name_ar) : ($relProduct->category->name_ar ?? 'توريدات بحرية');
+                $relCatName = $relProduct->category ? ($isEn ? ($relProduct->category->name_en ?: $relProduct->category->name_ar) : $relProduct->category->name_ar) : ($isEn ? 'Marine Supplies' : 'توريدات بحرية');
                 $relPriceVal = $relProduct->price > 0 ? number_format($relProduct->price) : null;
             @endphp
             <div class="col-fleet-5">

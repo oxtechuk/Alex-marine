@@ -1,44 +1,42 @@
 @extends('layouts.admin')
 
-@section('title', 'إنشاء أمر بيع فوري (POS) — أليكس مارين')
-@section('page_title', 'نظام نقطة البيع والبيع المباشر (POS System)')
+@section('title', 'إنشاء أمر بيع سريع (POS) — أليكس مارين')
+@section('page_title', 'نظام البيع السريع وإصدار الفواتير المباشرة (Quick POS)')
 
 @section('content')
 
 <!-- Header Banner -->
-<div class="card border-0 shadow-sm rounded-4 bg-navy text-white p-4 mb-4" style="background: linear-gradient(135deg, #0A1D37 0%, #0D3B66 100%);">
+<div class="card-luxury p-4 mb-4 bg-navy text-white" style="background: linear-gradient(135deg, #0A192F 0%, #162E4E 100%);">
     <div class="d-flex align-items-center gap-3">
-        <div class="bg-white bg-opacity-10 text-warning rounded-3 d-flex align-items-center justify-content-center p-3 border border-warning border-opacity-25" style="width: 48px; height: 48px;">
-            <i class="bi bi-cart-plus-fill fs-3 text-warning"></i>
+        <div class="rounded-4 bg-gold text-dark d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px;">
+            <i class="bi bi-cart-plus-fill fs-3 text-navy"></i>
         </div>
         <div>
-            <h4 class="fw-extrabold text-white m-0">نظام البيع المباشر وإنشاء الفواتير (POS)</h4>
-            <p class="text-white-50 fs-7 m-0 mt-1">إصدار الفواتير الفورية واختيار المنتجات حسب الأقساب والتسميع الآلي لأسعار البيع</p>
+            <h4 class="fw-extrabold text-white m-0">نظام البيع المباشر والفواتير الفورية (POS)</h4>
+            <p class="text-white-50 fs-7 m-0 mt-1">إصدار أوامر البيع والفواتير المباشرة لعملاء المعرض والفروع بسرعة وسهولة</p>
         </div>
     </div>
 </div>
 
-<form action="{{ route('admin.sales.store') }}" method="POST" id="saleForm">
+<form action="{{ route('admin.sales.store') }}" method="POST" id="posSaleForm">
     @csrf
 
     <div class="row g-4">
         
-        <!-- Left Side: Sale Options & Customer Details -->
+        <!-- Left Column: Customer & Invoice Settings -->
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-4 bg-white p-4 sticky-top" style="top: 20px; z-index: 10;">
+            <div class="card-luxury p-4 sticky-top" style="top: 20px; z-index: 10;">
                 <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-3">
-                    <div class="bg-navy bg-opacity-10 text-navy rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                        <i class="bi bi-person-badge-fill fs-5 text-navy"></i>
-                    </div>
+                    <i class="bi bi-person-badge-fill fs-4 text-gold"></i>
                     <div>
-                        <h5 class="fw-extrabold text-navy m-0 fs-6">بيانات الفاتورة والفرع</h5>
-                        <small class="text-muted fs-8">اختر نوع العميل والفرع التابع للبيع</small>
+                        <h5 class="fw-bold text-navy m-0 fs-6">بيانات الفاتورة والعميل</h5>
+                        <small class="text-muted fs-8">حدد الفرع وطريقة الدفع ونوع العميل</small>
                     </div>
                 </div>
 
                 <!-- Branch Selection -->
                 <div class="mb-3">
-                    <label class="form-label fw-bold text-navy fs-7">الفرع التابع للعملية <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-navy fs-7">الفرع المسؤول عن البيع <span class="text-danger">*</span></label>
                     <select name="branch_id" class="form-select fw-bold" required>
                         @foreach($branches as $branch)
                             <option value="{{ $branch->id }}">{{ $branch->name_ar }} ({{ $branch->city }})</option>
@@ -48,18 +46,18 @@
 
                 <!-- Customer Type Toggle -->
                 <div class="mb-3 p-3 bg-light rounded-3 border">
-                    <label class="form-label fw-bold text-navy mb-2 fs-7">نوع العميل <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-navy mb-2 fs-7">نوع العميل</label>
                     <div class="d-flex gap-3">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="customer_type" id="custCash" value="cash" checked onchange="toggleCustomerFields()">
-                            <label class="form-check-label fw-bold text-success" for="custCash">
-                                <i class="bi bi-cash-stack me-1"></i> عميل نقدي
+                            <label class="form-check-label fw-bold text-navy" for="custCash">
+                                <i class="bi bi-cash-stack text-gold me-1"></i> عميل نقدي
                             </label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="customer_type" id="custExisting" value="existing" onchange="toggleCustomerFields()">
                             <label class="form-check-label fw-bold text-navy" for="custExisting">
-                                <i class="bi bi-person-check-fill me-1"></i> عميل مسجل
+                                <i class="bi bi-person-check-fill text-gold me-1"></i> عميل مسجل
                             </label>
                         </div>
                     </div>
@@ -68,18 +66,18 @@
                 <!-- Cash Customer Fields -->
                 <div id="cashFields" class="mb-3">
                     <div class="mb-2">
-                        <label class="form-label fw-bold fs-7">اسم العميل النقدي</label>
+                        <label class="form-label fw-bold text-navy fs-8">اسم العميل النقدي</label>
                         <input type="text" name="customer_name" class="form-control form-control-sm" value="عميل نقدي" placeholder="اسم العميل">
                     </div>
                     <div>
-                        <label class="form-label fw-bold fs-7">رقم الهاتف</label>
+                        <label class="form-label fw-bold text-navy fs-8">رقم الهاتف</label>
                         <input type="text" name="phone" class="form-control form-control-sm" placeholder="010XXXXXXXX">
                     </div>
                 </div>
 
                 <!-- Existing Customer Selection -->
                 <div id="existingFields" class="mb-3 d-none">
-                    <label class="form-label fw-bold text-navy fs-7">اختر العميل المسجل <span class="text-danger">*</span></label>
+                    <label class="form-label fw-bold text-navy fs-7">اختر العميل المسجل</label>
                     <select name="user_id" class="form-select form-select-sm">
                         <option value="">-- اختر العميل من الدليل --</option>
                         @foreach($customers as $cust)
@@ -92,149 +90,93 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold text-navy fs-7">طريقة الدفع والسداد <span class="text-danger">*</span></label>
                     <select name="payment_status" class="form-select fw-bold" required>
-                        <option value="نقدي / مدفوع" selected>💵 نقدي / كاش (Cash)</option>
-                        <option value="تحويل بنكي / فوري">📱 تحويل بنكي / Instapay</option>
-                        <option value="آجل / حسب الاتفاق">📄 آجل / حسابات</option>
+                        <option value="نقدي / مدفوع (Cash)" selected>💵 نقدي / كاش (Cash)</option>
+                        <option value="تحويل بنكي / Instapay">📱 تحويل بنكي / Instapay</option>
+                        <option value="آجل / حسابات">📄 آجل / حسابات</option>
                     </select>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label fw-bold fs-7">ملاحظات الفاتورة</label>
+                    <label class="form-label fw-bold text-navy fs-8">ملاحظات الفاتورة</label>
                     <textarea name="notes" class="form-control form-control-sm" rows="2" placeholder="ملاحظات التسليم أو الضمان..."></textarea>
                 </div>
 
                 <!-- Grand Total Footer Summary Box -->
-                <div class="p-3 bg-navy text-white rounded-4 shadow-sm border border-warning border-opacity-25 text-center" style="background-color: #0A1D37 !important;">
-                    <span class="fs-7 text-warning fw-bold d-block mb-1">إجمالي فاتورة POS المباشرة</span>
-                    <span class="fs-2 fw-extrabold text-white" id="grandTotalText">0.00 جـ.م</span>
+                <div class="p-3 bg-navy text-white rounded-4 shadow-sm text-center">
+                    <span class="fs-8 text-gold fw-bold d-block mb-1">المبلغ الإجمالي المستحق</span>
+                    <span class="fs-2 fw-extrabold text-white" id="posGrandTotalText">0.00 جـ.م</span>
                     
-                    <button type="submit" class="btn btn-navy w-100 fw-extrabold rounded-pill py-2.5 text-white mt-3 fs-6 shadow border border-warning border-opacity-50">
-                        <i class="bi bi-printer-fill text-warning me-2"></i> تأكيد وحفظ الفاتورة
+                    <button type="submit" class="btn btn-gold w-100 fw-bold rounded-pill py-2.5 mt-3 fs-6">
+                        <i class="bi bi-printer-fill me-1"></i> حفظ وتأكيد الفاتورة
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Right Side: POS Interactive Product Browser & Cart -->
+        <!-- Right Column: Quick Interactive Product Search & Cart Table -->
         <div class="col-lg-8">
             
-            <!-- 1. POS Interactive Product Browser Header -->
-            <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
-                
-                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-grid-3x3-gap-fill fs-3 text-warning"></i>
-                        <div>
-                            <h5 class="fw-extrabold text-navy m-0 fs-6">تصفح المنتجات واختيار الأقسام</h5>
-                            <small class="text-muted fs-8">اضغط على أي منتج لإضافته فورياً للفاتورة مع سعر البيع</small>
-                        </div>
-                    </div>
+            <!-- Product Fast Search -->
+            <div class="card-luxury p-3 mb-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-gold"><i class="bi bi-search fs-5"></i></span>
+                    <input type="text" id="posSearchInput" class="form-control border-start-0 fs-6" placeholder="🔍 بحث سريع باسم المنتج أو كود SKU لإضافته فوراً..." onkeyup="filterPosCatalog()">
                 </div>
 
-                <!-- Quick Search Input -->
-                <div class="mb-3">
-                    <div class="input-group input-group-lg">
-                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                        <input type="text" id="posSearchInput" class="form-control border-start-0 bg-light fs-6" placeholder="🔍 بحث سريع باسم المنتج أو كود SKU..." onkeyup="filterPosProducts()">
-                    </div>
-                </div>
-
-                <!-- Category Filters (Pills) -->
-                <div class="d-flex gap-2 overflow-auto pb-2" id="categoryPills">
-                    <button type="button" class="btn btn-navy btn-sm rounded-pill px-3 fw-bold pos-cat-btn active" data-cat="all" onclick="filterByCategory('all', this)" style="background-color: #0A1D37; color: white;">
-                        🌐 جميع الأقسام (الكل)
-                    </button>
-                    @foreach($categories as $cat)
-                        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-semibold pos-cat-btn" data-cat="{{ $cat->id }}" onclick="filterByCategory('{{ $cat->id }}', this)">
-                            {{ $cat->name_ar }}
-                        </button>
-                    @endforeach
-                </div>
-
-                <!-- Visual Product Cards Grid -->
-                <div class="row g-3 mt-2 overflow-auto style-scrollbar" style="max-height: 280px;" id="posProductsGrid">
-                    @foreach($products as $prod)
-                        @php
-                            $pImg = !empty($prod->image) && is_string($prod->image) ? (\Illuminate\Support\Str::startsWith($prod->image, ['http://', 'https://']) ? $prod->image : asset($prod->image)) : null;
-                        @endphp
-                        <div class="col-md-4 col-6 pos-product-item" data-cat-id="{{ $prod->category_id }}" data-name="{{ mb_strtolower($prod->name_ar . ' ' . $prod->name_en) }}" data-sku="{{ mb_strtolower($prod->sku) }}">
-                            <div class="card h-100 border rounded-3 p-2 bg-light hover-shadow cursor-pointer product-card-clickable" onclick="addSpecificProductToInvoice({{ $prod->id }}, '{{ addslashes($prod->name_ar) }}', '{{ $prod->sku }}', {{ $prod->price ?? 0 }})">
-                                <div class="d-flex align-items-center gap-2">
-                                    @if($pImg)
-                                        <img src="{{ $pImg }}" style="width: 42px; height: 42px; object-fit: cover;" class="rounded-3 border">
-                                    @else
-                                        <div class="bg-white rounded-3 d-flex align-items-center justify-content-center border text-muted" style="width: 42px; height: 42px;">
-                                            <i class="bi bi-box-seam fs-6"></i>
-                                        </div>
-                                    @endif
-                                    <div class="overflow-hidden">
-                                        <div class="fw-bold text-navy text-truncate fs-8" title="{{ $prod->name_ar }}">{{ $prod->name_ar }}</div>
-                                        <div class="d-flex align-items-center justify-content-between gap-1 mt-1">
-                                            <span class="badge bg-white text-secondary border font-monospace fs-8">{{ $prod->sku }}</span>
-                                            <span class="badge bg-navy text-white fw-bold fs-8">{{ number_format($prod->price ?? 0, 2) }} جـ.م</span>
-                                        </div>
-                                    </div>
+                <!-- Quick Product Dropdown / Results List -->
+                <div id="posSearchResults" class="mt-2 overflow-auto" style="max-height: 220px; display: none;">
+                    <div class="list-group list-group-flush border rounded-3" id="posResultsList">
+                        @foreach($products as $p)
+                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2 px-3 pos-item-result"
+                                    data-id="{{ $p->id }}"
+                                    data-name="{{ $p->name_ar }}"
+                                    data-sku="{{ $p->sku }}"
+                                    data-price="{{ $p->price }}"
+                                    onclick="addPosItem({{ $p->id }}, '{{ addslashes($p->name_ar) }}', '{{ $p->sku }}', {{ $p->price }})">
+                                <div>
+                                    <strong class="text-navy">{{ $p->name_ar }}</strong>
+                                    <span class="text-muted fs-8 ms-2"><code>{{ $p->sku ?: '—' }}</code></span>
                                 </div>
-                            </div>
-                        </div>
-                    @endforeach
+                                <span class="badge badge-gold px-2 py-1 fs-7">{{ number_format($p->price, 2) }} ج.م <i class="bi bi-plus-lg ms-1"></i></span>
+                            </button>
+                        @endforeach
+                    </div>
                 </div>
-
             </div>
 
-            <!-- 2. Invoice Line Items Table Card -->
-            <div class="card border-0 shadow-sm rounded-4 bg-white p-4">
-                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+            <!-- Cart Table -->
+            <div class="card-luxury p-4">
+                <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-cart-check-fill fs-3 text-marine"></i>
-                        <div>
-                            <h5 class="fw-extrabold text-navy m-0 fs-6">جدول بنود فاتورة البيع المباشر</h5>
-                            <small class="text-muted fs-8">المنتجات المضافة للفاتورة حالياً</small>
-                        </div>
+                        <i class="bi bi-cart3 fs-4 text-gold"></i>
+                        <h5 class="fw-bold text-navy m-0">أصناف الفاتورة الحالية</h5>
                     </div>
-
-                    <button type="button" class="btn btn-sm btn-outline-navy fw-bold rounded-pill px-3" onclick="addItemRow()">
-                        <i class="bi bi-plus-circle me-1 text-warning"></i> إضافة صف يدوي
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="clearPosCart()">
+                        <i class="bi bi-trash me-1"></i> إفراغ السلة
                     </button>
                 </div>
 
-                <div class="table-responsive mb-3">
-                    <table class="table table-bordered align-middle" id="itemsTable">
-                        <thead class="bg-light">
+                <div class="table-responsive">
+                    <table class="table table-luxury align-middle m-0" id="posCartTable">
+                        <thead>
                             <tr>
-                                <th style="width: 45%;">المنتج والـ SKU <span class="text-danger">*</span></th>
-                                <th style="width: 20%;">الكمية <span class="text-danger">*</span></th>
-                                <th style="width: 25%;">سعر البيع (جـ.م) <span class="text-danger">*</span></th>
-                                <th style="width: 10%;" class="text-center">حذف</th>
+                                <th style="width: 40%;">المنتج</th>
+                                <th class="text-center" style="width: 15%;">الكمية</th>
+                                <th class="text-center" style="width: 20%;">سعر الوحدة (ج.م)</th>
+                                <th class="text-center" style="width: 15%;">الإجمالي</th>
+                                <th class="text-center" style="width: 10%;">حذف</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <!-- Item Row 0 -->
-                            <tr class="item-row">
-                                <td>
-                                    <select name="items[0][product_id]" class="form-select product-select fw-semibold" required onchange="updateProductPrice(this)">
-                                        <option value="">-- اختر المنتج --</option>
-                                        @foreach($products as $prod)
-                                            <option value="{{ $prod->id }}" data-sku="{{ $prod->sku }}" data-price="{{ $prod->price ?? 0 }}">
-                                                {{ $prod->name_ar }} ({{ $prod->sku }}) {{ $prod->price ? '— '.number_format($prod->price, 2).' جـ.م' : '' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" name="items[0][quantity]" class="form-control qty-input font-monospace fw-bold" value="1" min="1" required onchange="calculateGrandTotal()" onkeyup="calculateGrandTotal()">
-                                </td>
-                                <td>
-                                    <input type="number" step="0.01" name="items[0][unit_price]" class="form-control price-input font-monospace fw-bold text-success" value="0.00" required onchange="calculateGrandTotal()" onkeyup="calculateGrandTotal()">
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-outline-danger border-0" onclick="removeRow(this)"><i class="bi bi-trash-fill"></i></button>
+                        <tbody id="posCartBody">
+                            <tr id="emptyCartRow">
+                                <td colspan="5" class="text-center text-muted py-5">
+                                    <i class="bi bi-cart-x fs-1 d-block mb-2 text-gold"></i>
+                                    الفاتورة فارغة. ابحث عن منتج واضغط عليه لإضافته هنا فوراً.
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
 
         </div>
@@ -242,169 +184,134 @@
     </div>
 </form>
 
-<style>
-    .hover-shadow:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(10,29,55,0.08);
-        border-color: #0A1D37 !important;
-        transition: all 0.2s ease;
-    }
-    .cursor-pointer {
-        cursor: pointer;
-    }
-</style>
-
 <script>
-    let itemIndex = 1;
+let cartItems = {};
 
-    function toggleCustomerFields() {
-        const isCash = document.getElementById('custCash').checked;
-        const cashDiv = document.getElementById('cashFields');
-        const existingDiv = document.getElementById('existingFields');
+function toggleCustomerFields() {
+    const isExisting = document.getElementById('custExisting').checked;
+    document.getElementById('existingFields').classList.toggle('d-none', !isExisting);
+    document.getElementById('cashFields').classList.toggle('d-none', isExisting);
+}
 
-        if (isCash) {
-            cashDiv.classList.remove('d-none');
-            existingDiv.classList.add('d-none');
+function filterPosCatalog() {
+    const query = document.getElementById('posSearchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('posSearchResults');
+    const items = document.querySelectorAll('.pos-item-result');
+
+    if (!query) {
+        resultsContainer.style.display = 'none';
+        return;
+    }
+
+    let matchCount = 0;
+    items.forEach(el => {
+        const name = el.getAttribute('data-name').toLowerCase();
+        const sku = (el.getAttribute('data-sku') || '').toLowerCase();
+        if (name.includes(query) || sku.includes(query)) {
+            el.style.display = 'flex';
+            matchCount++;
         } else {
-            cashDiv.classList.add('d-none');
-            existingDiv.classList.remove('d-none');
+            el.style.display = 'none';
         }
+    });
+
+    resultsContainer.style.display = matchCount > 0 ? 'block' : 'none';
+}
+
+function addPosItem(id, name, sku, price) {
+    if (cartItems[id]) {
+        cartItems[id].quantity += 1;
+    } else {
+        cartItems[id] = {
+            id: id,
+            name: name,
+            sku: sku || '—',
+            quantity: 1,
+            unit_price: parseFloat(price) || 0
+        };
+    }
+    renderPosCart();
+    document.getElementById('posSearchInput').value = '';
+    document.getElementById('posSearchResults').style.display = 'none';
+}
+
+function removePosItem(id) {
+    delete cartItems[id];
+    renderPosCart();
+}
+
+function updatePosItemQty(id, val) {
+    const qty = parseInt(val) || 1;
+    if (cartItems[id]) {
+        cartItems[id].quantity = qty > 0 ? qty : 1;
+        renderPosCart();
+    }
+}
+
+function updatePosItemPrice(id, val) {
+    const price = parseFloat(val) || 0;
+    if (cartItems[id]) {
+        cartItems[id].unit_price = price >= 0 ? price : 0;
+        renderPosCart();
+    }
+}
+
+function clearPosCart() {
+    cartItems = {};
+    renderPosCart();
+}
+
+function renderPosCart() {
+    const tbody = document.getElementById('posCartBody');
+    tbody.innerHTML = '';
+
+    const keys = Object.keys(cartItems);
+    if (keys.length === 0) {
+        tbody.innerHTML = `
+            <tr id="emptyCartRow">
+                <td colspan="5" class="text-center text-muted py-5">
+                    <i class="bi bi-cart-x fs-1 d-block mb-2 text-gold"></i>
+                    الفاتورة فارغة. ابحث عن منتج واضغط عليه لإضافته هنا فوراً.
+                </td>
+            </tr>
+        `;
+        document.getElementById('posGrandTotalText').textContent = '0.00 جـ.م';
+        return;
     }
 
-    function filterByCategory(catId, btnElement) {
-        document.querySelectorAll('.pos-cat-btn').forEach(btn => {
-            btn.classList.remove('active', 'btn-navy');
-            btn.classList.add('btn-outline-secondary');
-            btn.style.backgroundColor = '';
-            btn.style.color = '';
-        });
+    let grand = 0;
+    keys.forEach((key, index) => {
+        const item = cartItems[key];
+        const subtotal = item.quantity * item.unit_price;
+        grand += subtotal;
 
-        btnElement.classList.remove('btn-outline-secondary');
-        btnElement.classList.add('active', 'btn-navy');
-        btnElement.style.backgroundColor = '#0A1D37';
-        btnElement.style.color = 'white';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>
+                <input type="hidden" name="items[${index}][product_id]" value="${item.id}">
+                <strong class="text-navy">${item.name}</strong>
+                <small class="text-muted d-block">كود: <code>${item.sku}</code></small>
+            </td>
+            <td>
+                <input type="number" name="items[${index}][quantity]" value="${item.quantity}" min="1" class="form-control form-control-sm text-center fw-bold" onchange="updatePosItemQty(${item.id}, this.value)">
+            </td>
+            <td>
+                <input type="number" step="0.01" name="items[${index}][unit_price]" value="${item.unit_price.toFixed(2)}" min="0" class="form-control form-control-sm text-center fw-bold text-navy" onchange="updatePosItemPrice(${item.id}, this.value)">
+            </td>
+            <td class="text-center fw-extrabold text-navy">
+                ${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ج.م
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-sm btn-outline-danger border-0 rounded-circle p-1" onclick="removePosItem(${item.id})">
+                    <i class="bi bi-trash-fill"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
 
-        const items = document.querySelectorAll('.pos-product-item');
-        items.forEach(item => {
-            if (catId === 'all' || item.getAttribute('data-cat-id') === catId) {
-                item.classList.remove('d-none');
-            } else {
-                item.classList.add('d-none');
-            }
-        });
-    }
-
-    function filterPosProducts() {
-        const query = document.getElementById('posSearchInput').value.toLowerCase().trim();
-        const items = document.querySelectorAll('.pos-product-item');
-
-        items.forEach(item => {
-            const name = item.getAttribute('data-name');
-            const sku = item.getAttribute('data-sku');
-
-            if (name.includes(query) || sku.includes(query)) {
-                item.classList.remove('d-none');
-            } else {
-                item.classList.add('d-none');
-            }
-        });
-    }
-
-    function addSpecificProductToInvoice(productId, productName, sku, price) {
-        const rows = document.querySelectorAll('.item-row');
-        let targetRow = null;
-
-        const firstRowSelect = rows[0].querySelector('.product-select');
-        if (firstRowSelect && !firstRowSelect.value) {
-            targetRow = rows[0];
-        } else {
-            rows.forEach(r => {
-                const sel = r.querySelector('.product-select');
-                if (sel && sel.value == productId) {
-                    targetRow = r;
-                }
-            });
-        }
-
-        if (targetRow && targetRow.querySelector('.product-select').value == productId) {
-            const qtyInput = targetRow.querySelector('.qty-input');
-            qtyInput.value = parseInt(qtyInput.value || 0) + 1;
-        } else if (targetRow && !targetRow.querySelector('.product-select').value) {
-            const select = targetRow.querySelector('.product-select');
-            select.value = productId;
-            const priceInput = targetRow.querySelector('.price-input');
-            if (priceInput) {
-                priceInput.value = parseFloat(price).toFixed(2);
-            }
-        } else {
-            addItemRow();
-            const newRows = document.querySelectorAll('.item-row');
-            const lastRow = newRows[newRows.length - 1];
-            const select = lastRow.querySelector('.product-select');
-            select.value = productId;
-            const priceInput = lastRow.querySelector('.price-input');
-            if (priceInput) {
-                priceInput.value = parseFloat(price).toFixed(2);
-            }
-        }
-
-        calculateGrandTotal();
-    }
-
-    function addItemRow() {
-        const tableBody = document.querySelector('#itemsTable tbody');
-        const firstRow = document.querySelector('.item-row');
-        const newRow = firstRow.cloneNode(true);
-
-        const select = newRow.querySelector('.product-select');
-        const qty = newRow.querySelector('.qty-input');
-        const price = newRow.querySelector('.price-input');
-
-        select.name = `items[${itemIndex}][product_id]`;
-        select.value = '';
-        qty.name = `items[${itemIndex}][quantity]`;
-        qty.value = '1';
-        price.name = `items[${itemIndex}][unit_price]`;
-        price.value = '0.00';
-
-        tableBody.appendChild(newRow);
-        itemIndex++;
-        calculateGrandTotal();
-    }
-
-    function removeRow(btn) {
-        const rows = document.querySelectorAll('.item-row');
-        if (rows.length > 1) {
-            btn.closest('tr').remove();
-            calculateGrandTotal();
-        } else {
-            alert('يجب إضافة منتج واحد على الأقل في العملية.');
-        }
-    }
-
-    function updateProductPrice(select) {
-        const selectedOption = select.options[select.selectedIndex];
-        const price = selectedOption.getAttribute('data-price') || 0;
-        const row = select.closest('tr');
-        const priceInput = row.querySelector('.price-input');
-        if (priceInput) {
-            priceInput.value = parseFloat(price).toFixed(2);
-        }
-        calculateGrandTotal();
-    }
-
-    function calculateGrandTotal() {
-        let grandTotal = 0;
-        const rows = document.querySelectorAll('.item-row');
-        
-        rows.forEach(row => {
-            const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
-            const price = parseFloat(row.querySelector('.price-input').value) || 0;
-            grandTotal += (qty * price);
-        });
-
-        document.getElementById('grandTotalText').innerText = grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' جـ.م';
-    }
+    document.getElementById('posGrandTotalText').textContent = grand.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' جـ.م';
+}
 </script>
 
 @endsection
