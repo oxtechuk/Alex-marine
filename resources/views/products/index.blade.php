@@ -194,10 +194,7 @@
                         </p>
 
                         <div class="product-card-footer">
-                            <span class="product-availability-badge">
-                                <i class="bi bi-check-circle-fill"></i>
-                                {{ $product->availability_status ?? ($isEn ? 'Available' : 'متوفر') }}
-                            </span>
+                           
 
                             <div class="d-flex align-items-center gap-2">
                                 {{-- Add to Quote Cart --}}
