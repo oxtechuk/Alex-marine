@@ -469,6 +469,7 @@
             }
         }
     </style>
+    @stack('styles')
 </head>
 <body class="{{ $isEn ? 'font-inter' : '' }}">
 

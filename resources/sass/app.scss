@@ -2218,4 +2218,291 @@ h6, .h6 { font-weight: 600; color: var(--alex-navy-dark); }
   }
 }
 
+/* ==========================================================================
+   PRACTICAL B2B PRODUCT CARDS — LUXURY & SPEED
+   ========================================================================== */
+.practical-card,
+.product-card {
+  background-color: #ffffff !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 14px !important;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(10, 29, 55, 0.04);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(10, 29, 55, 0.12);
+    border-color: #0A1D37 !important;
+
+    .product-thumb-img,
+    .product-card-img-wrap img {
+      transform: scale(1.05);
+    }
+  }
+
+  .product-card-img-wrap {
+    position: relative;
+    background-color: #F8FAFC;
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px;
+    overflow: hidden;
+    border-bottom: 1.5px solid #E2E8F0;
+
+    img,
+    .product-thumb-img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  }
+
+  .product-badge-category {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.96);
+    border: 1px solid #CBD5E1;
+    color: #0A192F;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  }
+
+  [dir="ltr"] & .product-badge-category {
+    right: auto;
+    left: 10px;
+  }
+
+  .product-badge-new {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, #1E6FAE 0%, #0D3B66 100%);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 6px;
+    z-index: 2;
+    box-shadow: 0 2px 6px rgba(13, 59, 102, 0.25);
+  }
+
+  [dir="ltr"] & .product-badge-new {
+    left: auto;
+    right: 10px;
+  }
+
+  .product-card-body {
+    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .product-card-title {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #0A192F;
+    margin-bottom: 0.35rem;
+    text-decoration: none;
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.8em;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #1E6FAE;
+    }
+  }
+
+  .product-card-sku {
+    font-size: 0.78rem;
+    color: #64748B;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    .sku-label { font-weight: 600; }
+    .sku-value {
+      font-weight: 700;
+      color: #0A192F;
+      background-color: #F1F5F9;
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.3px;
+    }
+  }
+
+  .product-card-desc {
+    font-size: 0.82rem;
+    color: #64748B;
+    line-height: 1.5;
+    margin-bottom: 0.85rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.5em;
+  }
+
+  .product-card-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 0.75rem;
+    border-top: 1.5px solid #F1F5F9;
+  }
+}
+
+/* Dual Action Buttons on Cards */
+.btn-card-order-now {
+  flex: 1.15;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #FAD961 0%, #D4AF37 100%) !important;
+  color: #0A192F !important;
+  border-radius: 8px !important;
+  font-size: 0.86rem !important;
+  font-weight: 800 !important;
+  border: none !important;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  i {
+    font-size: 0.95rem;
+    color: #0A192F;
+  }
+
+  &:hover {
+    background: #0A192F !important;
+    color: #D4AF37 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(10, 25, 47, 0.25);
+
+    i {
+      color: #D4AF37;
+    }
+  }
+}
+
+.btn-card-add-cart {
+  flex: 0.85;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #0A192F !important;
+  color: #ffffff !important;
+  border: 1.5px solid #0A192F !important;
+  border-radius: 8px !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  i {
+    font-size: 1rem;
+    color: #ffffff;
+  }
+
+  &:hover {
+    background-color: #1E6FAE !important;
+    border-color: #1E6FAE !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 110, 174, 0.25);
+  }
+
+  &.btn-success-state {
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+    color: #ffffff !important;
+    transform: scale(1.05);
+  }
+}
+
+/* Category Pills Scroller */
+.category-pills-wrap {
+  width: 100%;
+  position: relative;
+}
+.category-pills-scroller {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 8px 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+.cat-pill {
+  white-space: nowrap;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 20px;
+  color: #0A192F;
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  i {
+    color: #64748B;
+    font-size: 1rem;
+  }
+
+  &:hover,
+  &.active {
+    background: #0A1D37;
+    border-color: #0A1D37;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(10, 29, 55, 0.15);
+
+    i {
+      color: #D4AF37;
+    }
+  }
+}
+
+
 
