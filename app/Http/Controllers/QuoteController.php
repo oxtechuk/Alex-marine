@@ -118,14 +118,15 @@ class QuoteController extends Controller
     {
         $request->validate([
             'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
+            'quantity' => 'nullable|integer|min:1',
         ]);
 
+        $quantity = max(1, (int) ($request->quantity ?? 1));
         $product = Product::findOrFail($request->product_id);
         $cart = session()->get('quote_cart', []);
 
         if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += $request->quantity;
+            $cart[$product->id]['quantity'] += $quantity;
         } else {
             $cart[$product->id] = [
                 'id' => $product->id,
@@ -133,12 +134,26 @@ class QuoteController extends Controller
                 'sku' => $product->sku,
                 'category' => $product->category->name_ar ?? '',
                 'image' => $product->image,
-                'quantity' => $request->quantity,
+                'quantity' => $quantity,
                 'notes' => $request->notes ?? '',
             ];
         }
 
         session()->put('quote_cart', $cart);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => app()->getLocale() == 'en' ? 'Product added to quote cart successfully' : 'تمت إضافة المنتج إلى قائمة طلب عرض السعر بنجاح',
+                'cart_count' => count($cart),
+                'product' => [
+                    'id' => $product->id,
+                    'name' => app()->getLocale() == 'en' ? ($product->name_en ?: $product->name_ar) : $product->name_ar,
+                    'sku' => $product->sku,
+                    'image' => $product->image,
+                ],
+            ]);
+        }
 
         return redirect()->back()->with('success', 'تمت إضافة المنتج إلى قائمة طلب عرض السعر بنجاح');
     }

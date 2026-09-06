@@ -284,14 +284,7 @@
                         <input type="text" name="about_title_en" class="form-control form-control-sm" value="{{ $settings['about_title_en'] ?? 'ALEX MARINE — Leading Marine & Safety Supplies' }}">
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold fs-7">الوصف (عربي)</label>
-                        <textarea name="about_desc_ar" class="form-control form-control-sm" rows="3">{{ $settings['about_desc_ar'] ?? 'نوفر حلول التوريدات المتكاملة ومهمات السلامة المهنية للسفن والشركات الملاحية والمصانع، مع ضمان التوريد الفوري المباشر للأرصفة والمواقع بأعلى شهادات الجودة.' }}</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold fs-7">Description (English)</label>
-                        <textarea name="about_desc_en" class="form-control form-control-sm" rows="3">{{ $settings['about_desc_en'] ?? 'We provide integrated commercial supplies and safety solutions for vessels, port operators, and industrial facilities with guaranteed port delivery and certified standards.' }}</textarea>
-                    </div>
+                
                 </div>
 
                 {{-- Category Cover Images & Selection --}}

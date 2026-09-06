@@ -30,7 +30,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $query->latest()->paginate(9);
+        $products = $query->latest()->paginate(12);
 
         return view('products.index', compact('products', 'categories'));
     }

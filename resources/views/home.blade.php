@@ -614,10 +614,7 @@
                         </a>
                         <div class="product-card-sku">SKU: {{ $prod->sku }}</div>
                         <div class="product-card-footer">
-                            <span class="product-availability-badge">
-                                <i class="bi bi-check-circle-fill"></i>
-                                {{ $prod->availability_status }}
-                            </span>
+                            
                             <a href="{{ $prodUrl }}"
                                class="btn-alex-primary py-1 px-2.5" style="font-size:0.8rem;">
                                 {{ $isEn ? 'Details' : 'تفاصيل' }}

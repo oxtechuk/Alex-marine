@@ -51,6 +51,16 @@ class AlexMarineTest extends TestCase
         ]);
         $response->assertSessionHas('quote_cart');
 
+        // Test AJAX request
+        $ajaxResponse = $this->postJson('/quote/add', [
+            'product_id' => $product->id,
+            'quantity' => 1,
+        ]);
+        $ajaxResponse->assertOk();
+        $ajaxResponse->assertJson([
+            'success' => true,
+        ]);
+
         $testEmail = 'rfq-'.uniqid().'@shipping.com';
         $response = $this->post('/quote/store', [
             'customer_name' => 'مهندس أحمد علي',

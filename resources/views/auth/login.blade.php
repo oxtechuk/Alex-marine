@@ -12,13 +12,19 @@
         <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 mx-auto bg-white" style="max-width: 480px;">
             <div class="text-center mb-4">
                 @php
-                    $logoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
+                    $headerLogoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
                 @endphp
-                <a href="{{ route('home') }}" class="d-inline-block mb-3 text-decoration-none">
-                    <img src="{{ $logoSrc }}" alt="ALEX MARINE" style="max-height: 52px; width: auto; object-fit: contain;"
-                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-inline-flex');">
-                    <div class="d-none rounded-4 align-items-center justify-content-center p-3" style="background-color: #0A192F; width: 64px; height: 64px;">
-                        <i class="bi bi-anchor fs-2" style="color: #D4AF37;"></i>
+                <a href="{{ route('home') }}" class="d-inline-flex align-items-center justify-content-center mb-3 text-decoration-none">
+                    <img src="{{ $headerLogoSrc }}" alt="ALEX MARINE" style="max-height: 58px; width: auto; object-fit: contain;"
+                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-flex');">
+                    <div class="d-none align-items-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:44px;height:44px;background:var(--alex-navy-dark);">
+                            <i class="bi bi-anchor fs-4" style="color:var(--alex-gold);"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark); font-size:1.2rem;">ALEX MARINE</div>
+                            <div class="navbar-brand-subtitle text-muted" style="font-size:0.75rem;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
+                        </div>
                     </div>
                 </a>
                 <h3 class="fw-extrabold text-navy mb-1" style="color: #0A192F;">{{ $isEn ? 'Account Login' : 'تسجيل الدخول' }}</h3>
@@ -45,7 +51,7 @@
                     <label class="form-label fw-bold text-navy fs-7">{{ $isEn ? 'Email Address' : 'البريد الإلكتروني' }} <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-envelope-fill"></i></span>
-                        <input type="email" name="email" id="loginEmail" class="form-control border-start-0" required value="{{ old('email', 'admin@alexmarine.com') }}" placeholder="admin@alexmarine.com">
+                        <input type="email" name="email" id="loginEmail" class="form-control border-start-0" required value="{{ old('email') }}" placeholder="{{ $isEn ? 'name@company.com' : 'name@company.com' }}" autocomplete="username">
                     </div>
                 </div>
 
@@ -53,13 +59,13 @@
                     <label class="form-label fw-bold text-navy fs-7">{{ $isEn ? 'Password' : 'كلمة المرور' }} <span class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-key-fill"></i></span>
-                        <input type="password" name="password" id="loginPassword" class="form-control border-start-0" required value="password" placeholder="••••••••">
+                        <input type="password" name="password" id="loginPassword" class="form-control border-start-0" required placeholder="••••••••" autocomplete="current-password">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <div class="form-check">
-                        <input type="checkbox" name="remember" class="form-check-input" id="remember" checked>
+                        <input type="checkbox" name="remember" class="form-check-input" id="remember">
                         <label class="form-check-label fs-7 text-muted" for="remember">{{ $isEn ? 'Remember me' : 'تذكر بيانات دخولي' }}</label>
                     </div>
                 </div>

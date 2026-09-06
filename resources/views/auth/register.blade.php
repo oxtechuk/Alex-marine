@@ -12,13 +12,19 @@
         <div class="alex-card p-4 mx-auto" style="max-width: 520px;">
             <div class="text-center mb-4">
                 @php
-                    $logoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
+                    $headerLogoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
                 @endphp
-                <a href="{{ route('home') }}" class="d-inline-block mb-3 text-decoration-none">
-                    <img src="{{ $logoSrc }}" alt="ALEX MARINE" style="max-height: 52px; width: auto; object-fit: contain;"
-                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-inline-flex');">
-                    <div class="d-none rounded-4 align-items-center justify-content-center p-3" style="background-color: #0A192F; width: 64px; height: 64px;">
-                        <i class="bi bi-anchor fs-2" style="color: #D4AF37;"></i>
+                <a href="{{ route('home') }}" class="d-inline-flex align-items-center justify-content-center mb-3 text-decoration-none">
+                    <img src="{{ $headerLogoSrc }}" alt="ALEX MARINE" style="max-height: 58px; width: auto; object-fit: contain;"
+                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-flex');">
+                    <div class="d-none align-items-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:44px;height:44px;background:var(--alex-navy-dark);">
+                            <i class="bi bi-anchor fs-4" style="color:var(--alex-gold);"></i>
+                        </div>
+                        <div class="text-start">
+                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark); font-size:1.2rem;">ALEX MARINE</div>
+                            <div class="navbar-brand-subtitle text-muted" style="font-size:0.75rem;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
+                        </div>
                     </div>
                 </a>
                 <h3 class="fw-bold text-dark mt-1">{{ $isEn ? 'Corporate Client Registration' : 'حساب جديد للشركات والعملاء' }}</h3>
