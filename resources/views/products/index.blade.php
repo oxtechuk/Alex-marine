@@ -203,30 +203,33 @@
                             {{ Str::limit($isEn ? ($product->short_desc_en ?: $product->short_desc_ar) : $product->short_desc_ar, 75) }}
                         </p>
 
-                        {{-- Action Buttons Row --}}
+                        {{-- Action Buttons Row: 1. Order Now (Quick RFQ Popup) & 2. Add to Cart --}}
                         <div class="product-card-footer">
-                            {{-- Details Button --}}
-                            <a href="{{ $productUrl }}" class="btn-card-details">
-                                <span>{{ $isEn ? 'Details' : 'تفاصيل' }}</span>
-                                <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
-                            </a>
+                            {{-- Button 1: Order Now (اطلب الآن - فتح بوب اب الشراء السريع) --}}
+                            <button type="button"
+                                    class="btn-card-order-now js-btn-direct-order"
+                                    data-product-id="{{ $product->id }}"
+                                    data-product-name="{{ $productTitle }}"
+                                    data-product-sku="{{ $product->sku }}"
+                                    data-product-img="{{ $productImg }}"
+                                    data-product-cat="{{ $catName }}"
+                                    title="{{ $isEn ? 'Direct Order / Quick Purchase' : 'طلب توريد مباشر وسريع' }}">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                                <span>{{ $isEn ? 'Order Now' : 'اطلب الآن' }}</span>
+                            </button>
 
-                            {{-- Add to Quote Cart Button (+) --}}
-                            <form action="{{ route('quote.add') }}" method="POST" class="d-inline js-add-quote-form" onsubmit="event.preventDefault();">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="button"
-                                        class="btn-card-add-quote js-btn-add-quote"
-                                        title="{{ $isEn ? 'Add to Quote Cart' : 'أضف لطلب عرض السعر' }}"
-                                        aria-label="{{ $isEn ? 'Add to Quote Cart' : 'أضف لطلب عرض السعر' }}"
-                                        data-product-id="{{ $product->id }}"
-                                        data-product-name="{{ $productTitle }}"
-                                        data-product-sku="{{ $product->sku }}"
-                                        data-product-img="{{ $productImg }}">
-                                    <i class="bi bi-plus-lg add-icon-default"></i>
-                                </button>
-                            </form>
+                            {{-- Button 2: Add to Quote Cart (أضف للسلة مع بوب اب) --}}
+                            <button type="button"
+                                    class="btn-card-add-cart js-btn-add-quote"
+                                    title="{{ $isEn ? 'Add to Quote Cart' : 'أضف لقائمة عرض السعر' }}"
+                                    aria-label="{{ $isEn ? 'Add to Quote Cart' : 'أضف لقائمة عرض السعر' }}"
+                                    data-product-id="{{ $product->id }}"
+                                    data-product-name="{{ $productTitle }}"
+                                    data-product-sku="{{ $product->sku }}"
+                                    data-product-img="{{ $productImg }}">
+                                <i class="bi bi-basket2-fill add-icon-default"></i>
+                                <span>{{ $isEn ? 'Cart' : 'السلة' }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -288,6 +291,81 @@
         </div>
     </div>
 </section>
+
+{{-- ═══════════════════════════════════════════════
+     QUICK DIRECT ORDER MODAL (بوب اب الشراء السريع)
+═══════════════════════════════════════════════ --}}
+<div class="modal fade" id="quickDirectOrderModal" tabindex="-1" aria-labelledby="quickDirectOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <!-- Modal Header -->
+            <div class="modal-header text-white px-4 py-3" style="background:var(--alex-navy-dark, #0A1D37); border-bottom: 2px solid var(--alex-gold, #D4AF37);">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(212,175,55,0.2);color:var(--alex-gold,#D4AF37);">
+                        <i class="bi bi-lightning-charge-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 fs-6 text-white" id="quickDirectOrderModalLabel">
+                            {{ $isEn ? 'Quick Direct Order / RFQ' : 'طلب شراء وتوريد مباشر سريع' }}
+                        </h5>
+                        <small class="text-white-50 fs-8">{{ $isEn ? 'Direct Port Logistics & Vessel Supply' : 'توريد فوري مباشر لجميع الموانئ والشركات' }}</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body p-4">
+                <!-- Product Preview Box -->
+                <div class="d-flex align-items-center gap-3 p-3 mb-3 bg-light rounded-3 border">
+                    <img id="modalProductImg" src="" alt="Product" style="width:62px;height:62px;object-fit:contain;background:#fff;border-radius:8px;padding:4px;border:1px solid #e2e8f0;flex-shrink:0;">
+                    <div class="min-w-0 flex-grow-1">
+                        <span id="modalProductCat" class="badge bg-secondary text-white fs-8 mb-1"></span>
+                        <h6 id="modalProductTitle" class="fw-bold text-dark mb-1 text-truncate" style="font-size:0.92rem;"></h6>
+                        <div id="modalProductSku" class="text-muted fs-8 fw-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Order Form -->
+                <form action="{{ route('quote.direct') }}" method="POST" id="quickDirectOrderForm">
+                    @csrf
+                    <input type="hidden" name="product_id" id="modalProductId" value="">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark fs-7">
+                            {{ $isEn ? 'Full Name / Company Name' : 'الاسم بالكامل أو اسم الشركة' }} <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" name="name" class="form-control" placeholder="{{ $isEn ? 'e.g. Captain Mohamed Ali / Marine Corp' : 'مثال: القبطان محمد علي / شركة الملاحة' }}" value="{{ Auth::check() ? Auth::user()->name : '' }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark fs-7">
+                            {{ $isEn ? 'Mobile / WhatsApp Number' : 'رقم الهاتف / الواتساب للتواصل' }} <span class="text-danger">*</span>
+                        </label>
+                        <input type="tel" name="phone" class="form-control" placeholder="{{ $isEn ? 'e.g. 01012345678' : 'مثال: 01012345678' }}" value="{{ Auth::check() ? Auth::user()->phone : '' }}" required dir="ltr">
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold text-dark fs-7">{{ $isEn ? 'Quantity' : 'الكمية المطلوبة' }}</label>
+                            <input type="number" name="quantity" class="form-control" value="1" min="1">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold text-dark fs-7">{{ $isEn ? 'Port / Delivery Point' : 'ميناء / جهة التسليم' }}</label>
+                            <input type="text" name="notes" class="form-control" placeholder="{{ $isEn ? 'e.g. Alexandria Port Dock 5' : 'مثال: ميناء الإسكندرية رصيف 5' }}">
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-alex-gold py-2-5 fw-bold fs-6 shadow-sm">
+                            <i class="bi bi-send-fill me-1"></i> {{ $isEn ? 'Confirm & Send Order' : 'تأكيد إرسال الطلب الآن' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{-- ═══════════════════════════════════════════════
      LUXURY ADD-TO-QUOTE POPUP TOAST
@@ -500,62 +578,62 @@
     border-top: 1.5px solid #F1F5F9;
 }
 
-/* Details Button */
-.btn-card-details {
-    flex-grow: 1;
-    height: 42px;
+/* Action Buttons Row: Dual Buttons */
+.btn-card-order-now {
+    flex: 1.15;
+    height: 40px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    background: linear-gradient(135deg, #FAD961 0%, #D4AF37 100%);
+    color: #0A192F !important;
+    border-radius: 8px;
+    font-size: 0.86rem;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-card-order-now:hover {
+    background: #0A192F;
+    color: #D4AF37 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(10, 25, 47, 0.25);
+}
+
+.btn-card-add-cart {
+    flex: 0.85;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     background-color: #0A192F;
     color: #ffffff !important;
+    border: 1.5px solid #0A192F;
     border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 700;
-    text-decoration: none;
-    border: none;
-    transition: all 0.2s ease;
-}
-
-.btn-card-details:hover {
-    background-color: #1E6FAE;
-    color: #ffffff !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(30, 110, 174, 0.25);
-}
-
-/* Large (+) Add Button */
-.btn-card-add-quote {
-    width: 44px;
-    height: 42px;
-    min-width: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #F1F5F9;
-    color: #0A192F;
-    border: 1.5px solid #CBD5E1;
-    border-radius: 8px;
-    font-size: 1.25rem;
+    font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.btn-card-add-quote:hover {
-    background-color: #D4AF37;
-    border-color: #D4AF37;
-    color: #0A192F;
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+.btn-card-add-cart:hover {
+    background-color: #1E6FAE;
+    border-color: #1E6FAE;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 110, 174, 0.25);
 }
 
-.btn-card-add-quote.btn-success-state {
+.btn-card-add-cart.btn-success-state {
     background-color: #10B981 !important;
     border-color: #10B981 !important;
     color: #ffffff !important;
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 /* ─────────────────────────────────────────────────────────────

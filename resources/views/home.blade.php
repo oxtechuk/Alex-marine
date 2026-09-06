@@ -119,8 +119,8 @@
                 @endif
             </a>
 
-            {{-- Floating Pill Menu --}}
-            <div class="econ-hero-nav-pill-wrapper">
+            {{-- Floating Pill Menu (Desktop only, hidden on mobile) --}}
+            <div class="econ-hero-nav-pill-wrapper d-none d-lg-flex">
                 <nav class="econ-hero-nav-pills">
                     <a href="{{ route('home') }}" class="econ-hero-nav-link active">{{ $isEn ? 'Home' : 'الرئيسية' }}</a>
                     <a href="{{ route('about') }}" class="econ-hero-nav-link">{{ $isEn ? 'About' : 'من نحن' }}</a>
@@ -142,6 +142,19 @@
                         @endif
                     </a>
                 </div>
+            </div>
+
+            {{-- Mobile Quick Actions on Hero (visible < 992px) --}}
+            <div class="d-flex align-items-center gap-2 d-lg-none">
+                <a href="{{ route('quote.index') }}" class="hero-quote-btn" title="{{ $isEn ? 'Quote Cart' : 'سلة الطلبات' }}">
+                    <i class="bi bi-basket2-fill"></i>
+                    @if(count(session('quote_cart', [])) > 0)
+                        <span class="hero-quote-badge">{{ count(session('quote_cart', [])) }}</span>
+                    @endif
+                </a>
+                <button class="btn btn-outline-light rounded-pill px-3 py-1 fs-8 fw-bold" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar">
+                    <i class="bi bi-list me-1"></i> {{ $isEn ? 'Menu' : 'القائمة' }}
+                </button>
             </div>
         </div>
 

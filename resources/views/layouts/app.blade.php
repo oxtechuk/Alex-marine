@@ -301,6 +301,63 @@
             line-height: 1.35;
         }
 
+        /* Mobile Drawer Styling */
+        .alex-mobile-toggle {
+            background: transparent;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .alex-mobile-offcanvas {
+            width: 320px !important;
+            background-color: #FFFFFF;
+            z-index: 10600;
+        }
+        .mobile-nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: #0A192F;
+            font-size: 0.94rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item i {
+            font-size: 1.15rem;
+            color: #64748B;
+            transition: color 0.2s ease;
+        }
+        .mobile-nav-item:hover, .mobile-nav-item.active {
+            background-color: #F1F5F9;
+            color: #1E6FAE;
+        }
+        .mobile-nav-item:hover i, .mobile-nav-item.active i {
+            color: #D4AF37;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-alex {
+                padding: 0.4rem 0 !important;
+            }
+            .alex-nav-actions .alex-nav-cart {
+                height: 36px;
+                padding: 0 10px;
+                font-size: 0.8rem;
+                gap: 5px;
+            }
+            .alex-nav-btn {
+                height: 36px;
+                width: 36px;
+            }
+        }
+
         @media (max-width: 576px) {
             .alex-wa-widget {
                 bottom: 18px;
@@ -322,33 +379,28 @@
     ════════════════════════════════════════════ -->
     <header id="main-navbar" class="navbar-alex {{ request()->routeIs('home') ? 'home-navbar-auto-hide' : '' }}">
         <div class="container">
-            <nav class="navbar navbar-expand-lg py-0 w-100 align-items-center justify-content-between">
+            <nav class="navbar navbar-expand-lg py-2 py-lg-0 w-100 align-items-center justify-content-between flex-nowrap">
+
+                <!-- Mobile Menu Hamburger Button (< 992px) -->
+                <button class="navbar-toggler border-0 p-1 me-2 shadow-none alex-mobile-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Toggle navigation">
+                    <i class="bi bi-list fs-2 text-dark"></i>
+                </button>
 
                 <!-- Brand Logo -->
-                <a class="navbar-brand d-flex align-items-center py-0 me-0" href="{{ route('home') }}">
-                    @php
-                        $headerLogoSrc = !empty($siteHeaderLogo) ? (\Illuminate\Support\Str::startsWith($siteHeaderLogo, ['http://', 'https://']) ? $siteHeaderLogo : asset($siteHeaderLogo)) : asset('uploads/Alex-marin.svg');
-                    @endphp
-                    <img src="{{ $headerLogoSrc }}" alt="ALEX MARINE" class="navbar-brand-img"
-                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-flex');">
-                    <div class="d-none align-items-center gap-2">
-                        <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:40px;height:40px;background:var(--alex-navy-dark);">
-                            <i class="bi bi-anchor fs-5" style="color:var(--alex-gold);"></i>
+                <a class="navbar-brand d-flex align-items-center py-0 my-0 me-auto me-lg-0" href="{{ route('home') }}">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                            <i class="bi bi-anchor" style="font-size:1.2rem;color:var(--alex-gold, #D4AF37);"></i>
                         </div>
                         <div>
-                            <div class="navbar-brand-title">ALEX MARINE</div>
-                            <div class="navbar-brand-subtitle">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
+                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.1rem; line-height:1.1;">ALEX MARINE</div>
+                            <div class="navbar-brand-subtitle text-muted d-none d-sm-block" style="font-size:0.68rem; font-weight:600;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
                         </div>
                     </div>
                 </a>
 
-                <!-- Mobile Toggle Button -->
-                <button class="navbar-toggler border-0 p-2 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Center Navigation Links -->
-                <div class="collapse navbar-collapse justify-content-center" id="mainNavbar">
+                <!-- Desktop Center Navigation Links (>= 992px) -->
+                <div class="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="mainNavbar">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center freshio-nav-links">
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
@@ -361,7 +413,7 @@
                             </a>
                         </li>
 
-                        <!-- Products Mega Menu (Wide & Icon-Free) -->
+                        <!-- Products Mega Menu (Wide) -->
                         <li class="nav-item dropdown dropdown-mega position-static">
                             <a class="nav-link dropdown-toggle d-inline-flex align-items-center gap-1 {{ request()->routeIs('products.*') ? 'active' : '' }}"
                                href="{{ route('products.index') }}"
@@ -374,7 +426,6 @@
                             </a>
                             <div class="dropdown-menu freshio-mega-menu border-0 p-0 shadow-lg" aria-labelledby="navProductsDropdown">
                                 <div class="p-4">
-                                    {{-- Mega Menu Header --}}
                                     <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom flex-wrap gap-2">
                                         <div>
                                             <h6 class="fw-bold text-dark mb-0 fs-6">{{ $isEn ? 'All Product Departments' : 'أقسام وتوريدات المنتجات الرئيسية' }}</h6>
@@ -386,7 +437,6 @@
                                         </a>
                                     </div>
 
-                                    {{-- Dynamic Categories Grid (Luxury Icon Cards) --}}
                                     @php
                                         $catsToDisplay = isset($navCategories) && count($navCategories) > 0
                                             ? $navCategories
@@ -417,7 +467,6 @@
                                         @endforeach
                                     </div>
 
-                                    {{-- Mega Menu Bottom Info Bar --}}
                                     <div class="mega-bottom-bar mt-3 pt-3 border-top d-flex align-items-center justify-content-between flex-wrap gap-2 text-muted fs-8">
                                         <div>
                                             <a href="{{ route('quote.index') }}" class="text-primary text-decoration-none fw-bold">
@@ -447,17 +496,23 @@
                     </ul>
                 </div>
 
-                <!-- Right Action Buttons (Search, User, Lang, Basket) — Circle-Free Luxury Design -->
-                <div class="alex-nav-actions">
+                <!-- Right Action Buttons (Search, User, Lang, Basket) -->
+                @php $quoteCount = count(session('quote_cart', [])); @endphp
+                <div class="alex-nav-actions d-flex align-items-center gap-1 gap-sm-2 flex-nowrap ms-auto ms-lg-0">
 
                     <!-- Search Button Trigger -->
                     <button type="button" class="alex-nav-btn alex-nav-btn-icon" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}">
                         <i class="bi bi-search"></i>
                     </button>
 
-                    <!-- User / Account Button -->
+                    <!-- Language Switcher (Desktop Only) -->
+                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang d-none d-md-inline-flex" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
+                        <span>{{ $isEn ? 'عربي' : 'EN' }}</span>
+                    </a>
+
+                    <!-- User / Account Button (Desktop Only) -->
                     @auth
-                        <div class="dropdown">
+                        <div class="dropdown d-none d-md-block">
                             <button class="alex-nav-btn alex-nav-btn-icon dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" title="{{ Auth::user()->name }}">
                                 <i class="bi bi-person-fill" style="color: #D4AF37;"></i>
                             </button>
@@ -480,27 +535,133 @@
                             </ul>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="alex-nav-btn alex-nav-btn-icon" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
+                        <a href="{{ route('login') }}" class="alex-nav-btn alex-nav-btn-icon d-none d-md-inline-flex" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
                             <i class="bi bi-person"></i>
                         </a>
                     @endauth
 
-                    <!-- Language Switcher -->
-                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
-                        <span>{{ $isEn ? 'عربي' : 'EN' }}</span>
-                    </a>
-
                     <!-- Quote Cart / RFQ Button (Luxury Gold Pill with Count Badge) -->
-                    @php $quoteCount = count(session('quote_cart', [])); @endphp
                     <a href="{{ route('quote.index') }}" class="alex-nav-cart" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}">
                         <i class="bi bi-basket2-fill"></i>
-                        <span class="d-none d-sm-inline">{{ $isEn ? 'Quote Cart' : 'طلب تسعير' }}</span>
+                        <span class="d-none d-lg-inline">{{ $isEn ? 'Quote Cart' : 'طلب تسعير' }}</span>
                         <span class="alex-nav-cart-badge">{{ $quoteCount }}</span>
                     </a>
                 </div>
             </nav>
         </div>
     </header>
+
+    <!-- ════════════════════════════════════════════
+         OFFCANVAS MOBILE NAVIGATION DRAWER
+    ════════════════════════════════════════════ -->
+    <div class="offcanvas offcanvas-{{ $isEn ? 'start' : 'end' }} alex-mobile-offcanvas d-lg-none" tabindex="-1" id="mainMobileNavbar" aria-labelledby="mainMobileNavbarLabel">
+        <div class="offcanvas-header border-bottom py-3">
+            <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:36px;height:36px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                    <i class="bi bi-anchor" style="font-size:1.15rem;color:var(--alex-gold, #D4AF37);"></i>
+                </div>
+                <div>
+                    <div class="fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.05rem; line-height:1.1;">ALEX MARINE</div>
+                    <div class="text-muted" style="font-size:0.68rem;">{{ $isEn ? 'Marine & Industrial Supplies' : 'التوريدات البحرية المعتمدة' }}</div>
+                </div>
+            </div>
+            <button type="button" class="btn-close text-reset shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body p-3 d-flex flex-column justify-content-between">
+            <div>
+                <!-- User Profile / Auth Area -->
+                @auth
+                    <div class="p-3 mb-3 rounded-3 bg-light border d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center" style="width:34px;height:34px;">
+                                <i class="bi bi-person-fill fs-5" style="color:var(--alex-gold);"></i>
+                            </div>
+                            <div>
+                                <strong class="d-block text-dark fs-7">{{ Auth::user()->name }}</strong>
+                                <small class="text-muted fs-8">{{ Auth::user()->email }}</small>
+                            </div>
+                        </div>
+                        <a href="{{ route('customer.dashboard') }}" class="btn btn-sm btn-outline-dark fs-8">{{ $isEn ? 'Portal' : 'لوحتي' }}</a>
+                    </div>
+                @else
+                    <div class="d-flex gap-2 mb-3">
+                        <a href="{{ route('login') }}" class="btn btn-sm btn-outline-dark flex-grow-1 py-2 fw-bold fs-7">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> {{ $isEn ? 'Sign In' : 'تسجيل الدخول' }}
+                        </a>
+                        <a href="{{ route('register') }}" class="btn btn-sm btn-alex-gold flex-grow-1 py-2 fw-bold fs-7">
+                            {{ $isEn ? 'Register' : 'حساب جديد' }}
+                        </a>
+                    </div>
+                @endauth
+
+                <!-- Search Input Trigger -->
+                <div class="mb-3">
+                    <form action="{{ route('products.index') }}" method="GET">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ $isEn ? 'Search products...' : 'بحث في المنتجات...' }}" style="border-radius: 8px 0 0 8px;">
+                            <button class="btn btn-dark btn-sm px-3" type="submit" style="border-radius: 0 8px 8px 0;">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Navigation Links List -->
+                <div class="mobile-nav-menu mb-4">
+                    <a href="{{ route('home') }}" class="mobile-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                        <i class="bi bi-house-door-fill"></i>
+                        <span>{{ $isEn ? 'Home' : 'الرئيسية' }}</span>
+                    </a>
+                    <a href="{{ route('about') }}" class="mobile-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
+                        <i class="bi bi-info-circle-fill"></i>
+                        <span>{{ $isEn ? 'About Us' : 'من نحن' }}</span>
+                    </a>
+                    <a href="{{ route('products.index') }}" class="mobile-nav-item {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                        <i class="bi bi-box-seam-fill"></i>
+                        <span>{{ $isEn ? 'Products Catalog' : 'دليل المنتجات والتوريدات' }}</span>
+                    </a>
+                    <a href="{{ route('services.index') }}" class="mobile-nav-item {{ request()->routeIs('services.*') ? 'active' : '' }}">
+                        <i class="bi bi-gear-wide-connected"></i>
+                        <span>{{ $isEn ? 'Services' : 'الخدمات والصيانة' }}</span>
+                    </a>
+                    <a href="{{ route('projects.index') }}" class="mobile-nav-item {{ request()->routeIs('projects.*') ? 'active' : '' }}">
+                        <i class="bi bi-trophy-fill"></i>
+                        <span>{{ $isEn ? 'Projects & Portfolio' : 'مشاريعنا وسابقة الأعمال' }}</span>
+                    </a>
+                    <a href="{{ route('contact') }}" class="mobile-nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
+                        <i class="bi bi-telephone-fill"></i>
+                        <span>{{ $isEn ? 'Contact Us' : 'تواصل معنا' }}</span>
+                    </a>
+                </div>
+
+                <!-- Categories Quick Pills -->
+                <h6 class="text-muted fw-bold fs-8 mb-2 text-uppercase">{{ $isEn ? 'Product Categories' : 'الأقسام والتصنيفات' }}</h6>
+                <div class="d-flex flex-wrap gap-1 mb-3">
+                    @foreach($catsToDisplay as $cat)
+                        <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="badge bg-light text-dark border p-2 text-decoration-none fs-8">
+                            {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+
+            <!-- Drawer Bottom: Language Switch & Hotline -->
+            <div class="border-top pt-3 mt-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fs-8 text-muted fw-bold">{{ $isEn ? 'Language:' : 'اللغة:' }}</span>
+                    <div class="btn-group btn-group-sm">
+                        <a href="{{ route('lang.switch', 'ar') }}" class="btn btn-outline-dark {{ !$isEn ? 'active' : '' }} fs-8 py-1">عربي</a>
+                        <a href="{{ route('lang.switch', 'en') }}" class="btn btn-outline-dark {{ $isEn ? 'active' : '' }} fs-8 py-1">EN</a>
+                    </div>
+                </div>
+                <a href="https://wa.me/201200001122" target="_blank" class="btn btn-success w-100 py-2 fs-7 fw-bold d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-whatsapp fs-5"></i>
+                    <span>{{ $isEn ? 'WhatsApp Direct' : 'تواصل عبر واتساب' }}</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Flash Messages -->
     @if(session('success') || session('error'))
