@@ -671,17 +671,26 @@
          OFFCANVAS MOBILE NAVIGATION DRAWER
     ════════════════════════════════════════════ -->
     <div class="offcanvas offcanvas-{{ $isEn ? 'start' : 'end' }} alex-mobile-offcanvas d-lg-none" tabindex="-1" id="mainMobileNavbar" aria-labelledby="mainMobileNavbarLabel">
-        <div class="offcanvas-header border-bottom py-3">
-            <div class="d-flex align-items-center gap-2">
-                <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:36px;height:36px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
-                    <i class="bi bi-anchor" style="font-size:1.15rem;color:var(--alex-gold, #D4AF37);"></i>
-                </div>
-                <div>
-                    <div class="fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.05rem; line-height:1.1;">ALEX MARINE</div>
-                    <div class="text-muted" style="font-size:0.68rem;">{{ $isEn ? 'Marine & Industrial Supplies' : 'التوريدات البحرية المعتمدة' }}</div>
-                </div>
+        <div class="offcanvas-header border-bottom py-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2 min-w-0">
+                @php
+                    $drawerLogo = !empty($siteHeaderLogo) ? $siteHeaderLogo : (file_exists(public_path('uploads/Alex-marin.svg')) ? '/uploads/Alex-marin.svg' : '');
+                @endphp
+                @if(!empty($drawerLogo))
+                    <img src="{{ \Illuminate\Support\Str::startsWith($drawerLogo, ['http://', 'https://']) ? $drawerLogo : asset($drawerLogo) }}"
+                         alt="ALEX MARINE"
+                         style="max-height: 36px; width: auto; max-width: 150px; object-fit: contain;">
+                @else
+                    <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:36px;height:36px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                        <i class="bi bi-anchor" style="font-size:1.15rem;color:var(--alex-gold, #D4AF37);"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.05rem; line-height:1.1;">ALEX MARINE</div>
+                        <div class="text-muted" style="font-size:0.68rem;">{{ $isEn ? 'Marine & Industrial Supplies' : 'التوريدات البحرية المعتمدة' }}</div>
+                    </div>
+                @endif
             </div>
-            <button type="button" class="btn-close text-reset shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close text-reset shadow-none m-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
         <div class="offcanvas-body p-3 d-flex flex-column justify-content-between">
