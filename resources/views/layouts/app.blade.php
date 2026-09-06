@@ -342,32 +342,130 @@
             color: #D4AF37;
         }
 
+        /* ─────────────────────────────────────────────────────────────
+           LUXURY MOBILE BOTTOM NAVIGATION BAR & RESPONSIVE STYLING
+        ───────────────────────────────────────────────────────────── */
+        .alex-mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(10, 29, 55, 0.98) 0%, rgba(6, 17, 34, 1) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1.5px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
+            z-index: 1040;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .bottom-nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 60px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 4px;
+        }
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            position: relative;
+            padding: 6px 2px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .bottom-nav-item:hover, .bottom-nav-item.active {
+            color: var(--alex-gold, #D4AF37) !important;
+            transform: translateY(-2px);
+        }
+        .bottom-nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            width: 14px;
+            height: 3px;
+            border-radius: 2px;
+            background: var(--alex-gold, #D4AF37);
+            box-shadow: 0 0 8px var(--alex-gold, #D4AF37);
+        }
+        .bottom-nav-icon {
+            position: relative;
+            font-size: 1.25rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bottom-nav-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            line-height: 1;
+        }
+        .bottom-nav-cart .bottom-nav-icon .alex-nav-cart-badge {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+            background: linear-gradient(135deg, #FAD961 0%, #D49B23 100%);
+            color: #0A1D37;
+            font-weight: 900;
+            font-size: 0.66rem;
+            height: 18px;
+            min-width: 18px;
+            padding: 0 4px;
+            border-radius: 9px;
+            border: 1.5px solid #0A1D37;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        [dir="ltr"] .bottom-nav-cart .bottom-nav-icon .alex-nav-cart-badge {
+            right: auto;
+            left: -10px;
+        }
+
         @media (max-width: 991.98px) {
-            .navbar-alex {
-                padding: 0.4rem 0 !important;
+            body {
+                padding-bottom: 74px !important;
             }
-            .alex-nav-actions .alex-nav-cart {
-                height: 36px;
-                padding: 0 10px;
-                font-size: 0.8rem;
-                gap: 5px;
+            .navbar-alex {
+                padding: 0.5rem 0 !important;
             }
             .alex-nav-btn {
                 height: 36px;
                 width: 36px;
             }
+            .alex-wa-widget {
+                bottom: 80px !important;
+                left: 16px !important;
+                z-index: 1030;
+            }
+            [dir="ltr"] .alex-wa-widget {
+                left: auto !important;
+                right: 16px !important;
+            }
+            .alex-wa-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 1.5rem;
+            }
+            .alex-wa-badge {
+                display: none !important;
+            }
         }
 
         @media (max-width: 576px) {
-            .alex-wa-widget {
-                bottom: 18px;
-                left: 18px;
-            }
-            [dir="ltr"] .alex-wa-widget {
-                right: 18px;
-            }
-            .alex-wa-badge {
-                display: none;
+            .navbar-brand-title {
+                font-size: 0.98rem !important;
             }
         }
     </style>
@@ -381,20 +479,15 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg py-2 py-lg-0 w-100 align-items-center justify-content-between flex-nowrap">
 
-                <!-- Mobile Menu Hamburger Button (< 992px) -->
-                <button class="navbar-toggler border-0 p-1 me-2 shadow-none alex-mobile-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Toggle navigation">
-                    <i class="bi bi-list fs-2 text-dark"></i>
-                </button>
-
-                <!-- Brand Logo -->
-                <a class="navbar-brand d-flex align-items-center py-0 my-0 me-auto me-lg-0" href="{{ route('home') }}">
+                <!-- Brand Logo (Always perfectly aligned) -->
+                <a class="navbar-brand d-flex align-items-center py-0 my-0 me-0" href="{{ route('home') }}">
                     <div class="d-flex align-items-center gap-2">
-                        <div class="d-flex align-items-center justify-content-center rounded-circle" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
                             <i class="bi bi-anchor" style="font-size:1.2rem;color:var(--alex-gold, #D4AF37);"></i>
                         </div>
-                        <div>
-                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.1rem; line-height:1.1;">ALEX MARINE</div>
-                            <div class="navbar-brand-subtitle text-muted d-none d-sm-block" style="font-size:0.68rem; font-weight:600;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
+                        <div class="d-flex flex-column">
+                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.08rem; line-height:1.1; letter-spacing:-0.2px;">ALEX MARINE</div>
+                            <div class="navbar-brand-subtitle text-muted d-none d-sm-block" style="font-size:0.66rem; font-weight:600;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
                         </div>
                     </div>
                 </a>
@@ -496,23 +589,23 @@
                     </ul>
                 </div>
 
-                <!-- Right Action Buttons (Search, User, Lang, Basket) -->
+                <!-- Right Action Buttons (Search, User, Lang, Basket / Mobile Toggle) -->
                 @php $quoteCount = count(session('quote_cart', [])); @endphp
                 <div class="alex-nav-actions d-flex align-items-center gap-1 gap-sm-2 flex-nowrap ms-auto ms-lg-0">
 
-                    <!-- Search Button Trigger -->
-                    <button type="button" class="alex-nav-btn alex-nav-btn-icon" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}">
+                    <!-- Search Button Trigger (Available on all screens) -->
+                    <button type="button" class="alex-nav-btn alex-nav-btn-icon" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}" aria-label="Search">
                         <i class="bi bi-search"></i>
                     </button>
 
                     <!-- Language Switcher (Desktop Only) -->
-                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang d-none d-md-inline-flex" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
+                    <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang d-none d-lg-inline-flex" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
                         <span>{{ $isEn ? 'عربي' : 'EN' }}</span>
                     </a>
 
                     <!-- User / Account Button (Desktop Only) -->
                     @auth
-                        <div class="dropdown d-none d-md-block">
+                        <div class="dropdown d-none d-lg-block">
                             <button class="alex-nav-btn alex-nav-btn-icon dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" title="{{ Auth::user()->name }}">
                                 <i class="bi bi-person-fill" style="color: #D4AF37;"></i>
                             </button>
@@ -535,17 +628,22 @@
                             </ul>
                         </div>
                     @else
-                        <a href="{{ route('login') }}" class="alex-nav-btn alex-nav-btn-icon d-none d-md-inline-flex" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
+                        <a href="{{ route('login') }}" class="alex-nav-btn alex-nav-btn-icon d-none d-lg-inline-flex" title="{{ $isEn ? 'Login' : 'تسجيل الدخول' }}">
                             <i class="bi bi-person"></i>
                         </a>
                     @endauth
 
-                    <!-- Quote Cart / RFQ Button (Luxury Gold Pill with Count Badge) -->
-                    <a href="{{ route('quote.index') }}" class="alex-nav-cart" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}">
+                    <!-- Quote Cart / RFQ Button (Desktop Gold Pill with Count Badge) -->
+                    <a href="{{ route('quote.index') }}" class="alex-nav-cart d-none d-lg-inline-flex" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}">
                         <i class="bi bi-basket2-fill"></i>
-                        <span class="d-none d-lg-inline">{{ $isEn ? 'Quote Cart' : 'طلب تسعير' }}</span>
-                        <span class="alex-nav-cart-badge">{{ $quoteCount }}</span>
+                        <span>{{ $isEn ? 'Quote Cart' : 'طلب تسعير' }}</span>
+                        <span class="alex-nav-cart-badge js-quote-header-count">{{ $quoteCount }}</span>
                     </a>
+
+                    <!-- Mobile Drawer Toggle Button (< 992px) -->
+                    <button class="alex-nav-btn alex-nav-btn-icon alex-mobile-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Toggle navigation">
+                        <i class="bi bi-list fs-4 text-dark"></i>
+                    </button>
                 </div>
             </nav>
         </div>
@@ -928,6 +1026,54 @@
             <i class="bi bi-whatsapp"></i>
         </div>
     </a>
+
+    <!-- ════════════════════════════════════════════
+         LUXURY MOBILE BOTTOM NAVIGATION BAR (< 992px)
+    ════════════════════════════════════════════ -->
+    <nav class="alex-mobile-bottom-nav d-lg-none" aria-label="Mobile Navigation">
+        <div class="bottom-nav-inner">
+            <!-- 1. Home -->
+            <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                <div class="bottom-nav-icon">
+                    <i class="bi bi-house-door{{ request()->routeIs('home') ? '-fill' : '' }}"></i>
+                </div>
+                <span class="bottom-nav-label">{{ $isEn ? 'Home' : 'الرئيسية' }}</span>
+            </a>
+
+            <!-- 2. Products Catalog -->
+            <a href="{{ route('products.index') }}" class="bottom-nav-item {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                <div class="bottom-nav-icon">
+                    <i class="bi bi-grid{{ request()->routeIs('products.*') ? '-fill' : '' }}"></i>
+                </div>
+                <span class="bottom-nav-label">{{ $isEn ? 'Products' : 'المنتجات' }}</span>
+            </a>
+
+            <!-- 3. Quote Cart (Center Item with Badge) -->
+            <a href="{{ route('quote.index') }}" class="bottom-nav-item bottom-nav-cart {{ request()->routeIs('quote.*') ? 'active' : '' }}">
+                <div class="bottom-nav-icon">
+                    <i class="bi bi-basket2{{ request()->routeIs('quote.*') ? '-fill' : '' }}"></i>
+                    <span class="alex-nav-cart-badge js-quote-bottom-count">{{ $quoteCount }}</span>
+                </div>
+                <span class="bottom-nav-label">{{ $isEn ? 'Quote' : 'التسعير' }}</span>
+            </a>
+
+            <!-- 4. Services -->
+            <a href="{{ route('services.index') }}" class="bottom-nav-item {{ request()->routeIs('services.*') ? 'active' : '' }}">
+                <div class="bottom-nav-icon">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <span class="bottom-nav-label">{{ $isEn ? 'Services' : 'الخدمات' }}</span>
+            </a>
+
+            <!-- 5. Drawer Menu Trigger -->
+            <button type="button" class="bottom-nav-item bottom-nav-btn" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Open Navigation Menu">
+                <div class="bottom-nav-icon">
+                    <i class="bi bi-list"></i>
+                </div>
+                <span class="bottom-nav-label">{{ $isEn ? 'Menu' : 'المزيد' }}</span>
+            </button>
+        </div>
+    </nav>
 
     @stack('scripts')
 </body>

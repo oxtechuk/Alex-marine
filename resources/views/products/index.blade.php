@@ -127,20 +127,22 @@
             </form>
         </div>
 
-        {{-- Category Pills --}}
-        <div class="d-flex flex-wrap gap-2 mb-4" data-aos="fade-up">
-            <a href="{{ route('products.index') }}"
-               class="cat-pill {{ !request('category') ? 'active' : '' }}">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-                {{ $isEn ? 'All Products' : 'الكل' }}
-            </a>
-            @foreach($categories as $cat)
-                <a href="{{ route('products.index', ['category' => $cat->slug, 'search' => request('search')]) }}"
-                   class="cat-pill {{ request('category') == $cat->slug ? 'active' : '' }}">
-                    <i class="bi {{ $cat->icon ?? 'bi-box' }}"></i>
-                    {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+        {{-- Category Pills (Smooth Scrollable on Mobile) --}}
+        <div class="category-pills-wrap mb-4" data-aos="fade-up">
+            <div class="category-pills-scroller">
+                <a href="{{ route('products.index') }}"
+                   class="cat-pill {{ !request('category') ? 'active' : '' }}">
+                    <i class="bi bi-grid-3x3-gap-fill"></i>
+                    <span>{{ $isEn ? 'All Products' : 'الكل' }}</span>
                 </a>
-            @endforeach
+                @foreach($categories as $cat)
+                    <a href="{{ route('products.index', ['category' => $cat->slug, 'search' => request('search')]) }}"
+                       class="cat-pill {{ request('category') == $cat->slug ? 'active' : '' }}">
+                        <i class="bi {{ $cat->icon ?? 'bi-box' }}"></i>
+                        <span>{{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}</span>
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         {{-- Results Summary --}}
@@ -828,11 +830,35 @@
     color: #ffffff;
 }
 
+.category-pills-wrap {
+    width: 100%;
+    position: relative;
+}
+.category-pills-scroller {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 2px 2px 8px 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.category-pills-scroller::-webkit-scrollbar {
+    display: none;
+}
+.cat-pill {
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
 @media (max-width: 576px) {
     .alex-quote-toast {
-        bottom: 20px;
-        right: 16px;
-        left: 16px;
+        bottom: 74px;
+        right: 14px;
+        left: 14px;
         width: auto;
     }
 }
