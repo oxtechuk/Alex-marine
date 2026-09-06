@@ -46,7 +46,7 @@
     <!-- Vite Assets -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
-    <!-- Dynamic Brand Colors -->
+    <!-- Dynamic Brand Colors & Refined UI Styles -->
     <style>
         :root {
             --font-primary: 'Cairo', 'Tajawal', sans-serif;
@@ -86,8 +86,8 @@
             flex-direction: row-reverse;
         }
         .alex-wa-btn {
-            width: 58px;
-            height: 58px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
             display: flex;
@@ -139,7 +139,7 @@
             box-shadow: 0 0 6px #25D366;
         }
         .alex-wa-widget:hover .alex-wa-btn {
-            transform: scale(1.1) translateY(-3px);
+            transform: scale(1.08) translateY(-3px);
             box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
         }
         .alex-wa-widget:hover .alex-wa-badge {
@@ -148,6 +148,7 @@
             border-color: #D4AF37;
             transform: translateY(-2px);
         }
+
         /* Luxury Header Action Buttons (Uniform Sizing, Pixel-Perfect Padding) */
         .alex-nav-actions {
             display: flex;
@@ -158,16 +159,16 @@
             display: none !important;
         }
         .alex-nav-btn {
-            height: 38px;
+            height: 40px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            border-radius: 8px;
+            border-radius: 10px;
             background: #F8FAFC;
-            color: #0A192F;
+            color: #0A1D37;
             border: 1px solid #E2E8F0;
-            font-size: 0.84rem;
+            font-size: 0.85rem;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -175,59 +176,105 @@
             line-height: 1;
         }
         .alex-nav-btn i {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             color: #475569;
             transition: color 0.2s ease;
         }
         .alex-nav-btn:hover {
             background: #FFFFFF;
-            color: #0A192F;
+            color: #0A1D37;
             border-color: #D4AF37;
             transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(10, 25, 47, 0.06);
+            box-shadow: 0 4px 12px rgba(10, 29, 55, 0.08);
         }
         .alex-nav-btn:hover i {
             color: #D4AF37;
         }
         .alex-nav-btn-icon {
-            width: 38px;
+            width: 40px;
             padding: 0;
         }
         .alex-nav-btn-lang {
-            padding: 0 12px;
-            font-size: 0.78rem;
+            padding: 0 14px;
+            font-size: 0.8rem;
             font-weight: 800;
             letter-spacing: 0.5px;
         }
+        .alex-nav-btn-mobile-cart {
+            background: #FFFDF5;
+            border-color: #F3D270;
+            color: #B37D14;
+        }
+        .alex-nav-btn-mobile-cart i {
+            color: #D4AF37;
+        }
+        .alex-nav-btn-mobile-cart .alex-nav-cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #0A1D37;
+            color: #FFFFFF;
+            font-size: 0.65rem;
+            font-weight: 800;
+            height: 18px;
+            min-width: 18px;
+            padding: 0 4px;
+            border-radius: 9px;
+            border: 1.5px solid #FFFFFF;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [dir="ltr"] .alex-nav-btn-mobile-cart .alex-nav-cart-badge {
+            right: auto;
+            left: -5px;
+        }
+        .alex-mobile-toggle-btn {
+            background: #0A1D37 !important;
+            color: #FFFFFF !important;
+            border: 1px solid #0A1D37 !important;
+        }
+        .alex-mobile-toggle-btn i {
+            color: #FFFFFF !important;
+            font-size: 1.25rem;
+        }
+        .alex-mobile-toggle-btn:hover {
+            background: #0D3B66 !important;
+            border-color: #D4AF37 !important;
+        }
+        .alex-mobile-toggle-btn:hover i {
+            color: #D4AF37 !important;
+        }
+
         .alex-nav-cart {
-            height: 38px;
+            height: 40px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 0 14px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #E5C058 0%, #D4AF37 100%);
-            color: #0A192F !important;
+            padding: 0 16px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #FAD961 0%, #D49B23 100%);
+            color: #0A1D37 !important;
             border: 1px solid #D4AF37;
-            font-size: 0.85rem;
-            font-weight: 700;
+            font-size: 0.88rem;
+            font-weight: 800;
             text-decoration: none;
-            box-shadow: 0 3px 10px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 3px 12px rgba(212, 175, 55, 0.28);
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             line-height: 1;
         }
         .alex-nav-cart i {
-            font-size: 1.05rem;
-            color: #0A192F;
+            font-size: 1.1rem;
+            color: #0A1D37;
         }
         .alex-nav-cart:hover {
-            background: linear-gradient(135deg, #F3D270 0%, #E5C058 100%);
+            background: linear-gradient(135deg, #FFF0B3 0%, #E5A315 100%);
             transform: translateY(-1px);
-            box-shadow: 0 5px 14px rgba(212, 175, 55, 0.35);
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
             color: #000000 !important;
         }
         .alex-nav-cart-badge {
-            background: #0A192F;
+            background: #0A1D37;
             color: #FFFFFF;
             font-size: 0.72rem;
             font-weight: 800;
@@ -301,45 +348,147 @@
             line-height: 1.35;
         }
 
-        /* Mobile Drawer Styling */
-        .alex-mobile-toggle {
-            background: transparent;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+        /* ─────────────────────────────────────────────────────────────
+           LUXURY MOBILE OFFCANVAS DRAWER STYLING
+        ───────────────────────────────────────────────────────────── */
         .alex-mobile-offcanvas {
-            width: 320px !important;
+            width: 330px !important;
             background-color: #FFFFFF;
             z-index: 10600;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.35);
+        }
+        .drawer-header {
+            background: linear-gradient(135deg, #0A1D37 0%, #0D3B66 100%);
+            border-bottom: 2.5px solid #D4AF37 !important;
+            padding: 1.1rem 1.25rem;
+        }
+        .drawer-close-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .drawer-close-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #D4AF37;
+            transform: rotate(90deg);
+        }
+        .drawer-auth-card {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 1rem;
+        }
+        .mobile-search-box {
+            position: relative;
+            margin-bottom: 1.1rem;
+        }
+        .mobile-search-input {
+            width: 100%;
+            padding: 10px 42px 10px 14px;
+            background: #F8FAFC;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #0A1D37;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        [dir="ltr"] .mobile-search-input {
+            padding: 10px 14px 10px 42px;
+        }
+        .mobile-search-input:focus {
+            background: #FFFFFF;
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        }
+        .mobile-search-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 8px;
+            background: transparent;
+            border: none;
+            color: #64748B;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        [dir="ltr"] .mobile-search-btn {
+            right: auto;
+            left: 8px;
         }
         .mobile-nav-menu {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
         .mobile-nav-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
+            justify-content: space-between;
+            padding: 10px 12px;
             border-radius: 10px;
-            color: #0A192F;
-            font-size: 0.94rem;
+            color: #0A1D37;
+            font-size: 0.92rem;
             font-weight: 700;
             text-decoration: none;
+            background: #FFFFFF;
+            border: 1px solid transparent;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mobile-nav-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: #F1F5F9;
+            color: #0A1D37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
             transition: all 0.2s ease;
         }
-        .mobile-nav-item i {
-            font-size: 1.15rem;
-            color: #64748B;
-            transition: color 0.2s ease;
+        .mobile-nav-item:hover {
+            background: #F8FAFC;
+            border-color: #E2E8F0;
+            color: #0A1D37;
+            transform: translateX(-3px);
         }
-        .mobile-nav-item:hover, .mobile-nav-item.active {
-            background-color: #F1F5F9;
-            color: #1E6FAE;
+        [dir="ltr"] .mobile-nav-item:hover {
+            transform: translateX(3px);
         }
-        .mobile-nav-item:hover i, .mobile-nav-item.active i {
-            color: #D4AF37;
+        .mobile-nav-item.active {
+            background: #0A1D37;
+            color: #FFFFFF;
+            border-color: #0A1D37;
+            box-shadow: 0 4px 14px rgba(10, 29, 55, 0.2);
+        }
+        .mobile-nav-item.active .mobile-nav-icon-box {
+            background: rgba(212, 175, 55, 0.25);
+            color: #FAD961;
+        }
+        .mobile-nav-item.active .bi-chevron-left,
+        .mobile-nav-item.active .bi-chevron-right {
+            color: #D4AF37 !important;
         }
 
         /* ─────────────────────────────────────────────────────────────
@@ -381,7 +530,7 @@
             align-items: center;
             justify-content: center;
             gap: 3px;
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.65) !important;
             text-decoration: none;
             position: relative;
             padding: 6px 2px;
@@ -445,14 +594,13 @@
                 padding-bottom: 74px !important;
             }
             .navbar-alex {
-                padding: 0.5rem 0 !important;
-            }
-            .alex-nav-btn {
-                height: 36px;
-                width: 36px;
+                padding: 0.55rem 0 !important;
+                background: #FFFFFF !important;
+                border-bottom: 1px solid #E2E8F0 !important;
+                box-shadow: 0 2px 10px rgba(10, 29, 55, 0.04) !important;
             }
             .alex-wa-widget {
-                bottom: 80px !important;
+                bottom: 78px !important;
                 left: 16px !important;
                 z-index: 1030;
             }
@@ -484,8 +632,8 @@
          MAIN NAVBAR — Freshio E-Commerce Style Header
     ════════════════════════════════════════════ -->
     <header id="main-navbar" class="navbar-alex {{ request()->routeIs('home') ? 'home-navbar-auto-hide' : '' }}">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg py-2 py-lg-0 w-100 align-items-center justify-content-between flex-nowrap">
+        <div class="container-fluid px-3 px-sm-4 px-lg-5">
+            <nav class="navbar navbar-expand-lg py-0 w-100 align-items-center justify-content-between flex-nowrap">
 
                 <!-- Brand Logo (Official Alex Marine Logo) -->
                 <a class="navbar-brand d-flex align-items-center py-0 my-0 me-0" href="{{ route('home') }}">
@@ -495,8 +643,8 @@
                     @if(!empty($headerBrandLogo))
                         <img src="{{ \Illuminate\Support\Str::startsWith($headerBrandLogo, ['http://', 'https://']) ? $headerBrandLogo : asset($headerBrandLogo) }}"
                              alt="ALEX MARINE"
-                             style="max-height: 42px; width: auto; max-width: 180px; object-fit: contain;"
-                             class="d-inline-block">
+                             class="brand-logo-img"
+                             style="max-height: 40px; width: auto; max-width: 170px; object-fit: contain;">
                     @else
                         <div class="d-flex align-items-center gap-2">
                             <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
@@ -551,7 +699,7 @@
                                     @php
                                         $catsToDisplay = isset($navCategories) && count($navCategories) > 0
                                             ? $navCategories
-                                            : \App\Models\Category::where('is_active', true)->whereNull('parent_id')->orderBy('sort_order')->get();
+                                             : \App\Models\Category::where('is_active', true)->whereNull('parent_id')->orderBy('sort_order')->get();
                                         if($catsToDisplay->isEmpty()) {
                                             $catsToDisplay = \App\Models\Category::where('is_active', true)->orderBy('sort_order')->take(6)->get();
                                         }
@@ -607,14 +755,20 @@
                     </ul>
                 </div>
 
-                <!-- Right Action Buttons (Search, User, Lang, Basket / Mobile Toggle) -->
+                <!-- Right Action Buttons (Search, User, Lang, Basket / Mobile Actions) -->
                 @php $quoteCount = count(session('quote_cart', [])); @endphp
-                <div class="alex-nav-actions d-flex align-items-center gap-1 gap-sm-2 flex-nowrap ms-auto ms-lg-0">
+                <div class="alex-nav-actions d-flex align-items-center gap-2 flex-nowrap ms-auto ms-lg-0">
 
                     <!-- Search Button Trigger (Available on all screens) -->
                     <button type="button" class="alex-nav-btn alex-nav-btn-icon" data-bs-toggle="modal" data-bs-target="#navSearchModal" title="{{ $isEn ? 'Search Products' : 'بحث في المنتجات' }}" aria-label="Search">
                         <i class="bi bi-search"></i>
                     </button>
+
+                    <!-- Mobile Quote Cart Icon Button (< 992px) -->
+                    <a href="{{ route('quote.index') }}" class="alex-nav-btn alex-nav-btn-icon alex-nav-btn-mobile-cart position-relative d-lg-none" title="{{ $isEn ? 'Quote Cart' : 'سلة طلبات التسعير' }}" aria-label="Quote Cart">
+                        <i class="bi bi-basket2-fill"></i>
+                        <span class="alex-nav-cart-badge js-quote-header-count">{{ $quoteCount }}</span>
+                    </a>
 
                     <!-- Language Switcher (Desktop Only) -->
                     <a href="{{ route('lang.switch', $isEn ? 'ar' : 'en') }}" class="alex-nav-btn alex-nav-btn-lang d-none d-lg-inline-flex" title="{{ $isEn ? 'Switch to Arabic' : 'Switch to English' }}">
@@ -659,8 +813,8 @@
                     </a>
 
                     <!-- Mobile Drawer Toggle Button (< 992px) -->
-                    <button class="alex-nav-btn alex-nav-btn-icon alex-mobile-toggle d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Toggle navigation">
-                        <i class="bi bi-list fs-4 text-dark"></i>
+                    <button class="alex-nav-btn alex-nav-btn-icon alex-mobile-toggle-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainMobileNavbar" aria-controls="mainMobileNavbar" aria-label="Toggle navigation">
+                        <i class="bi bi-list"></i>
                     </button>
                 </div>
             </nav>
@@ -668,10 +822,11 @@
     </header>
 
     <!-- ════════════════════════════════════════════
-         OFFCANVAS MOBILE NAVIGATION DRAWER
+         LUXURY OFFCANVAS MOBILE NAVIGATION DRAWER
     ════════════════════════════════════════════ -->
     <div class="offcanvas offcanvas-{{ $isEn ? 'start' : 'end' }} alex-mobile-offcanvas d-lg-none" tabindex="-1" id="mainMobileNavbar" aria-labelledby="mainMobileNavbarLabel">
-        <div class="offcanvas-header border-bottom py-3 d-flex align-items-center justify-content-between">
+        <!-- Drawer Header -->
+        <div class="drawer-header d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-2 min-w-0">
                 @php
                     $drawerLogo = !empty($siteHeaderLogo) ? $siteHeaderLogo : (file_exists(public_path('uploads/Alex-marin.svg')) ? '/uploads/Alex-marin.svg' : '');
@@ -679,108 +834,162 @@
                 @if(!empty($drawerLogo))
                     <img src="{{ \Illuminate\Support\Str::startsWith($drawerLogo, ['http://', 'https://']) ? $drawerLogo : asset($drawerLogo) }}"
                          alt="ALEX MARINE"
-                         style="max-height: 36px; width: auto; max-width: 150px; object-fit: contain;">
+                         style="max-height: 38px; width: auto; max-width: 155px; object-fit: contain;">
                 @else
-                    <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:36px;height:36px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:36px;height:36px;background:rgba(212,175,55,0.2);border:1.5px solid var(--alex-gold, #D4AF37);">
                         <i class="bi bi-anchor" style="font-size:1.15rem;color:var(--alex-gold, #D4AF37);"></i>
                     </div>
                     <div>
-                        <div class="fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.05rem; line-height:1.1;">ALEX MARINE</div>
-                        <div class="text-muted" style="font-size:0.68rem;">{{ $isEn ? 'Marine & Industrial Supplies' : 'التوريدات البحرية المعتمدة' }}</div>
+                        <div class="fw-bold text-white" style="font-size:1.05rem; line-height:1.1;">ALEX MARINE</div>
+                        <div class="text-white-50" style="font-size:0.68rem;">{{ $isEn ? 'Marine & Industrial Supplies' : 'التوريدات البحرية المعتمدة' }}</div>
                     </div>
                 @endif
             </div>
-            <button type="button" class="btn-close text-reset shadow-none m-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="drawer-close-btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="bi bi-x-lg" style="font-size: 1rem;"></i>
+            </button>
         </div>
 
         <div class="offcanvas-body p-3 d-flex flex-column justify-content-between">
             <div>
                 <!-- User Profile / Auth Area -->
                 @auth
-                    <div class="p-3 mb-3 rounded-3 bg-light border d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center" style="width:34px;height:34px;">
-                                <i class="bi bi-person-fill fs-5" style="color:var(--alex-gold);"></i>
+                    <div class="drawer-auth-card d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2 min-w-0">
+                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width:36px;height:36px;">
+                                <i class="bi bi-person-fill fs-5" style="color:var(--alex-gold, #D4AF37);"></i>
                             </div>
-                            <div>
-                                <strong class="d-block text-dark fs-7">{{ Auth::user()->name }}</strong>
-                                <small class="text-muted fs-8">{{ Auth::user()->email }}</small>
+                            <div class="text-truncate">
+                                <strong class="d-block text-dark fs-7 text-truncate">{{ Auth::user()->name }}</strong>
+                                <small class="text-muted fs-8 text-truncate d-block">{{ Auth::user()->email }}</small>
                             </div>
                         </div>
-                        <a href="{{ route('customer.dashboard') }}" class="btn btn-sm btn-outline-dark fs-8">{{ $isEn ? 'Portal' : 'لوحتي' }}</a>
+                        <a href="{{ route('customer.dashboard') }}" class="btn btn-sm btn-outline-dark fs-8 px-2 py-1 fw-bold flex-shrink-0">{{ $isEn ? 'Portal' : 'لوحتي' }}</a>
                     </div>
                 @else
-                    <div class="d-flex gap-2 mb-3">
-                        <a href="{{ route('login') }}" class="btn btn-sm btn-outline-dark flex-grow-1 py-2 fw-bold fs-7">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> {{ $isEn ? 'Sign In' : 'تسجيل الدخول' }}
-                        </a>
-                        <a href="{{ route('register') }}" class="btn btn-sm btn-alex-gold flex-grow-1 py-2 fw-bold fs-7">
-                            {{ $isEn ? 'Register' : 'حساب جديد' }}
-                        </a>
+                    <div class="drawer-auth-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-person-circle text-warning fs-5"></i>
+                            <div>
+                                <span class="fw-bold text-dark fs-7 d-block">{{ $isEn ? 'Welcome to ALEX MARINE' : 'أهلاً بك في أليكس مارين' }}</span>
+                                <small class="text-muted fs-8">{{ $isEn ? 'B2B Marine & Safety Supplies' : 'بوابتك للتوريدات والسلامة البحرية' }}</small>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('login') }}" class="btn btn-sm btn-outline-dark flex-grow-1 py-1-5 fw-bold fs-8">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> {{ $isEn ? 'Sign In' : 'تسجيل الدخول' }}
+                            </a>
+                            <a href="{{ route('register') }}" class="btn btn-sm btn-alex-gold flex-grow-1 py-1-5 fw-bold fs-8">
+                                <i class="bi bi-person-plus-fill me-1"></i> {{ $isEn ? 'Register' : 'حساب جديد' }}
+                            </a>
+                        </div>
                     </div>
                 @endauth
 
-                <!-- Search Input Trigger -->
-                <div class="mb-3">
+                <!-- Search Input Form -->
+                <div class="mobile-search-box">
                     <form action="{{ route('products.index') }}" method="GET">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ $isEn ? 'Search products...' : 'بحث في المنتجات...' }}" style="border-radius: 8px 0 0 8px;">
-                            <button class="btn btn-dark btn-sm px-3" type="submit" style="border-radius: 0 8px 8px 0;">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
+                        <input type="text"
+                               name="search"
+                               class="mobile-search-input"
+                               placeholder="{{ $isEn ? 'Search products, SKU...' : 'بحث في المنتجات، الكود...' }}"
+                               autocomplete="off">
+                        <button class="mobile-search-btn" type="submit" aria-label="Search">
+                            <i class="bi bi-search"></i>
+                        </button>
                     </form>
                 </div>
 
-                <!-- Navigation Links List -->
-                <div class="mobile-nav-menu mb-4">
+                <!-- Navigation Links List with Rich Visuals -->
+                <div class="mobile-nav-menu mb-3">
                     <a href="{{ route('home') }}" class="mobile-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                        <i class="bi bi-house-door-fill"></i>
-                        <span>{{ $isEn ? 'Home' : 'الرئيسية' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-house-door-fill"></i>
+                            </div>
+                            <span>{{ $isEn ? 'Home' : 'الرئيسية' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
+
                     <a href="{{ route('about') }}" class="mobile-nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
-                        <i class="bi bi-info-circle-fill"></i>
-                        <span>{{ $isEn ? 'About Us' : 'من نحن' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </div>
+                            <span>{{ $isEn ? 'About Us' : 'من نحن' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
+
                     <a href="{{ route('products.index') }}" class="mobile-nav-item {{ request()->routeIs('products.*') ? 'active' : '' }}">
-                        <i class="bi bi-box-seam-fill"></i>
-                        <span>{{ $isEn ? 'Products Catalog' : 'دليل المنتجات والتوريدات' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-box-seam-fill"></i>
+                            </div>
+                            <span>{{ $isEn ? 'Products Catalog' : 'دليل المنتجات والتوريدات' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
+
                     <a href="{{ route('services.index') }}" class="mobile-nav-item {{ request()->routeIs('services.*') ? 'active' : '' }}">
-                        <i class="bi bi-gear-wide-connected"></i>
-                        <span>{{ $isEn ? 'Services' : 'الخدمات والصيانة' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-gear-wide-connected"></i>
+                            </div>
+                            <span>{{ $isEn ? 'Services & Maintenance' : 'الخدمات والصيانة' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
+
                     <a href="{{ route('projects.index') }}" class="mobile-nav-item {{ request()->routeIs('projects.*') ? 'active' : '' }}">
-                        <i class="bi bi-trophy-fill"></i>
-                        <span>{{ $isEn ? 'Projects & Portfolio' : 'مشاريعنا وسابقة الأعمال' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-trophy-fill"></i>
+                            </div>
+                            <span>{{ $isEn ? 'Projects & Portfolio' : 'مشاريعنا وسابقة الأعمال' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
+
                     <a href="{{ route('contact') }}" class="mobile-nav-item {{ request()->routeIs('contact') ? 'active' : '' }}">
-                        <i class="bi bi-telephone-fill"></i>
-                        <span>{{ $isEn ? 'Contact Us' : 'تواصل معنا' }}</span>
+                        <div class="mobile-nav-item-left">
+                            <div class="mobile-nav-icon-box">
+                                <i class="bi bi-telephone-fill"></i>
+                            </div>
+                            <span>{{ $isEn ? 'Contact Us' : 'تواصل معنا' }}</span>
+                        </div>
+                        <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }} text-muted" style="font-size: 0.75rem;"></i>
                     </a>
                 </div>
 
                 <!-- Categories Quick Pills -->
-                <h6 class="text-muted fw-bold fs-8 mb-2 text-uppercase">{{ $isEn ? 'Product Categories' : 'الأقسام والتصنيفات' }}</h6>
-                <div class="d-flex flex-wrap gap-1 mb-3">
-                    @foreach($catsToDisplay as $cat)
-                        <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="badge bg-light text-dark border p-2 text-decoration-none fs-8">
-                            {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
-                        </a>
-                    @endforeach
+                <div class="pt-2 border-top">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <span class="text-muted fw-bold fs-8 text-uppercase">{{ $isEn ? 'Key Categories' : 'الأقسام والتصنيفات' }}</span>
+                        <a href="{{ route('products.index') }}" class="text-primary fs-8 text-decoration-none fw-bold">{{ $isEn ? 'All' : 'الكل' }} &larr;</a>
+                    </div>
+                    <div class="d-flex flex-wrap gap-1 mb-3">
+                        @foreach($catsToDisplay as $cat)
+                            <a href="{{ route('products.index', ['category' => $cat->slug]) }}" class="cat-pill py-1 px-2 fs-8 text-decoration-none">
+                                <i class="bi {{ $cat->icon ?: 'bi-tag' }} me-1" style="font-size: 0.75rem; color: #D4AF37;"></i>
+                                {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
             <!-- Drawer Bottom: Language Switch & Hotline -->
-            <div class="border-top pt-3 mt-3">
+            <div class="border-top pt-3 mt-2">
                 <div class="d-flex align-items-center justify-content-between mb-2">
                     <span class="fs-8 text-muted fw-bold">{{ $isEn ? 'Language:' : 'اللغة:' }}</span>
                     <div class="btn-group btn-group-sm">
-                        <a href="{{ route('lang.switch', 'ar') }}" class="btn btn-outline-dark {{ !$isEn ? 'active' : '' }} fs-8 py-1">عربي</a>
-                        <a href="{{ route('lang.switch', 'en') }}" class="btn btn-outline-dark {{ $isEn ? 'active' : '' }} fs-8 py-1">EN</a>
+                        <a href="{{ route('lang.switch', 'ar') }}" class="btn btn-outline-dark {{ !$isEn ? 'active fw-bold' : '' }} fs-8 py-1">عربي</a>
+                        <a href="{{ route('lang.switch', 'en') }}" class="btn btn-outline-dark {{ $isEn ? 'active fw-bold' : '' }} fs-8 py-1">EN</a>
                     </div>
                 </div>
-                <a href="https://wa.me/201200001122" target="_blank" class="btn btn-success w-100 py-2 fs-7 fw-bold d-flex align-items-center justify-content-center gap-2">
+                <a href="https://wa.me/201200001122" target="_blank" class="btn btn-success w-100 py-2 fs-7 fw-bold d-flex align-items-center justify-content-center gap-2 shadow-sm rounded-3">
                     <i class="bi bi-whatsapp fs-5"></i>
                     <span>{{ $isEn ? 'WhatsApp Direct' : 'تواصل عبر واتساب' }}</span>
                 </a>

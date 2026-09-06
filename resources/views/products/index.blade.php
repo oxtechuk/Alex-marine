@@ -233,7 +233,7 @@
                                     data-product-sku="{{ $product->sku }}"
                                     data-product-img="{{ $productImg }}">
                                 <i class="bi bi-basket2-fill add-icon-default"></i>
-                                <span>{{ $isEn ? 'Cart' : 'السلة' }}</span>
+                                <span>{{ $isEn ? 'add Cart' : 'اضافةلسلة' }}</span>
                             </button>
                         </div>
                     </div>
