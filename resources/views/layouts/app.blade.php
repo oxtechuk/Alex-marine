@@ -346,17 +346,24 @@
            LUXURY MOBILE BOTTOM NAVIGATION BAR & RESPONSIVE STYLING
         ───────────────────────────────────────────────────────────── */
         .alex-mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(180deg, rgba(10, 29, 55, 0.98) 0%, rgba(6, 17, 34, 1) 100%);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-top: 1.5px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
-            z-index: 1040;
-            padding-bottom: env(safe-area-inset-bottom, 0px);
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100vw !important;
+            background: #0A1D37 !important;
+            background: linear-gradient(180deg, #0A1D37 0%, #061122 100%) !important;
+            border-top: 2px solid #D4AF37 !important;
+            box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.45) !important;
+            z-index: 99999 !important;
+            padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+            display: block !important;
+        }
+
+        @media (min-width: 992px) {
+            .alex-mobile-bottom-nav {
+                display: none !important;
+            }
         }
         .bottom-nav-inner {
             display: flex;
@@ -480,17 +487,27 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg py-2 py-lg-0 w-100 align-items-center justify-content-between flex-nowrap">
 
-                <!-- Brand Logo (Always perfectly aligned) -->
+                <!-- Brand Logo (Official Alex Marine Logo) -->
                 <a class="navbar-brand d-flex align-items-center py-0 my-0 me-0" href="{{ route('home') }}">
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
-                            <i class="bi bi-anchor" style="font-size:1.2rem;color:var(--alex-gold, #D4AF37);"></i>
+                    @php
+                        $headerBrandLogo = !empty($siteHeaderLogo) ? $siteHeaderLogo : (file_exists(public_path('uploads/Alex-marin.svg')) ? '/uploads/Alex-marin.svg' : '');
+                    @endphp
+                    @if(!empty($headerBrandLogo))
+                        <img src="{{ \Illuminate\Support\Str::startsWith($headerBrandLogo, ['http://', 'https://']) ? $headerBrandLogo : asset($headerBrandLogo) }}"
+                             alt="ALEX MARINE"
+                             style="max-height: 42px; width: auto; max-width: 180px; object-fit: contain;"
+                             class="d-inline-block">
+                    @else
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:38px;height:38px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
+                                <i class="bi bi-anchor" style="font-size:1.2rem;color:var(--alex-gold, #D4AF37);"></i>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.08rem; line-height:1.1; letter-spacing:-0.2px;">ALEX MARINE</div>
+                                <div class="navbar-brand-subtitle text-muted d-none d-sm-block" style="font-size:0.66rem; font-weight:600;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
+                            </div>
                         </div>
-                        <div class="d-flex flex-column">
-                            <div class="navbar-brand-title fw-bold" style="color:var(--alex-navy-dark, #0A1D37); font-size:1.08rem; line-height:1.1; letter-spacing:-0.2px;">ALEX MARINE</div>
-                            <div class="navbar-brand-subtitle text-muted d-none d-sm-block" style="font-size:0.66rem; font-weight:600;">{{ $isEn ? 'Marine Supplies' : 'للتوريدات البحرية' }}</div>
-                        </div>
-                    </div>
+                    @endif
                 </a>
 
                 <!-- Desktop Center Navigation Links (>= 992px) -->

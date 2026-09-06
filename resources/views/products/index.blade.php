@@ -16,11 +16,12 @@
     <div class="container">
         {{-- Breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb breadcrumb-alex">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('home') }}" class="text-white-50">{{ $isEn ? 'Home' : 'الرئيسية' }}</a>
+            <ol class="breadcrumb breadcrumb-alex d-inline-flex align-items-center gap-2 p-0 m-0">
+                <li class="breadcrumb-item d-inline-flex align-items-center">
+                    <a href="{{ route('home') }}" class="text-white-50 text-decoration-none">{{ $isEn ? 'Home' : 'الرئيسية' }}</a>
                 </li>
-                <li class="breadcrumb-item active text-white" aria-current="page">
+                <li class="text-white-50" style="opacity:0.4;">/</li>
+                <li class="breadcrumb-item active text-white d-inline-flex align-items-center" aria-current="page">
                     {{ $isEn ? 'Products Catalog' : 'دليل المنتجات' }}
                 </li>
             </ol>
@@ -210,6 +211,8 @@
                             {{-- Button 1: Order Now (اطلب الآن - فتح بوب اب الشراء السريع) --}}
                             <button type="button"
                                     class="btn-card-order-now js-btn-direct-order"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#quickDirectOrderModal"
                                     data-product-id="{{ $product->id }}"
                                     data-product-name="{{ $productTitle }}"
                                     data-product-sku="{{ $product->sku }}"
@@ -867,94 +870,150 @@
 
 @push('scripts')
 <script>
-// 1. Whole-Card Click Handler (Click anywhere to go to product details)
 document.addEventListener('DOMContentLoaded', function () {
-    document.addEventListener('click', function (e) {
-        const card = e.target.closest('.product-card[data-href]');
-        if (!card) return;
 
-        // If click was on a button, link, form, input or close button, do not navigate card
-        if (e.target.closest('button, a, form, input, select, .js-prevent-card-click, .btn-card-add-quote')) {
+    // 1. Whole-Card Click Handler (Click anywhere on card or image to view details)
+    document.addEventListener('click', function (e) {
+        // If click was on or inside any interactive element, don't trigger card navigation
+        if (e.target.closest('button, a, input, select, textarea, form, .modal, .toast, .js-prevent-card-click, .btn-card-add-cart, .btn-card-order-now, .js-btn-direct-order, .js-btn-add-quote')) {
             return;
         }
 
-        const href = card.getAttribute('data-href');
-        if (href) {
-            window.location.href = href;
+        const card = e.target.closest('.product-card[data-href]');
+        if (card) {
+            const href = card.getAttribute('data-href');
+            if (href) {
+                window.location.href = href;
+            }
         }
     });
 
-    // 2. AJAX Add-to-Quote Cart Handlers
-    document.querySelectorAll('.js-btn-add-quote').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+    // 2. Direct Order Modal Population (اطلب الآن - فتح وتعبئة بيانات المنتج في البوب اب)
+    function populateDirectOrderModal(btn) {
+        if (!btn) return;
+        const pId = btn.getAttribute('data-product-id') || '';
+        const pName = btn.getAttribute('data-product-name') || '';
+        const pSku = btn.getAttribute('data-product-sku') || '';
+        const pImg = btn.getAttribute('data-product-img') || '';
+        const pCat = btn.getAttribute('data-product-cat') || '';
 
-            const productId = this.getAttribute('data-product-id');
-            const productName = this.getAttribute('data-product-name') || '';
-            const productSku = this.getAttribute('data-product-sku') || '';
-            const productImg = this.getAttribute('data-product-img') || '';
+        const idInput = document.getElementById('modalProductId');
+        const titleEl = document.getElementById('modalProductTitle');
+        const skuEl = document.getElementById('modalProductSku');
+        const imgEl = document.getElementById('modalProductImg');
+        const catEl = document.getElementById('modalProductCat');
 
-            // Visual feedback on button
-            const originalIcon = this.innerHTML;
-            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" style="width: 1rem; height: 1rem;"></span>';
-            this.disabled = true;
+        if (idInput) idInput.value = pId;
+        if (titleEl) titleEl.textContent = pName;
+        if (skuEl) skuEl.textContent = pSku ? ('{{ $isEn ? "Code: " : "كود: " }}' + pSku) : '';
+        if (imgEl) imgEl.src = pImg;
+        if (catEl) {
+            if (pCat) {
+                catEl.textContent = pCat;
+                catEl.style.display = 'inline-block';
+            } else {
+                catEl.style.display = 'none';
+            }
+        }
+    }
 
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    // Modal show event listener (Bootstrap 5)
+    const directModalEl = document.getElementById('quickDirectOrderModal');
+    if (directModalEl) {
+        directModalEl.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            if (button) {
+                populateDirectOrderModal(button);
+            }
+        });
+    }
 
-            const formData = new FormData();
-            formData.append('product_id', productId);
-            formData.append('quantity', 1);
+    // Direct click delegation for Order Now button
+    document.addEventListener('click', function (e) {
+        const orderBtn = e.target.closest('.js-btn-direct-order');
+        if (!orderBtn) return;
 
-            fetch('{{ route("quote.add") }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken,
-                    'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Update all badge counts on page
-                    updateCartBadges(data.cart_count);
+        populateDirectOrderModal(orderBtn);
 
-                    // Show success state on button
-                    this.innerHTML = '<i class="bi bi-check-lg" style="font-size:1.3rem;"></i>';
-                    this.classList.add('btn-success-state');
+        // If bootstrap modal is available and not opened by data-bs-toggle
+        if (directModalEl && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            const modalInstance = bootstrap.Modal.getInstance(directModalEl) || new bootstrap.Modal(directModalEl);
+            modalInstance.show();
+        }
+    });
 
-                    // Show modern popup toast
-                    showQuoteToast({
-                        title: productName,
-                        sku: productSku,
-                        img: productImg,
-                        count: data.cart_count
-                    });
+    // 3. AJAX Add-to-Quote Cart Handlers (أضف للسلة مع بوب اب التنبيه الفوري)
+    document.addEventListener('click', function (e) {
+        const addBtn = e.target.closest('.js-btn-add-quote');
+        if (!addBtn) return;
 
-                    setTimeout(() => {
-                        this.innerHTML = originalIcon;
-                        this.classList.remove('btn-success-state');
-                        this.disabled = false;
-                    }, 2000);
-                } else {
-                    this.innerHTML = originalIcon;
-                    this.disabled = false;
-                }
-            })
-            .catch(err => {
-                console.error('Add to quote error:', err);
-                this.innerHTML = originalIcon;
-                this.disabled = false;
-            });
+        e.preventDefault();
+        e.stopPropagation();
+
+        const productId = addBtn.getAttribute('data-product-id');
+        const productName = addBtn.getAttribute('data-product-name') || '';
+        const productSku = addBtn.getAttribute('data-product-sku') || '';
+        const productImg = addBtn.getAttribute('data-product-img') || '';
+
+        // Visual feedback on button
+        const originalHtml = addBtn.innerHTML;
+        addBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" style="width: 1rem; height: 1rem;"></span>';
+        addBtn.disabled = true;
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        const formData = new FormData();
+        formData.append('product_id', productId);
+        formData.append('quantity', 1);
+
+        fetch('{{ route("quote.add") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Update all badge counts on page
+                updateCartBadges(data.cart_count);
+
+                // Show success state on button
+                addBtn.innerHTML = '<i class="bi bi-check-lg" style="font-size:1.2rem;"></i>';
+                addBtn.classList.add('btn-success-state');
+
+                // Show modern popup toast
+                showQuoteToast({
+                    title: productName,
+                    sku: productSku,
+                    img: productImg,
+                    count: data.cart_count
+                });
+
+                setTimeout(() => {
+                    addBtn.innerHTML = originalHtml;
+                    addBtn.classList.remove('btn-success-state');
+                    addBtn.disabled = false;
+                }, 2000);
+            } else {
+                addBtn.innerHTML = originalHtml;
+                addBtn.disabled = false;
+            }
+        })
+        .catch(err => {
+            console.error('Add to quote error:', err);
+            addBtn.innerHTML = originalHtml;
+            addBtn.disabled = false;
         });
     });
 });
 
-// Update Cart Badges across Header & Page
+// Update Cart Badges across Header, Bottom Bar & Page
 function updateCartBadges(count) {
-    document.querySelectorAll('.alex-nav-cart-badge, .js-quote-hero-count, .js-toast-count-badge').forEach(el => {
+    document.querySelectorAll('.alex-nav-cart-badge, .js-quote-hero-count, .js-toast-count-badge, .js-quote-bottom-count, .js-quote-header-count').forEach(el => {
         el.textContent = count;
         el.classList.add('pulse-animation');
         setTimeout(() => el.classList.remove('pulse-animation'), 600);
@@ -965,6 +1024,8 @@ function updateCartBadges(count) {
 let toastTimer = null;
 function showQuoteToast(item) {
     const toast = document.getElementById('quoteCartToast');
+    if (!toast) return;
+
     const titleEl = document.getElementById('quoteToastTitle');
     const skuEl = document.getElementById('quoteToastSku');
     const imgEl = document.getElementById('quoteToastImg');
@@ -990,7 +1051,7 @@ function hideQuoteToast() {
     }
 }
 
-// 3. Grid vs List View Toggle
+// 4. Grid vs List View Toggle
 function setView(mode) {
     const grid = document.getElementById('products-grid');
     const gridBtn = document.getElementById('grid-view-btn');
@@ -1032,5 +1093,6 @@ function setView(mode) {
         gridBtn.classList.add('active');
         listBtn.classList.remove('active');
     }
+}
 </script>
 @endpush
