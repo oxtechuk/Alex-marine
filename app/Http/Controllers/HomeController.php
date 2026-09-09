@@ -39,10 +39,7 @@ class HomeController extends Controller
             $featureCategories = $categories->take(4);
         }
 
-        $featuredProducts = Product::with('category')->where('is_active', true)->where('is_featured', true)->take(8)->get();
-        if ($featuredProducts->isEmpty()) {
-            $featuredProducts = Product::with('category')->where('is_active', true)->take(8)->get();
-        }
+        $featuredProducts = Product::with('category')->where('is_active', true)->where('is_featured', true)->take(4)->get();
         $services = Service::where('is_active', true)->take(4)->get();
         $certificates = Certificate::where('is_active', true)->take(3)->get();
         $news = NewsArticle::where('is_published', true)->orderBy('published_at', 'desc')->take(3)->get();
