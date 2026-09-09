@@ -10,53 +10,60 @@
 @section('content')
 
 {{-- ═══════════════════════════════════════════════
-     PRODUCTS PAGE HERO (SOLID NAVY B2B)
+     PRODUCTS PAGE HERO (LUXURY OCEAN SUNSET THEME)
 ═══════════════════════════════════════════════ --}}
-<section class="about-hero" id="products-hero">
-    <div class="container">
+<section class="alex-products-hero position-relative overflow-hidden py-5" id="products-hero">
+    {{-- Background Layer --}}
+    <div class="alex-prod-hero-bg position-absolute inset-0"></div>
+    <div class="alex-prod-hero-overlay position-absolute inset-0"></div>
+
+    <div class="container position-relative z-3 py-3">
         {{-- Breadcrumb --}}
         <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb breadcrumb-alex d-inline-flex align-items-center gap-2 p-0 m-0">
                 <li class="breadcrumb-item d-inline-flex align-items-center">
-                    <a href="{{ route('home') }}" class="text-white-50 text-decoration-none">{{ $isEn ? 'Home' : 'الرئيسية' }}</a>
+                    <a href="{{ route('home') }}" class="text-white-50 text-decoration-none hover-gold">{{ $isEn ? 'Home' : 'الرئيسية' }}</a>
                 </li>
                 <li class="text-white-50" style="opacity:0.4;">/</li>
-                <li class="breadcrumb-item active text-white d-inline-flex align-items-center" aria-current="page">
+                <li class="breadcrumb-item active text-gold fw-bold d-inline-flex align-items-center" aria-current="page">
                     {{ $isEn ? 'Products Catalog' : 'دليل المنتجات' }}
                 </li>
             </ol>
         </nav>
 
-        <div class="row align-items-center">
+        <div class="row align-items-center justify-content-between g-4">
             <div class="col-lg-7" data-aos="fade-right">
-              
-                <h1 class="display-section text-white mb-2">
+                <div class="alex-hero-badge mb-2 d-inline-flex align-items-center">
+                    <i class="bi bi-box-seam me-1 text-gold"></i>
+                    <span>{{ $isEn ? 'ALEX MARINE CATALOG' : 'كتالوج أليكس مارين المعتمد' }}</span>
+                </div>
+                <h1 class="display-section text-white fw-black mb-2" style="font-size: 2.2rem; letter-spacing: -0.5px;">
                     {{ $isEn ? 'Marine & Industrial Safety Catalog' : 'دليل المنتجات والتوريدات البحرية' }}
                 </h1>
-                <p class="mb-0 text-white-50" style="font-size:1rem; max-width:550px; line-height:1.7;">
+                <p class="mb-0 text-white-50 leading-relaxed" style="font-size:1rem; max-width:580px;">
                     {{ $isEn
                         ? 'Browse our certified marine supplies, industrial PPE, and firefighting equipment. Select items to request an official quotation.'
                         : 'تصفح قائمة المنتجات المعتمدة للتوريدات ومهمات السلامة المهنية، وأضف المنتجات المطلوبة لإصدار عرض سعر رسمي لمؤسستك.' }}
                 </p>
             </div>
-            <div class="col-lg-5 text-{{ $isEn ? 'end' : 'start' }} mt-4 mt-lg-0" data-aos="fade-left">
+            <div class="col-lg-5 text-{{ $isEn ? 'end' : 'start' }}" data-aos="fade-left">
                 {{-- Quick Stats Badges --}}
                 <div class="d-flex flex-wrap gap-2 justify-content-{{ $isEn ? 'end' : 'start' }}">
-                    <div class="px-3 py-2 text-center rounded border" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15) !important; min-width:100px;">
-                        <div style="font-size:1.4rem; font-weight:800; color:var(--alex-gold);">{{ $products->total() }}</div>
-                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600;">{{ $isEn ? 'Products' : 'منتج متوفر' }}</div>
+                    <div class="px-3 py-2 text-center rounded-4 border shadow-sm" style="background:rgba(7, 21, 43, 0.7); backdrop-filter:blur(8px); border-color:rgba(229,169,25,0.3) !important; min-width:105px;">
+                        <div style="font-size:1.5rem; font-weight:900; color:var(--alex-gold, #E5A919);">{{ $products->total() }}</div>
+                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.75); font-weight:700;">{{ $isEn ? 'Products' : 'منتج متوفر' }}</div>
                     </div>
-                    <div class="px-3 py-2 text-center rounded border" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15) !important; min-width:100px;">
-                        <div style="font-size:1.4rem; font-weight:800; color:var(--alex-gold);">{{ $categories->count() }}</div>
-                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600;">{{ $isEn ? 'Categories' : 'تصنيف' }}</div>
+                    <div class="px-3 py-2 text-center rounded-4 border shadow-sm" style="background:rgba(7, 21, 43, 0.7); backdrop-filter:blur(8px); border-color:rgba(229,169,25,0.3) !important; min-width:105px;">
+                        <div style="font-size:1.5rem; font-weight:900; color:var(--alex-gold, #E5A919);">{{ $categories->count() }}</div>
+                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.75); font-weight:700;">{{ $isEn ? 'Categories' : 'تصنيف' }}</div>
                     </div>
-                    <div class="px-3 py-2 text-center rounded border" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15) !important; min-width:100px;">
-                        <div style="font-size:1.4rem; font-weight:800; color:var(--alex-gold);">
-                            <a href="{{ route('quote.index') }}" class="text-decoration-none js-quote-hero-count" style="color:var(--alex-gold);">
+                    <div class="px-3 py-2 text-center rounded-4 border shadow-sm" style="background:rgba(7, 21, 43, 0.7); backdrop-filter:blur(8px); border-color:rgba(229,169,25,0.3) !important; min-width:105px;">
+                        <div style="font-size:1.5rem; font-weight:900; color:var(--alex-gold, #E5A919);">
+                            <a href="{{ route('quote.index') }}" class="text-decoration-none js-quote-hero-count" style="color:var(--alex-gold, #E5A919);">
                                 {{ count(session('quote_cart', [])) }}
                             </a>
                         </div>
-                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:600;">{{ $isEn ? 'Quote Cart' : 'سلة الطلبات' }}</div>
+                        <div style="font-size:0.75rem; color:rgba(255,255,255,0.75); font-weight:700;">{{ $isEn ? 'Quote Cart' : 'سلة الطلبات' }}</div>
                     </div>
                 </div>
             </div>
@@ -416,6 +423,27 @@
 
 @push('styles')
 <style>
+/* ─────────────────────────────────────────────────────────────
+   ALEX PRODUCTS LUXURY HERO STYLING
+───────────────────────────────────────────────────────────── */
+.alex-products-hero {
+    background-color: #07152B;
+    min-height: 260px;
+}
+.alex-prod-hero-bg {
+    background-image: url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=85');
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+}
+.alex-prod-hero-overlay {
+    background: linear-gradient(90deg, rgba(7, 21, 43, 0.96) 0%, rgba(7, 21, 43, 0.88) 60%, rgba(7, 21, 43, 0.6) 100%);
+}
+.hover-gold:hover {
+    color: var(--alex-gold, #E5A919) !important;
+}
+
 /* ─────────────────────────────────────────────────────────────
    PRACTICAL B2B PRODUCT CARDS STYLING
 ───────────────────────────────────────────────────────────── */

@@ -1142,16 +1142,13 @@
         </div>
 
         <!-- Footer Bottom -->
-        <div class="footer-bottom">
+        <div class="footer-bottom py-3" style="background:#050F1D; border-top:1px solid rgba(255,255,255,0.06); font-size:0.8rem; color:rgba(255,255,255,0.5);">
             <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                 <div>
-                    © {{ date('Y') }} <strong style="color:rgba(255,255,255,0.6);">ALEX MARINE</strong>
-                    — {{ $isEn ? 'All Rights Reserved.' : 'جميع الحقوق محفوظة.' }}
+                    © {{ date('Y') }} <strong style="color:var(--alex-gold, #E5A919);">ALEX MARINE</strong> Supplies — {{ $isEn ? 'All Rights Reserved.' : 'جميع الحقوق محفوظة' }}
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <a href="{{ route('home') }}" class="footer-bottom-link">{{ $isEn ? 'Privacy Policy' : 'سياسة الخصوصية' }}</a>
-                    <span style="color:rgba(255,255,255,0.15);">|</span>
-                    <span>{{ $isEn ? 'Marine Logistics & Industrial Safety' : 'حلول التوريدات والسلامة البحرية' }}</span>
+                <div class="d-flex align-items-center gap-2">
+                    <span>Made with <span style="color:#E53E3E;">❤️</span> for a safer sea</span>
                 </div>
             </div>
         </div>
