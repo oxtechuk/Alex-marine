@@ -246,7 +246,7 @@
 
         <!-- Sidebar Save Action Card -->
         <div class="col-lg-4">
-            <div class="alex-card p-4 bg-navy text-white text-center shadow-lg sticky-top" style="top: 20px; background-color: #0A1D37 !important;">
+            <div class="alex-card p-4 bg-navy text-white text-center shadow-lg mb-4" style="background-color: #0A1D37 !important;">
                 <i class="bi bi-palette2 display-4 text-warning mb-2 d-block"></i>
                 <h4 class="fw-bold mb-2">حفظ إعدادات الهُوية</h4>
                 <p class="text-white-50 fs-7 mb-3">سيتم تطبيق الشعار، الألوان، وروابط التواصل الاجتماعي فوراً على الهيدر والفوتر والموقع بالكامل.</p>
@@ -254,9 +254,40 @@
                     <i class="bi bi-check-circle-fill me-2"></i> حفظ الإعدادات الآن
                 </button>
             </div>
+</form>
+
+            <!-- Server & Hosting Quick Tools Card -->
+            <div class="alex-card p-4 bg-white border rounded-3 shadow-sm">
+                <div class="d-flex align-items-center gap-2 mb-3 border-bottom pb-2">
+                    <i class="bi bi-hdd-network-fill fs-4 text-primary"></i>
+                    <div>
+                        <h5 class="fw-bold text-navy m-0">أدوات الاستضافة والسيرفر</h5>
+                        <small class="text-muted">مخصصة لاستضافة هوستنجر والمواقع المرفوعة</small>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2">
+                    <!-- Clear Cache -->
+                    <form action="{{ route('admin.tools.clear-cache') }}" method="POST" onsubmit="return confirm('هل أنت متأكد من تنظيف الكاش وإعادة بناء إعدادات الموقع؟');">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary w-100 text-start d-flex align-items-center justify-content-between p-2">
+                            <span><i class="bi bi-arrow-clockwise me-2"></i> تنظيف الكاش (Clear Cache)</span>
+                            <i class="bi bi-chevron-left text-muted"></i>
+                        </button>
+                    </form>
+
+                    <!-- Storage Link -->
+                    <form action="{{ route('admin.tools.storage-link') }}" method="POST" onsubmit="return confirm('هل تريد إنشاء رابط التخزين بالملفات العامة؟');">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-secondary w-100 text-start d-flex align-items-center justify-content-between p-2">
+                            <span><i class="bi bi-link-45deg me-2"></i> إصلاح رابط التخزين (Storage Link)</span>
+                            <i class="bi bi-chevron-left text-muted"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
 
     </div>
-</form>
 
 @endsection
