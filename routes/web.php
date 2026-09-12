@@ -110,6 +110,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/customers', [AdminController::class, 'customers'])->name('customers.index');
     Route::post('/customers', [AdminController::class, 'storeCustomer'])->name('customers.store');
 
+    // System Maintenance Tools for Hosting/Production
+    Route::post('/tools/clear-cache', [AdminController::class, 'clearCache'])->name('tools.clear-cache');
+    Route::post('/tools/storage-link', [AdminController::class, 'linkStorage'])->name('tools.storage-link');
+
     // Direct Sales / POS Redirect to Unified Orders & Sales Management
     Route::redirect('/sales/create', '/admin/orders')->name('sales.create');
 });

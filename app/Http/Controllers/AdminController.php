@@ -12,6 +12,7 @@ use App\Models\QuoteRequest;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -1095,5 +1096,31 @@ class AdminController extends Controller
 
         return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'تم إتمام عملية البيع وإنشاء أمر الشراء بنجاح ('.$orderNumber.')');
+    }
+
+    /**
+     * Clear application cache, routes, config, and views on production/shared hosting
+     */
+    public function clearCache()
+    {
+        try {
+            Artisan::call('optimize:clear');
+            return back()->with('success', 'تم تنظيف الكاش وإعادة بناء إعدادات النظام بنجاح.');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'حدث خطأ أثناء تنظيف الكاش: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Create storage symlink on shared hosting where terminal/SSH is unavailable
+     */
+    public function linkStorage()
+    {
+        try {
+            Artisan::call('storage:link');
+            return back()->with('success', 'تم ربط مجلد التخزين بالملفات العامة بنجاح (Storage Link Created).');
+        } catch (\Throwable $e) {
+            return back()->with('error', 'حدث خطأ أثناء ربط التخزين: ' . $e->getMessage());
+        }
     }
 }
