@@ -132,10 +132,31 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-bold">رمز الأيقونة (Bootstrap Icon)</label>
-                                                    <input type="text" name="icon" class="form-control" value="{{ $subCat->icon }}" placeholder="bi-tag-fill">
-                                                </div>
+                                                 <div class="mb-3">
+                                                     <label class="form-label fw-bold d-flex align-items-center justify-content-between">
+                                                         <span>رمز الأيقونة (Icon)</span>
+                                                         <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-bold rounded-pill px-2.5 py-0.5 fs-8 js-open-icon-picker" data-target-input="#subCatIconInput{{ $subCat->id }}" data-target-preview="#subCatIconPreview{{ $subCat->id }}">
+                                                             <i class="bi bi-grid-3x3-gap-fill text-warning me-1"></i> تصفح مكتبة الأيقونات
+                                                         </button>
+                                                     </label>
+                                                     <div class="input-group">
+                                                         <span class="input-group-text bg-white" id="subCatIconPreview{{ $subCat->id }}" style="width: 46px; justify-content: center;">
+                                                             <i class="bi {{ $subCat->icon ?: 'bi-folder-fill' }} fs-5 text-warning"></i>
+                                                         </span>
+                                                         <input type="text" name="icon" id="subCatIconInput{{ $subCat->id }}" class="form-control font-monospace js-icon-input" value="{{ $subCat->icon }}" placeholder="bi-tag-fill" data-preview="#subCatIconPreview{{ $subCat->id }}">
+                                                         <button type="button" class="btn btn-navy text-white fw-bold px-3 js-open-icon-picker" data-target-input="#subCatIconInput{{ $subCat->id }}" data-target-preview="#subCatIconPreview{{ $subCat->id }}" style="background-color: #0A1D37;">
+                                                             <i class="bi bi-palette2 me-1"></i> اختيار أيقونة
+                                                         </button>
+                                                     </div>
+                                                     <div class="mt-2 d-flex align-items-center gap-1.5 flex-wrap">
+                                                         <small class="text-muted fs-8 me-1">شائع:</small>
+                                                         @foreach(['bi-anchor', 'bi-shield-check', 'bi-fire', 'bi-life-preserver', 'bi-box-seam', 'bi-tools', 'bi-truck', 'bi-tag-fill'] as $qIcon)
+                                                             <button type="button" class="btn btn-light btn-xs border rounded-2 p-1 px-2 js-quick-icon-btn" data-icon="{{ $qIcon }}" data-target-input="#subCatIconInput{{ $subCat->id }}" data-target-preview="#subCatIconPreview{{ $subCat->id }}" title="{{ $qIcon }}">
+                                                                 <i class="bi {{ $qIcon }} text-navy"></i>
+                                                             </button>
+                                                         @endforeach
+                                                     </div>
+                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label fw-bold">وصف التصنيف</label>
                                                     <textarea name="description_ar" class="form-control" rows="2">{{ $subCat->description_ar }}</textarea>
@@ -193,8 +214,29 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-bold">رمز الأيقونة (Bootstrap Icon)</label>
-                                <input type="text" name="icon" class="form-control" value="{{ $mainCat->icon }}" placeholder="bi-tag-fill">
+                                <label class="form-label fw-bold d-flex align-items-center justify-content-between">
+                                    <span>رمز الأيقونة (Icon)</span>
+                                    <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-bold rounded-pill px-2.5 py-0.5 fs-8 js-open-icon-picker" data-target-input="#mainCatIconInput{{ $mainCat->id }}" data-target-preview="#mainCatIconPreview{{ $mainCat->id }}">
+                                        <i class="bi bi-grid-3x3-gap-fill text-warning me-1"></i> تصفح مكتبة الأيقونات
+                                    </button>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white" id="mainCatIconPreview{{ $mainCat->id }}" style="width: 46px; justify-content: center;">
+                                        <i class="bi {{ $mainCat->icon ?: 'bi-folder-fill' }} fs-5 text-warning"></i>
+                                    </span>
+                                    <input type="text" name="icon" id="mainCatIconInput{{ $mainCat->id }}" class="form-control font-monospace js-icon-input" value="{{ $mainCat->icon }}" placeholder="bi-tag-fill" data-preview="#mainCatIconPreview{{ $mainCat->id }}">
+                                    <button type="button" class="btn btn-navy text-white fw-bold px-3 js-open-icon-picker" data-target-input="#mainCatIconInput{{ $mainCat->id }}" data-target-preview="#mainCatIconPreview{{ $mainCat->id }}" style="background-color: #0A1D37;">
+                                        <i class="bi bi-palette2 me-1"></i> اختيار أيقونة
+                                    </button>
+                                </div>
+                                <div class="mt-2 d-flex align-items-center gap-1.5 flex-wrap">
+                                    <small class="text-muted fs-8 me-1">شائع:</small>
+                                    @foreach(['bi-anchor', 'bi-shield-check', 'bi-fire', 'bi-life-preserver', 'bi-box-seam', 'bi-tools', 'bi-truck', 'bi-tag-fill'] as $qIcon)
+                                        <button type="button" class="btn btn-light btn-xs border rounded-2 p-1 px-2 js-quick-icon-btn" data-icon="{{ $qIcon }}" data-target-input="#mainCatIconInput{{ $mainCat->id }}" data-target-preview="#mainCatIconPreview{{ $mainCat->id }}" title="{{ $qIcon }}">
+                                            <i class="bi {{ $qIcon }} text-navy"></i>
+                                        </button>
+                                    @endforeach
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-bold">وصف التصنيف</label>
@@ -250,8 +292,29 @@
                         <small class="text-muted fs-8">اختر تصنيفاً إذا كنت تريد جعل هذا التصنيف فرعياً تحته.</small>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">رمز الأيقونة (Bootstrap Icon)</label>
-                        <input type="text" name="icon" class="form-control" placeholder="bi-shield-check">
+                        <label class="form-label fw-bold d-flex align-items-center justify-content-between">
+                            <span>رمز الأيقونة (Icon)</span>
+                            <button type="button" class="btn btn-sm btn-outline-warning text-dark fw-bold rounded-pill px-2.5 py-0.5 fs-8 js-open-icon-picker" data-target-input="#addCategoryIconInput" data-target-preview="#addCategoryIconPreview">
+                                <i class="bi bi-grid-3x3-gap-fill text-warning me-1"></i> تصفح مكتبة الأيقونات
+                            </button>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white" id="addCategoryIconPreview" style="width: 46px; justify-content: center;">
+                                <i class="bi bi-folder-fill fs-5 text-warning"></i>
+                            </span>
+                            <input type="text" name="icon" id="addCategoryIconInput" class="form-control font-monospace js-icon-input" placeholder="bi-shield-check" value="" data-preview="#addCategoryIconPreview">
+                            <button type="button" class="btn btn-navy text-white fw-bold px-3 js-open-icon-picker" data-target-input="#addCategoryIconInput" data-target-preview="#addCategoryIconPreview" style="background-color: #0A1D37;">
+                                <i class="bi bi-palette2 me-1"></i> اختيار أيقونة
+                            </button>
+                        </div>
+                        <div class="mt-2 d-flex align-items-center gap-1.5 flex-wrap">
+                            <small class="text-muted fs-8 me-1">شائع:</small>
+                            @foreach(['bi-anchor', 'bi-shield-check', 'bi-fire', 'bi-life-preserver', 'bi-box-seam', 'bi-tools', 'bi-truck', 'bi-signpost-split'] as $qIcon)
+                                <button type="button" class="btn btn-light btn-xs border rounded-2 p-1 px-2 js-quick-icon-btn" data-icon="{{ $qIcon }}" data-target-input="#addCategoryIconInput" data-target-preview="#addCategoryIconPreview" title="{{ $qIcon }}">
+                                    <i class="bi {{ $qIcon }} text-navy"></i>
+                                </button>
+                            @endforeach
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">وصف التصنيف</label>
@@ -266,5 +329,386 @@
         </div>
     </div>
 </div>
+
+{{-- ══════════════════════════════════════════════════════════
+     ICON PICKER MODAL (مكتبة أيقونات متكاملة ومصنفة)
+══════════════════════════════════════════════════════════ --}}
+@php
+$iconLibrary = [
+    // 1. Marine & Navigation (بحرية وملاحة)
+    ['icon' => 'bi-anchor', 'name' => 'anchor', 'ar' => 'مرساة بحرية', 'cat' => 'marine', 'tags' => 'مرساة سفينة يخت بحر ملاحة موانئ'],
+    ['icon' => 'bi-compass', 'name' => 'compass', 'ar' => 'بوصلة بحرية', 'cat' => 'marine', 'tags' => 'بوصلة اتجاه ملاحة توجيه'],
+    ['icon' => 'bi-life-preserver', 'name' => 'life-preserver', 'ar' => 'طوق نجاة', 'cat' => 'marine', 'tags' => 'طوق نجاة إنقاذ بحري سلامة غرق'],
+    ['icon' => 'bi-water', 'name' => 'water', 'ar' => 'مياه وبحار', 'cat' => 'marine', 'tags' => 'مياه بحر أمواج سواحل'],
+    ['icon' => 'bi-tsunami', 'name' => 'tsunami', 'ar' => 'أمواج وعواصف', 'cat' => 'marine', 'tags' => 'أمواج عاصفة بحرية طقس'],
+    ['icon' => 'bi-wind', 'name' => 'wind', 'ar' => 'رياح وأرصاد', 'cat' => 'marine', 'tags' => 'رياح طقس أرصاد هواء'],
+    ['icon' => 'bi-signpost-split', 'name' => 'signpost', 'ar' => 'علامات إرشادية', 'cat' => 'marine', 'tags' => 'علامات لافتات ملاحية توجيه'],
+    ['icon' => 'bi-signpost-2', 'name' => 'signpost-2', 'ar' => 'إرشادات موانئ', 'cat' => 'marine', 'tags' => 'إرشادات ممر بحري رصيف'],
+    ['icon' => 'bi-geo-alt-fill', 'name' => 'geo-alt', 'ar' => 'موقع وميناء', 'cat' => 'marine', 'tags' => 'ميناء موقع إحداثيات رصيف'],
+    ['icon' => 'bi-pin-map-fill', 'name' => 'pin-map', 'ar' => 'خريطة أرصفة', 'cat' => 'marine', 'tags' => 'خريطة مارينا رصيف بحري'],
+    ['icon' => 'bi-broadcast', 'name' => 'broadcast', 'ar' => 'رادار واستغاثة', 'cat' => 'marine', 'tags' => 'رادار إشارة لاسلكي نداء استغاثة'],
+    ['icon' => 'bi-moisture', 'name' => 'moisture', 'ar' => 'رطوبة وغمر', 'cat' => 'marine', 'tags' => 'رطوبة مياه غطس بدلة غمر'],
+    ['icon' => 'bi-binoculars-fill', 'name' => 'binoculars', 'ar' => 'مراقبة واستطلاع', 'cat' => 'marine', 'tags' => 'منظار دربيل برج مراقبة أفق'],
+    ['icon' => 'bi-sunset-fill', 'name' => 'sunset', 'ar' => 'خط الأفق', 'cat' => 'marine', 'tags' => 'بحر شمس أفق ملاحة'],
+
+    // 2. Safety & Protection (أمن وسلامة)
+    ['icon' => 'bi-shield-check', 'name' => 'shield-check', 'ar' => 'سلامة معتمدة', 'cat' => 'safety', 'tags' => 'سلامة درع أمان فحص معتمد SOLAS'],
+    ['icon' => 'bi-shield-fill', 'name' => 'shield', 'ar' => 'درع وقاية', 'cat' => 'safety', 'tags' => 'درع وقاية حماية أمن صناعي'],
+    ['icon' => 'bi-shield-shaded', 'name' => 'shield-shaded', 'ar' => 'أمن صناعي', 'cat' => 'safety', 'tags' => 'أمن صناعي سلامة مهنية وقاية'],
+    ['icon' => 'bi-shield-lock-fill', 'name' => 'shield-lock', 'ar' => 'حماية وتأمين', 'cat' => 'safety', 'tags' => 'قفل تأمين حماية سلامة غلق'],
+    ['icon' => 'bi-shield-exclamation', 'name' => 'shield-alert', 'ar' => 'تنبيه أمني', 'cat' => 'safety', 'tags' => 'تنبيه إنذار أمان خطر تحذير'],
+    ['icon' => 'bi-cone-striped', 'name' => 'cone', 'ar' => 'حواجز ومرور', 'cat' => 'safety', 'tags' => 'قمع حاجز موقع عمل أمان'],
+    ['icon' => 'bi-exclamation-triangle-fill', 'name' => 'warning', 'ar' => 'تحذير وخطر', 'cat' => 'safety', 'tags' => 'خطر تحذير تنبيه إشارة'],
+    ['icon' => 'bi-exclamation-octagon-fill', 'name' => 'stop', 'ar' => 'إيقاف طوارئ', 'cat' => 'safety', 'tags' => 'توقف قف طوارئ زر أمان'],
+    ['icon' => 'bi-eye-fill', 'name' => 'eye', 'ar' => 'وقاية العين', 'cat' => 'safety', 'tags' => 'نظارات حماية بصر فحص وقاية'],
+    ['icon' => 'bi-heart-pulse-fill', 'name' => 'heart-pulse', 'ar' => 'إسعافات ورعاية', 'cat' => 'safety', 'tags' => 'قلب صحة إسعاف نبض طبي'],
+    ['icon' => 'bi-patch-check-fill', 'name' => 'certified', 'ar' => 'اعتماد وجودة', 'cat' => 'safety', 'tags' => 'شهادة أيزو جودة اعتماد رسمي'],
+    ['icon' => 'bi-incognito', 'name' => 'mask', 'ar' => 'حماية تنفس', 'cat' => 'safety', 'tags' => 'قناع كمامة تنفس هروب SCBA'],
+    ['icon' => 'bi-radioactive', 'name' => 'radioactive', 'ar' => 'مواد خطرة', 'cat' => 'safety', 'tags' => 'مواد خطرة إشعاع كيميائي'],
+    ['icon' => 'bi-bandaid-fill', 'name' => 'first-aid', 'ar' => 'إسعاف أولي', 'cat' => 'safety', 'tags' => 'ضماد صيدلية طوارئ إسعاف'],
+    ['icon' => 'bi-person-check-fill', 'name' => 'person-safe', 'ar' => 'سلامة الأفراد', 'cat' => 'safety', 'tags' => 'فرد عامل مهندس وقاية'],
+
+    // 3. Fire & Rescue (إطفاء وإنقاذ)
+    ['icon' => 'bi-fire', 'name' => 'fire', 'ar' => 'مكافحة حرائق', 'cat' => 'fire', 'tags' => 'نار حريق طفاية إطفاء بودرة فوم'],
+    ['icon' => 'bi-lightning-charge-fill', 'name' => 'lightning', 'ar' => 'طاقة وطوارئ', 'cat' => 'fire', 'tags' => 'كهرباء شحن تيار صدمة طاقة'],
+    ['icon' => 'bi-bell-fill', 'name' => 'alarm-bell', 'ar' => 'إنذار حريق', 'cat' => 'fire', 'tags' => 'جرس إنذار حريق تنبيه طوارئ'],
+    ['icon' => 'bi-megaphone-fill', 'name' => 'megaphone', 'ar' => 'إذاعة وإخلاء', 'cat' => 'fire', 'tags' => 'مكبر صوت إخلاء نداء طوارئ'],
+    ['icon' => 'bi-hospital-fill', 'name' => 'hospital', 'ar' => 'محطة إسعاف', 'cat' => 'fire', 'tags' => 'إسعاف مستشفى طبي إنقاذ'],
+    ['icon' => 'bi-thermometer-half', 'name' => 'temp', 'ar' => 'مستشعر حرارة', 'cat' => 'fire', 'tags' => 'حرارة حساس قياس مؤشر'],
+    ['icon' => 'bi-capsule', 'name' => 'medical', 'ar' => 'مستلزمات طبية', 'cat' => 'fire', 'tags' => 'دواء طب كبسولة علاج'],
+    ['icon' => 'bi-person-walking', 'name' => 'exit', 'ar' => 'مخارج طوارئ', 'cat' => 'fire', 'tags' => 'مخرج طوارئ مسار هروب خروج'],
+
+    // 4. Tools & Maintenance (معدات وصيانة)
+    ['icon' => 'bi-tools', 'name' => 'tools', 'ar' => 'حقيبة صيانة', 'cat' => 'tools', 'tags' => 'عدة صيانة أدوات تصليح ورشة'],
+    ['icon' => 'bi-wrench-adjustable', 'name' => 'wrench-adj', 'ar' => 'مفتاح ميكانيكا', 'cat' => 'tools', 'tags' => 'مفتاح ربط إنجليزي ميكانيكا'],
+    ['icon' => 'bi-wrench', 'name' => 'wrench', 'ar' => 'مفتاح ربط', 'cat' => 'tools', 'tags' => 'مفك عدة صيانة تصليح'],
+    ['icon' => 'bi-hammer', 'name' => 'hammer', 'ar' => 'مطرقة وتصنيع', 'cat' => 'tools', 'tags' => 'شاكوش مطرقة تشكيل حدادة صلب'],
+    ['icon' => 'bi-gear-fill', 'name' => 'gear', 'ar' => 'تروس ومحركات', 'cat' => 'tools', 'tags' => 'محرك موتور ترس ميكانيكا قطع غيار'],
+    ['icon' => 'bi-gear-wide-connected', 'name' => 'gears', 'ar' => 'أنظمة تروس', 'cat' => 'tools', 'tags' => 'نظام تروس ميكانيكا تدوير حركة'],
+    ['icon' => 'bi-sliders', 'name' => 'controls', 'ar' => 'لوحات تحكم', 'cat' => 'tools', 'tags' => 'تحكم معايرة ضبط مؤشرات'],
+    ['icon' => 'bi-cpu-fill', 'name' => 'cpu', 'ar' => 'متحكمات ومعالجة', 'cat' => 'tools', 'tags' => 'إلكترونيات معالج شريحة كمبيوتر'],
+    ['icon' => 'bi-plug-fill', 'name' => 'plug', 'ar' => 'توصيلات وكابلات', 'cat' => 'tools', 'tags' => 'كابل سلك فيشة كهرباء'],
+    ['icon' => 'bi-battery-charging', 'name' => 'battery', 'ar' => 'بطاريات ومولدات', 'cat' => 'tools', 'tags' => 'بطارية شحن طاقة مولد ديزل'],
+    ['icon' => 'bi-fuel-pump-fill', 'name' => 'fuel', 'ar' => 'وقود وتموين', 'cat' => 'tools', 'tags' => 'وقود ديزل بنزين تموين سفن'],
+    ['icon' => 'bi-speedometer', 'name' => 'gauge', 'ar' => 'عدادات وقياس', 'cat' => 'tools', 'tags' => 'عداد ضغط بار سرعة مقياس'],
+    ['icon' => 'bi-rulers', 'name' => 'rulers', 'ar' => 'أدوات قياس', 'cat' => 'tools', 'tags' => 'مسطرة أبعاد قياس متري'],
+    ['icon' => 'bi-nut-fill', 'name' => 'hardware', 'ar' => 'مسامير وروافع', 'cat' => 'tools', 'tags' => 'صامولة مسمار تثبيت صلب روافع'],
+    ['icon' => 'bi-screwdriver', 'name' => 'screwdriver', 'ar' => 'مفكات وورش', 'cat' => 'tools', 'tags' => 'مفك عدة يدوي إحكام'],
+
+    // 5. Cargo & Logistics (شحن وتوريدات)
+    ['icon' => 'bi-box-seam', 'name' => 'box-seam', 'ar' => 'طرد وبضائع', 'cat' => 'cargo', 'tags' => 'كرتونة شحن بضائع طرد توريد'],
+    ['icon' => 'bi-box-seam-fill', 'name' => 'package', 'ar' => 'كرتونة توريد', 'cat' => 'cargo', 'tags' => 'صندوق تغليف بضاعة تسليم'],
+    ['icon' => 'bi-boxes', 'name' => 'boxes', 'ar' => 'مستودعات وكراتين', 'cat' => 'cargo', 'tags' => 'مخزن بضائع حاويات طرود كراتين'],
+    ['icon' => 'bi-truck', 'name' => 'truck', 'ar' => 'شحن ونقل', 'cat' => 'cargo', 'tags' => 'شاحنة نقل توصيل ميناء لوجستيات'],
+    ['icon' => 'bi-cart-check-fill', 'name' => 'cart-check', 'ar' => 'أوامر توريد', 'cat' => 'cargo', 'tags' => 'شراء طلبيات عربة سلة توريدات'],
+    ['icon' => 'bi-basket2-fill', 'name' => 'basket', 'ar' => 'سلة مهمات', 'cat' => 'cargo', 'tags' => 'سلة تجهيزات مهمات مستلزمات'],
+    ['icon' => 'bi-bag-check-fill', 'name' => 'bag-check', 'ar' => 'حقائب معدات', 'cat' => 'cargo', 'tags' => 'شنطة طقم استلام أكياس'],
+    ['icon' => 'bi-archive-fill', 'name' => 'archive', 'ar' => 'أرشيف ومخزون', 'cat' => 'cargo', 'tags' => 'مخزون جرد أرشيف أدراج مستودع'],
+    ['icon' => 'bi-upc-scan', 'name' => 'barcode', 'ar' => 'باركود وتتبع', 'cat' => 'cargo', 'tags' => 'باركود سكانر تتبع شحنة بضاعة'],
+    ['icon' => 'bi-tag-fill', 'name' => 'tag', 'ar' => 'وسم وتصنيف', 'cat' => 'cargo', 'tags' => 'سعر كود وسم بطاقة صنف'],
+    ['icon' => 'bi-tags-fill', 'name' => 'tags', 'ar' => 'تصنيفات متعددة', 'cat' => 'cargo', 'tags' => 'علامات بطاقات أسعار تصنيف'],
+    ['icon' => 'bi-layers-fill', 'name' => 'layers', 'ar' => 'طبقات وحزم', 'cat' => 'cargo', 'tags' => 'رزم باليتات شحن طبقات طرود'],
+    ['icon' => 'bi-box-arrow-in-down', 'name' => 'import', 'ar' => 'استلام وتفريغ', 'cat' => 'cargo', 'tags' => 'وارد استيراد تفريغ شحنة ميناء'],
+    ['icon' => 'bi-box-arrow-up', 'name' => 'export', 'ar' => 'شحن وتصدير', 'cat' => 'cargo', 'tags' => 'صادر تصدير شحن تحميل سفينة'],
+
+    // 6. Ports & Facilities (موانئ ومنشآت)
+    ['icon' => 'bi-building', 'name' => 'building', 'ar' => 'مباني ومقرات', 'cat' => 'facilities', 'tags' => 'مبنى شركة إدارة مقر توكيل'],
+    ['icon' => 'bi-buildings-fill', 'name' => 'complex', 'ar' => 'منشآت ومصانع', 'cat' => 'facilities', 'tags' => 'مصنع منشأة ورش ميناء صناعي'],
+    ['icon' => 'bi-door-open-fill', 'name' => 'warehouse', 'ar' => 'مخازن وعنابر', 'cat' => 'facilities', 'tags' => 'عنبر هنجر باب بوابة مخزن'],
+    ['icon' => 'bi-shop', 'name' => 'store', 'ar' => 'منافذ ومعارض', 'cat' => 'facilities', 'tags' => 'محل منفذ بيع معرض متجر'],
+    ['icon' => 'bi-houses-fill', 'name' => 'workshops', 'ar' => 'ورش ومجمعات', 'cat' => 'facilities', 'tags' => 'ورش مجمع صناعي ساحة'],
+    ['icon' => 'bi-bank', 'name' => 'customs', 'ar' => 'جمارك ومؤسسات', 'cat' => 'facilities', 'tags' => 'جمارك هيئة ميناء رسمي حكومي'],
+
+    // 7. General & Other (عام ومتنوع)
+    ['icon' => 'bi-folder-fill', 'name' => 'folder', 'ar' => 'قسم رئيسي', 'cat' => 'general', 'tags' => 'مجلد ملف قسم تصنيف عام'],
+    ['icon' => 'bi-grid-fill', 'name' => 'grid', 'ar' => 'كتالوج شبكي', 'cat' => 'general', 'tags' => 'شبكة كتالوج قائمة دليل'],
+    ['icon' => 'bi-grid-3x3-gap-fill', 'name' => 'departments', 'ar' => 'أقسام وتصنيفات', 'cat' => 'general', 'tags' => 'أقسام تصنيفات أسطول دليل'],
+    ['icon' => 'bi-star-fill', 'name' => 'featured', 'ar' => 'منتج مميز', 'cat' => 'general', 'tags' => 'نجمة مميز مفضل مهم جودة'],
+    ['icon' => 'bi-award-fill', 'name' => 'award', 'ar' => 'شهادات وجوائز', 'cat' => 'general', 'tags' => 'وسام جائزة تكريم شهادة اعتماد'],
+    ['icon' => 'bi-trophy-fill', 'name' => 'trophy', 'ar' => 'اعتمادات رسمية', 'cat' => 'general', 'tags' => 'كأس ريادة تميز تفوق بطولة'],
+    ['icon' => 'bi-check-circle-fill', 'name' => 'check-circle', 'ar' => 'معتمد وجاهز', 'cat' => 'general', 'tags' => 'صح مؤكد متوفر تمام معتمد'],
+    ['icon' => 'bi-bookmark-star-fill', 'name' => 'bookmark', 'ar' => 'قسم هام', 'cat' => 'general', 'tags' => 'حفظ إشارة مفضلة قسم رئيسي'],
+    ['icon' => 'bi-card-checklist', 'name' => 'checklist', 'ar' => 'فحص ومواصفات', 'cat' => 'general', 'tags' => 'قائمة فحص تدقيق تقرير مواصفة'],
+    ['icon' => 'bi-receipt', 'name' => 'receipt', 'ar' => 'عروض أسعار', 'cat' => 'general', 'tags' => 'فاتورة تسعير أمر شراء عرض سعر'],
+    ['icon' => 'bi-lightbulb-fill', 'name' => 'lighting', 'ar' => 'كشافات وإضاءة', 'cat' => 'general', 'tags' => 'لمبة نور كشاف فكرة إضاءة طوارئ'],
+    ['icon' => 'bi-telephone-fill', 'name' => 'phone', 'ar' => 'اتصال وتواصل', 'cat' => 'general', 'tags' => 'هاتف تلفون اتصال خدمة عملاء'],
+    ['icon' => 'bi-headset', 'name' => 'support', 'ar' => 'دعم فني وتوريد', 'cat' => 'general', 'tags' => 'سماعة دعم فني استفسار توريدات'],
+];
+@endphp
+
+<div class="modal fade" id="iconPickerModal" tabindex="-1" aria-hidden="true" style="z-index: 1070;">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-4 border-0 shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="modal-header bg-navy text-white p-3.5 border-0" style="background-color: #0A1D37 !important;">
+                <div class="d-flex align-items-center gap-2.5">
+                    <div class="bg-white bg-opacity-10 text-warning rounded-3 d-flex align-items-center justify-content-center p-2 border border-warning border-opacity-25" style="width: 38px; height: 38px;">
+                        <i class="bi bi-collection-fill fs-5 text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold text-white fs-6 m-0">مكتبة أيقونات التصنيفات — أليكس مارين</h5>
+                        <p class="text-white-50 fs-8 m-0 mt-0.5">اختر أيقونة معبرة لقسمك من بين أكثر من 100 أيقونة بحرية وصناعية معتمدة</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal Search & Filter Tabs -->
+            <div class="p-3 bg-light border-bottom">
+                <!-- Search Input -->
+                <div class="position-relative mb-2.5">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <input type="text" id="iconPickerSearch" class="form-control rounded-pill ps-5 bg-white border-1" placeholder="ابحث باسم الأيقونة عربي أو إنجليزي (مثل: anchor, shield, fire, box, tool, sea, water)...">
+                </div>
+
+                <!-- Category Filter Tabs -->
+                <div class="d-flex align-items-center gap-1.5 flex-wrap" id="iconFilterTabs">
+                    <button type="button" class="btn btn-sm btn-navy rounded-pill px-3 py-1 fs-8 fw-bold js-icon-tab active" data-filter="all">
+                        الكل ({{ count($iconLibrary) }})
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="marine">
+                        ⚓ بحرية وملاحة
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="safety">
+                        🛡️ أمن وسلامة
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="fire">
+                        🧯 إطفاء وإنقاذ
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="tools">
+                        🔧 معدات وصيانة
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="cargo">
+                        📦 شحن وتوريدات
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="facilities">
+                        🏢 موانئ ومنشآت
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 fs-8 js-icon-tab" data-filter="general">
+                        🏷️ عام
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body: Icon Grid -->
+            <div class="modal-body p-3.5" style="min-height: 380px; max-height: 480px;">
+                <div class="row g-2.5 row-cols-3 row-cols-sm-4 row-cols-md-6" id="iconLibraryGrid">
+                    @foreach($iconLibrary as $item)
+                        <div class="col icon-picker-col" data-icon="{{ $item['icon'] }}" data-category="{{ $item['cat'] }}" data-search="{{ strtolower($item['name'] . ' ' . $item['ar'] . ' ' . $item['tags'] . ' ' . $item['icon']) }}">
+                            <div class="card h-100 border text-center p-2.5 rounded-3 icon-picker-card js-select-icon-card cursor-pointer" role="button" data-icon="{{ $item['icon'] }}" title="{{ $item['ar'] }} ({{ $item['icon'] }})">
+                                <div class="icon-glyph-wrapper mb-1">
+                                    <i class="bi {{ $item['icon'] }} fs-3 text-navy"></i>
+                                </div>
+                                <span class="fs-8 fw-bold text-dark text-truncate d-block">{{ $item['name'] }}</span>
+                                <small class="text-muted d-block text-truncate" style="font-size: 0.68rem;">{{ $item['ar'] }}</small>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- No Results State -->
+                <div id="noIconsFound" class="text-center py-5 d-none">
+                    <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
+                    <h6 class="fw-bold text-navy">لم يتم العثور على أيقونة مطابقة</h6>
+                    <p class="text-muted fs-8 mb-0">جرب البحث بكلمة أخرى مثل: sea, safe, box, tool...</p>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer bg-light p-3 d-flex align-items-center justify-content-between">
+                <span class="fs-8 text-muted" id="iconSelectionHint">
+                    <i class="bi bi-info-circle me-1"></i> انقر على أي أيقونة لاعتمادها فوراً وإغلاق المكتبة
+                </span>
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.icon-picker-card {
+    background-color: #ffffff;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.icon-picker-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(10, 29, 55, 0.12) !important;
+    border-color: #E5A919 !important;
+}
+.icon-picker-card:hover i {
+    color: #E5A919 !important;
+    transform: scale(1.1);
+}
+.icon-glyph-wrapper i {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.icon-picker-card:active {
+    transform: scale(0.96);
+}
+#iconPickerModal {
+    z-index: 1070 !important;
+}
+.modal-backdrop.show:nth-of-type(even) {
+    z-index: 1065 !important;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let activeTargetInput = null;
+    let activeTargetPreview = null;
+    let iconModalInstance = null;
+
+    const iconModalEl = document.getElementById('iconPickerModal');
+    if (iconModalEl) {
+        iconModalInstance = new bootstrap.Modal(iconModalEl, {
+            backdrop: true,
+            keyboard: true
+        });
+    }
+
+    // Open Icon Picker Modal
+    document.addEventListener('click', function(e) {
+        const trigger = e.target.closest('.js-open-icon-picker');
+        if (!trigger) return;
+
+        e.preventDefault();
+        const inputSelector = trigger.getAttribute('data-target-input');
+        const previewSelector = trigger.getAttribute('data-target-preview');
+
+        activeTargetInput = document.querySelector(inputSelector);
+        activeTargetPreview = document.querySelector(previewSelector);
+
+        if (iconModalInstance) {
+            // Reset search & filter
+            const searchInput = document.getElementById('iconPickerSearch');
+            if (searchInput) searchInput.value = '';
+            filterIcons('', 'all');
+
+            // Reset tabs
+            document.querySelectorAll('.js-icon-tab').forEach(tab => {
+                if (tab.getAttribute('data-filter') === 'all') {
+                    tab.classList.add('btn-navy', 'active');
+                    tab.classList.remove('btn-outline-secondary');
+                } else {
+                    tab.classList.remove('btn-navy', 'active');
+                    tab.classList.add('btn-outline-secondary');
+                }
+            });
+
+            iconModalInstance.show();
+        }
+    });
+
+    // Quick Icon Buttons
+    document.addEventListener('click', function(e) {
+        const quickBtn = e.target.closest('.js-quick-icon-btn');
+        if (!quickBtn) return;
+
+        e.preventDefault();
+        const icon = quickBtn.getAttribute('data-icon');
+        const targetInput = document.querySelector(quickBtn.getAttribute('data-target-input'));
+        const targetPreview = document.querySelector(quickBtn.getAttribute('data-target-preview'));
+
+        if (targetInput) {
+            targetInput.value = icon;
+            targetInput.dispatchEvent(new Event('input'));
+        }
+        if (targetPreview) {
+            targetPreview.innerHTML = `<i class="bi ${icon} fs-5 text-warning"></i>`;
+        }
+    });
+
+    // Select Icon from Modal Grid
+    document.addEventListener('click', function(e) {
+        const card = e.target.closest('.js-select-icon-card');
+        if (!card) return;
+
+        e.preventDefault();
+        const icon = card.getAttribute('data-icon');
+
+        if (activeTargetInput) {
+            activeTargetInput.value = icon;
+            activeTargetInput.dispatchEvent(new Event('input'));
+        }
+        if (activeTargetPreview) {
+            activeTargetPreview.innerHTML = `<i class="bi ${icon} fs-5 text-warning"></i>`;
+        }
+
+        if (iconModalInstance) {
+            iconModalInstance.hide();
+        }
+    });
+
+    // Real-time Preview when typing directly in input
+    document.addEventListener('input', function(e) {
+        if (e.target && e.target.classList.contains('js-icon-input')) {
+            const previewSelector = e.target.getAttribute('data-preview');
+            const previewEl = document.querySelector(previewSelector);
+            if (previewEl) {
+                const val = e.target.value.trim();
+                const iconClass = val ? val : 'bi-folder-fill';
+                previewEl.innerHTML = `<i class="bi ${iconClass} fs-5 text-warning"></i>`;
+            }
+        }
+    });
+
+    // Search & Filter Logic in Icon Library
+    const searchInput = document.getElementById('iconPickerSearch');
+    const tabs = document.querySelectorAll('.js-icon-tab');
+
+    let currentSearchTerm = '';
+    let currentCategoryFilter = 'all';
+
+    function filterIcons(term, cat) {
+        const items = document.querySelectorAll('#iconLibraryGrid .icon-picker-col');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const itemCat = item.getAttribute('data-category');
+            const itemSearch = item.getAttribute('data-search') || '';
+
+            const matchesCat = (cat === 'all' || itemCat === cat);
+            const matchesSearch = (!term || itemSearch.includes(term.toLowerCase()));
+
+            if (matchesCat && matchesSearch) {
+                item.classList.remove('d-none');
+                visibleCount++;
+            } else {
+                item.classList.add('d-none');
+            }
+        });
+
+        const noResults = document.getElementById('noIconsFound');
+        if (noResults) {
+            noResults.classList.toggle('d-none', visibleCount > 0);
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            currentSearchTerm = this.value.trim();
+            filterIcons(currentSearchTerm, currentCategoryFilter);
+        });
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            tabs.forEach(t => {
+                t.classList.remove('btn-navy', 'active');
+                t.classList.add('btn-outline-secondary');
+            });
+            this.classList.add('btn-navy', 'active');
+            this.classList.remove('btn-outline-secondary');
+
+            currentCategoryFilter = this.getAttribute('data-filter') || 'all';
+            filterIcons(currentSearchTerm, currentCategoryFilter);
+        });
+    });
+});
+</script>
 
 @endsection
