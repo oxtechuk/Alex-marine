@@ -69,12 +69,18 @@ class AdminMaintenanceProjectController extends Controller
             'spec_values' => 'nullable|array',
         ]);
 
+        // Ensure uploads directory exists
+        $uploadDir = public_path('uploads/projects');
+        if (! file_exists($uploadDir)) {
+            @mkdir($uploadDir, 0777, true);
+        }
+
         // Upload main image
         $mainImage = $request->main_image_url;
         if ($request->hasFile('main_image_file')) {
             $file = $request->file('main_image_file');
             $filename = 'proj_main_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $mainImage = '/uploads/projects/'.$filename;
         }
 
@@ -83,7 +89,7 @@ class AdminMaintenanceProjectController extends Controller
         if ($request->hasFile('before_image_file')) {
             $file = $request->file('before_image_file');
             $filename = 'proj_before_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $beforeImage = '/uploads/projects/'.$filename;
         }
 
@@ -92,7 +98,7 @@ class AdminMaintenanceProjectController extends Controller
         if ($request->hasFile('after_image_file')) {
             $file = $request->file('after_image_file');
             $filename = 'proj_after_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $afterImage = '/uploads/projects/'.$filename;
         }
 
@@ -188,39 +194,51 @@ class AdminMaintenanceProjectController extends Controller
             'spec_values' => 'nullable|array',
         ]);
 
+        // Ensure uploads directory exists
+        $uploadDir = public_path('uploads/projects');
+        if (! file_exists($uploadDir)) {
+            @mkdir($uploadDir, 0777, true);
+        }
+
         // Main Image
         $mainImage = $project->main_image;
-        if ($request->filled('main_image_url')) {
+        if ($request->has('remove_main_image')) {
+            $mainImage = null;
+        } elseif ($request->filled('main_image_url')) {
             $mainImage = $request->main_image_url;
         }
         if ($request->hasFile('main_image_file')) {
             $file = $request->file('main_image_file');
             $filename = 'proj_main_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $mainImage = '/uploads/projects/'.$filename;
         }
 
         // Before Image
         $beforeImage = $project->before_image;
-        if ($request->filled('before_image_url')) {
+        if ($request->has('remove_before_image')) {
+            $beforeImage = null;
+        } elseif ($request->filled('before_image_url')) {
             $beforeImage = $request->before_image_url;
         }
         if ($request->hasFile('before_image_file')) {
             $file = $request->file('before_image_file');
             $filename = 'proj_before_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $beforeImage = '/uploads/projects/'.$filename;
         }
 
         // After Image
         $afterImage = $project->after_image;
-        if ($request->filled('after_image_url')) {
+        if ($request->has('remove_after_image')) {
+            $afterImage = null;
+        } elseif ($request->filled('after_image_url')) {
             $afterImage = $request->after_image_url;
         }
         if ($request->hasFile('after_image_file')) {
             $file = $request->file('after_image_file');
             $filename = 'proj_after_'.time().'_'.Str::random(4).'.'.$file->getClientOriginalExtension();
-            $file->move(public_path('uploads/projects'), $filename);
+            $file->move($uploadDir, $filename);
             $afterImage = '/uploads/projects/'.$filename;
         }
 
@@ -229,7 +247,7 @@ class AdminMaintenanceProjectController extends Controller
         if ($request->hasFile('gallery_files')) {
             foreach ($request->file('gallery_files') as $gFile) {
                 $gFilename = 'proj_gal_'.time().'_'.Str::random(6).'.'.$gFile->getClientOriginalExtension();
-                $gFile->move(public_path('uploads/projects'), $gFilename);
+                $gFile->move($uploadDir, $gFilename);
                 $existingGallery[] = '/uploads/projects/'.$gFilename;
             }
         }

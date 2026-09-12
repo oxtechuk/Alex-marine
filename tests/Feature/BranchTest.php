@@ -80,6 +80,6 @@ class BranchTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/admin/dashboard?branch_id='.$branch->id);
         $response->assertStatus(200);
-        $response->assertSee('تصفية الإحصائيات');
+        $response->assertSee('تصفية بالفرع');
     }
 }

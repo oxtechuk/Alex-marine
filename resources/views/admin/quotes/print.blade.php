@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <title>عرض سعر - {{ $quote->quote_number }} - أليكس مارين</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; direction: rtl; text-align: right; padding: 20px; color: #333; }
+        @font-face {
+            font-family: 'Bahij TheSansArabic';
+            src: url('{{ asset("fonts/Bahij_TheSansArabic-Bold.ttf") }}') format('truetype');
+            font-weight: 300 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        body { font-family: 'Bahij TheSansArabic', 'Segoe UI', Tahoma, sans-serif; direction: rtl; text-align: right; padding: 20px; color: #333; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0A1D37; padding-bottom: 15px; margin-bottom: 20px; }
         .logo-title { font-size: 24px; font-weight: bold; color: #0A1D37; }
         .company-info { font-size: 13px; color: #666; line-height: 1.5; }

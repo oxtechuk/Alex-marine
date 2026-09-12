@@ -4,9 +4,9 @@
     $isEn = app()->getLocale() == 'en';
     $title = $project->title;
     $desc = $project->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($project->description), 160);
-    $hasBeforeAfter = !empty($project->before_image) && !empty($project->after_image);
-    $beforeUrl = !empty($project->before_image) ? (\Illuminate\Support\Str::startsWith($project->before_image, ['http://', 'https://']) ? $project->before_image : asset($project->before_image)) : $project->main_image_url;
-    $afterUrl = !empty($project->after_image) ? (\Illuminate\Support\Str::startsWith($project->after_image, ['http://', 'https://']) ? $project->after_image : asset($project->after_image)) : $project->main_image_url;
+    $hasBeforeAfter = $project->has_before_after;
+    $beforeUrl = $project->before_image_url;
+    $afterUrl = $project->after_image_url;
 @endphp
 
 @section('title', $title . ' — ' . ($isEn ? 'ALEX MARINE Maintenance Cases' : 'حالات ومشاريع الصيانة'))
@@ -84,28 +84,28 @@
             </div>
 
             <!-- Split-Screen Interactive Comparison Box -->
-            <div class="case-slider-wrapper mx-auto rounded-4 overflow-hidden position-relative shadow-2xl border border-secondary border-opacity-30" style="max-width: 1080px; height: 560px;">
+            <div class="case-slider-wrapper mx-auto rounded-4 overflow-hidden position-relative shadow-2xl border border-secondary border-opacity-30" style="max-width: 1080px; height: 560px; direction: ltr !important; text-align: left;">
                 
                 <!-- 1. Background Image: AFTER Image (Full Width Underneath) -->
-                <img src="{{ $afterUrl }}" alt="After Maintenance" class="case-slider-img position-absolute inset-0 w-100 h-100 object-fit-cover user-select-none">
+                <img src="{{ $afterUrl }}" alt="After Maintenance" class="case-slider-img position-absolute w-100 h-100 object-fit-cover user-select-none" style="top: 0; left: 0;">
                 
                 <!-- AFTER Label Pill (Bottom Right) -->
-                <div class="case-pill-badge position-absolute bottom-0 end-0 m-4 badge bg-black bg-opacity-75 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-7 fw-bold letter-spacing-1 shadow-lg">
-                    <i class="bi bi-check2-circle text-success me-1"></i> AFTER
+                <div class="case-pill-badge position-absolute bottom-0 end-0 m-4 badge bg-black bg-opacity-75 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-7 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 5;">
+                    <i class="bi bi-check2-circle text-success me-1"></i> AFTER (بعد الصيانة)
                 </div>
 
-                <!-- 2. Foreground Image: BEFORE Image (Clipped by Container Width) -->
-                <div id="beforeImageContainer" class="position-absolute inset-y-0 start-0 overflow-hidden" style="width: 50%;">
-                    <img src="{{ $beforeUrl }}" alt="Before Maintenance" class="case-slider-img position-absolute top-0 start-0 h-100 object-fit-cover user-select-none" style="width: 1080px; max-width: none;">
+                <!-- 2. Foreground Image: BEFORE Image (Clipped by Container Width from Left) -->
+                <div id="beforeImageContainer" class="position-absolute overflow-hidden" style="top: 0; bottom: 0; left: 0; width: 50%; z-index: 10;">
+                    <img id="beforeSliderImage" src="{{ $beforeUrl }}" alt="Before Maintenance" class="case-slider-img position-absolute user-select-none" style="top: 0; left: 0; height: 100%; object-fit: cover;">
                     
                     <!-- BEFORE Label Pill (Bottom Left) -->
-                    <div class="case-pill-badge position-absolute bottom-0 start-0 m-4 badge bg-black bg-opacity-75 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-7 fw-bold letter-spacing-1 shadow-lg">
-                        <i class="bi bi-clock-history text-danger me-1"></i> BEFORE
+                    <div class="case-pill-badge position-absolute bottom-0 start-0 m-4 badge bg-black bg-opacity-75 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-7 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 15;">
+                        <i class="bi bi-clock-history text-danger me-1"></i> BEFORE (قبل الصيانة)
                     </div>
                 </div>
 
                 <!-- 3. Drag Handle / Divider Line -->
-                <div id="sliderHandle" class="case-slider-handle position-absolute top-0 bottom-0 d-flex align-items-center justify-content-center" style="left: 50%; width: 4px; background: rgba(229, 169, 25, 0.9); cursor: ew-resize; z-index: 20;">
+                <div id="sliderHandle" class="case-slider-handle position-absolute top-0 bottom-0 d-flex align-items-center justify-content-center" style="left: 50%; width: 4px; background: #E5A919; cursor: ew-resize; z-index: 25; transform: translateX(-50%);">
                     <div class="case-handle-circle rounded-circle d-flex align-items-center justify-content-center shadow-2xl" style="width: 46px; height: 46px; background: #0A1D37; border: 2.5px solid #E5A919; color: #E5A919;">
                         <i class="bi bi-arrows fs-5"></i>
                     </div>
@@ -201,7 +201,7 @@
 .project-case-study-page {
     background-color: #121822;
     color: #F0F4F8;
-    font-family: 'Cairo', 'Tajawal', sans-serif;
+    font-family: var(--font-primary);
     min-height: 100vh;
 }
 .font-inter .project-case-study-page {
@@ -291,11 +291,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     const wrapper = document.querySelector('.case-slider-wrapper');
     const beforeContainer = document.getElementById('beforeImageContainer');
+    const beforeImg = document.getElementById('beforeSliderImage');
     const handle = document.getElementById('sliderHandle');
 
     if (!wrapper || !beforeContainer || !handle) return;
 
     let isDragging = false;
+
+    function syncBeforeImageWidth() {
+        const w = wrapper.clientWidth;
+        if (beforeImg && w > 0) {
+            beforeImg.style.width = w + 'px';
+            beforeImg.style.maxWidth = w + 'px';
+        }
+    }
 
     function updateSlider(clientX) {
         const rect = wrapper.getBoundingClientRect();
@@ -303,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (posX < 0) posX = 0;
         if (posX > rect.width) posX = rect.width;
 
-        const percentage = (posX / rect.width) * 100;
+        const percentage = Math.max(0, Math.min(100, (posX / rect.width) * 100));
         beforeContainer.style.width = percentage + '%';
         handle.style.left = percentage + '%';
     }
@@ -326,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Touch Events for Mobile
     wrapper.addEventListener('touchstart', function(e) {
         isDragging = true;
-        if (e.touches.length > 0) {
+        if (e.touches && e.touches.length > 0) {
             updateSlider(e.touches[0].clientX);
         }
     }, { passive: true });
@@ -336,18 +345,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     window.addEventListener('touchmove', function(e) {
-        if (!isDragging || e.touches.length === 0) return;
+        if (!isDragging || !e.touches || e.touches.length === 0) return;
         updateSlider(e.touches[0].clientX);
     }, { passive: true });
 
-    function syncBeforeImageWidth() {
-        const beforeImg = beforeContainer.querySelector('img');
-        if (beforeImg) {
-            beforeImg.style.width = wrapper.offsetWidth + 'px';
-        }
-    }
     syncBeforeImageWidth();
     window.addEventListener('resize', syncBeforeImageWidth);
+    if (beforeImg) {
+        beforeImg.addEventListener('load', syncBeforeImageWidth);
+    }
 });
 </script>
 

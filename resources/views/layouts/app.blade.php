@@ -48,9 +48,18 @@
 
     <!-- Dynamic Brand Colors & Refined UI Styles -->
     <style>
+        @font-face {
+            font-family: 'Bahij TheSansArabic';
+            src: url('{{ asset("fonts/Bahij_TheSansArabic-Bold.ttf") }}') format('truetype');
+            font-weight: 700 900;
+            font-style: normal;
+            font-display: swap;
+        }
         :root {
-            --font-primary: 'Cairo', 'Tajawal', sans-serif;
+            --font-heading: 'Bahij TheSansArabic', 'Cairo', 'Tajawal', sans-serif;
+            --font-primary: 'Cairo', 'Tajawal', 'Bahij TheSansArabic', sans-serif;
             --font-en:      'Inter', sans-serif;
+            --font-num:     'Inter', 'Cairo', sans-serif;
             --alex-navy-dark:   {{ $sitePrimaryColor }};
             --alex-navy-med:    {{ $siteSecondaryColor }};
             --alex-gold:        {{ $siteAccentColor }};
@@ -60,12 +69,82 @@
             --alex-gold-glow:    0 4px 18px rgba(229, 169, 25, 0.38);
             --alex-blue-marine: {{ $siteMarineColor }};
         }
+        html, body {
+            overflow-x: hidden !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            position: relative;
+        }
         body, button, input, select, textarea {
             font-family: var(--font-primary);
+            font-feature-settings: "lnum" 1;
         }
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6, .fw-bold, .fw-extrabold {
+            font-family: var(--font-heading);
+        }
+        .num-tabular, .product-card-sku, .showroom-product-sub, .price-val, .badge-num {
+            font-family: var(--font-num);
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "lnum" 1, "tnum" 1;
+        }
+        [dir="ltr"] body, body[dir="ltr"],
+        [dir="ltr"] button, [dir="ltr"] input, [dir="ltr"] select, [dir="ltr"] textarea,
+        [dir="ltr"] h1, [dir="ltr"] h2, [dir="ltr"] h3, [dir="ltr"] h4, [dir="ltr"] h5, [dir="ltr"] h6,
         .font-inter body, body.font-inter,
         .font-inter button, .font-inter input {
             font-family: var(--font-en) !important;
+        }
+
+        /* ════════════════════════════════════════════
+           UNIFIED LUXURY MOTION SYSTEM (AOS & TRANSITIONS)
+        ════════════════════════════════════════════ */
+        :root {
+            --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-luxury-soft: cubic-bezier(0.22, 1, 0.36, 1);
+            --motion-duration-base: 600ms;
+        }
+
+        [data-aos] {
+            pointer-events: auto !important;
+            transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        /* Calm luxury vertical reveal: subtle 16px serene glide */
+        [data-aos="fade-up"] {
+            transform: translate3d(0, 16px, 0) !important;
+            opacity: 0;
+            transition-property: transform, opacity !important;
+        }
+        [data-aos="fade-down"] {
+            transform: translate3d(0, -16px, 0) !important;
+            opacity: 0;
+            transition-property: transform, opacity !important;
+        }
+        /* Subtle lateral glides - gentle and harmonic across RTL/LTR */
+        [data-aos="fade-right"] {
+            transform: translate3d(14px, 0, 0) !important;
+            opacity: 0;
+            transition-property: transform, opacity !important;
+        }
+        [data-aos="fade-left"] {
+            transform: translate3d(-14px, 0, 0) !important;
+            opacity: 0;
+            transition-property: transform, opacity !important;
+        }
+        [data-aos].aos-animate {
+            transform: translate3d(0, 0, 0) !important;
+            opacity: 1 !important;
+        }
+
+        /* Luxury Scroll-triggered animations for custom elements */
+        .anim-fade-up {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .anim-fade-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Luxury WhatsApp Floating Widget */
@@ -78,7 +157,7 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         [dir="ltr"] .alex-wa-widget {
             left: auto;
@@ -95,9 +174,9 @@
             justify-content: center;
             color: #ffffff;
             font-size: 1.85rem;
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
             position: relative;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .alex-wa-btn::before {
             content: '';
@@ -106,14 +185,14 @@
             height: 100%;
             border-radius: 50%;
             background: #25D366;
-            opacity: 0.7;
-            animation: waPulse 2s infinite cubic-bezier(0.24, 0, 0.38, 1);
+            opacity: 0.45;
+            animation: waPulseLuxury 3.2s infinite cubic-bezier(0.16, 1, 0.3, 1);
             z-index: -1;
         }
-        @keyframes waPulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            70% { transform: scale(1.4); opacity: 0; }
-            100% { transform: scale(1.4); opacity: 0; }
+        @keyframes waPulseLuxury {
+            0% { transform: scale(0.98); opacity: 0.55; }
+            50% { transform: scale(1.22); opacity: 0.12; }
+            100% { transform: scale(1.36); opacity: 0; }
         }
         .alex-wa-badge {
             background: #ffffff;
@@ -499,7 +578,8 @@
             bottom: 0 !important;
             left: 0 !important;
             right: 0 !important;
-            width: 100vw !important;
+            width: 100% !important;
+            max-width: 100% !important;
             background: #0A1D37 !important;
             background: linear-gradient(180deg, #0A1D37 0%, #061122 100%) !important;
             border-top: 2px solid #D4AF37 !important;
@@ -1033,7 +1113,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="footer-logo-area d-flex align-items-center gap-3">
                             @if(!empty($siteFooterLogo))
-                                <img src="{{ $siteFooterLogo }}" alt="ALEX MARINE" style="max-height:50px; object-fit:contain; filter:brightness(0) invert(1);">
+                                <img src="{{ $siteFooterLogo }}" alt="ALEX MARINE" style="max-height:120px; object-fit:contain;">
                             @else
                                 <div class="d-flex align-items-center justify-content-center rounded-3"
                                      style="width:48px;height:48px;background:linear-gradient(135deg,var(--alex-navy-med),var(--alex-blue-marine)); flex-shrink:0;">
@@ -1160,12 +1240,13 @@
     <!-- AOS Init Script -->
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script>
-        // Init AOS
+        // Init AOS with calibrated luxury timing
         AOS.init({
-            duration: 700,
+            duration: 600,
             easing: 'ease-out-cubic',
             once: true,
-            offset: 80,
+            offset: 40,
+            delay: 0,
         });
 
         // Navbar Glassmorphism on Scroll

@@ -43,7 +43,7 @@ class HomeController extends Controller
         $services = Service::where('is_active', true)->take(4)->get();
         $certificates = Certificate::where('is_active', true)->take(3)->get();
         $news = NewsArticle::where('is_published', true)->orderBy('published_at', 'desc')->take(3)->get();
-        $maintenanceProjects = MaintenanceProject::with('service')->where('is_active', true)->orderBy('sort_order', 'asc')->latest()->take(3)->get();
+        $maintenanceProjects = MaintenanceProject::with('service')->where('is_active', true)->orderBy('sort_order', 'asc')->latest()->take(6)->get();
 
         return view('home', compact('categories', 'featureCategories', 'fleetProducts', 'featuredProducts', 'services', 'certificates', 'news', 'maintenanceProjects', 'selectedCategorySlug', 'settings'));
     }

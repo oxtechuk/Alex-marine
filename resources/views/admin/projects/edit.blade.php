@@ -86,7 +86,50 @@
                 </div>
             </div>
 
-            <!-- 2. Interactive Before & After Images -->
+            <!-- 2. Main Project Cover Image -->
+            <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+                <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-4">
+                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3">
+                        <i class="bi bi-image fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold text-navy m-0">الصورة الرئيسية للمشروع (Cover Image)</h5>
+                        <small class="text-muted">الصورة المعروضة كغلاف في الكروت وقوائم المشاريع</small>
+                    </div>
+                </div>
+
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-7">
+                        <label class="form-label fw-bold text-dark fs-8 mb-1">رفع صورة جديدة من جهازك:</label>
+                        <input type="file" name="main_image_file" class="form-control mb-2 rounded-3" accept="image/*" onchange="previewImg(this, 'main_preview', 'main_placeholder')">
+                        
+                        <label class="form-label fw-bold text-muted fs-8 mb-1">أو رابط صورة خارجي:</label>
+                        <input type="text" name="main_image_url" class="form-control form-control-sm rounded-3" placeholder="https://..." value="{{ old('main_image_url', $project->main_image) }}">
+
+                        @if($project->main_image)
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="remove_main_image" id="remove_main_image" value="1">
+                                <label class="form-check-label text-danger fs-8 fw-bold" for="remove_main_image">
+                                    <i class="bi bi-trash3 me-1"></i> حذف الصورة الرئيسية الحالية
+                                </label>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-md-5">
+                        <div class="text-center rounded-3 bg-light p-2 border" style="min-height: 140px; display: flex; align-items: center; justify-content: center;">
+                            @if($project->main_image)
+                                <img id="main_preview" src="{{ $project->main_image_url }}" alt="Main Cover" class="img-fluid rounded-3" style="max-height: 140px; object-fit: contain;">
+                                <div id="main_placeholder" class="text-muted fs-8 d-none"><i class="bi bi-image fs-2 d-block mb-1 opacity-50"></i>لم يتم تعيين صورة</div>
+                            @else
+                                <img id="main_preview" src="" alt="Main Cover" class="img-fluid rounded-3 d-none" style="max-height: 140px; object-fit: contain;">
+                                <div id="main_placeholder" class="text-muted fs-8"><i class="bi bi-image fs-2 d-block mb-1 opacity-50"></i>لم يتم تعيين صورة</div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Interactive Before & After Images -->
             <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4 border border-warning border-opacity-30" style="background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFD 100%);">
                 <div class="d-flex align-items-center gap-2 border-bottom pb-3 mb-4">
                     <div class="bg-warning bg-opacity-20 text-warning p-2 rounded-3">
@@ -94,7 +137,7 @@
                     </div>
                     <div>
                         <h5 class="fw-bold text-navy m-0">صور المقارنة التفاعلية (Before & After)</h5>
-                        <small class="text-muted">صور المقارنة التفاعلية لتوليد سلايدر المقارنة بالسحب</small>
+                        <small class="text-muted">صور المقارنة التفاعلية لتوليد سلايدر المقارنة بالسحب في الموقع</small>
                     </div>
                 </div>
 
@@ -109,14 +152,24 @@
                             </div>
                             
                             <label class="form-label fw-bold text-dark fs-8 mt-2 mb-1">تغيير الصورة:</label>
-                            <input type="file" name="before_image_file" class="form-control mb-2 rounded-3" accept="image/*" onchange="previewImg(this, 'before_preview')">
+                            <input type="file" name="before_image_file" class="form-control mb-2 rounded-3" accept="image/*" onchange="previewImg(this, 'before_preview', 'before_placeholder')">
                             
                             <label class="form-label fw-bold text-muted fs-8 mb-1">أو رابط صورة خارجي:</label>
                             <input type="text" name="before_image_url" class="form-control form-control-sm rounded-3" placeholder="https://..." value="{{ old('before_image_url', $project->before_image) }}">
 
+                            @if($project->before_image)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_before_image" id="remove_before_image" value="1">
+                                    <label class="form-check-label text-danger fs-8 fw-bold" for="remove_before_image">
+                                        <i class="bi bi-trash3 me-1"></i> حذف صورة قبل الصيانة
+                                    </label>
+                                </div>
+                            @endif
+
                             <div class="mt-3 text-center rounded-3 bg-light p-2 border" style="min-height: 160px; display: flex; align-items: center; justify-content: center;">
                                 @if($project->before_image)
-                                    <img id="before_preview" src="{{ \Illuminate\Support\Str::startsWith($project->before_image, ['http://', 'https://']) ? $project->before_image : asset($project->before_image) }}" alt="Before" class="img-fluid rounded-3" style="max-height: 160px; object-fit: contain;">
+                                    <img id="before_preview" src="{{ $project->before_image_url }}" alt="Before" class="img-fluid rounded-3" style="max-height: 160px; object-fit: contain;">
+                                    <div id="before_placeholder" class="text-muted fs-8 d-none"><i class="bi bi-image fs-1 d-block mb-1 opacity-50"></i>لم يتم رفع صورة</div>
                                 @else
                                     <img id="before_preview" src="" alt="Before" class="img-fluid rounded-3 d-none" style="max-height: 160px; object-fit: contain;">
                                     <div id="before_placeholder" class="text-muted fs-8"><i class="bi bi-image fs-1 d-block mb-1 opacity-50"></i>لم يتم رفع صورة</div>
@@ -135,14 +188,24 @@
                             </div>
 
                             <label class="form-label fw-bold text-dark fs-8 mt-2 mb-1">تغيير الصورة:</label>
-                            <input type="file" name="after_image_file" class="form-control mb-2 rounded-3" accept="image/*" onchange="previewImg(this, 'after_preview')">
+                            <input type="file" name="after_image_file" class="form-control mb-2 rounded-3" accept="image/*" onchange="previewImg(this, 'after_preview', 'after_placeholder')">
                             
                             <label class="form-label fw-bold text-muted fs-8 mb-1">أو رابط صورة خارجي:</label>
                             <input type="text" name="after_image_url" class="form-control form-control-sm rounded-3" placeholder="https://..." value="{{ old('after_image_url', $project->after_image) }}">
 
+                            @if($project->after_image)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_after_image" id="remove_after_image" value="1">
+                                    <label class="form-check-label text-danger fs-8 fw-bold" for="remove_after_image">
+                                        <i class="bi bi-trash3 me-1"></i> حذف صورة بعد الصيانة
+                                    </label>
+                                </div>
+                            @endif
+
                             <div class="mt-3 text-center rounded-3 bg-light p-2 border" style="min-height: 160px; display: flex; align-items: center; justify-content: center;">
                                 @if($project->after_image)
-                                    <img id="after_preview" src="{{ \Illuminate\Support\Str::startsWith($project->after_image, ['http://', 'https://']) ? $project->after_image : asset($project->after_image) }}" alt="After" class="img-fluid rounded-3" style="max-height: 160px; object-fit: contain;">
+                                    <img id="after_preview" src="{{ $project->after_image_url }}" alt="After" class="img-fluid rounded-3" style="max-height: 160px; object-fit: contain;">
+                                    <div id="after_placeholder" class="text-muted fs-8 d-none"><i class="bi bi-image fs-1 d-block mb-1 opacity-50"></i>لم يتم رفع صورة</div>
                                 @else
                                     <img id="after_preview" src="" alt="After" class="img-fluid rounded-3 d-none" style="max-height: 160px; object-fit: contain;">
                                     <div id="after_placeholder" class="text-muted fs-8"><i class="bi bi-image fs-1 d-block mb-1 opacity-50"></i>لم يتم رفع صورة</div>
@@ -202,13 +265,15 @@
 </form>
 
 <script>
-function previewImg(input, targetId) {
+function previewImg(input, targetId, placeholderId) {
     const preview = document.getElementById(targetId);
+    const placeholder = placeholderId ? document.getElementById(placeholderId) : null;
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function(e) {
             preview.src = e.target.result;
             preview.classList.remove('d-none');
+            if (placeholder) placeholder.classList.add('d-none');
         }
         reader.readAsDataURL(input.files[0]);
     }

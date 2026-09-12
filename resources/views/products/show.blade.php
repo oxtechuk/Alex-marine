@@ -345,9 +345,7 @@
                         <a href="{{ $relUrl }}" class="showroom-img-link">
                             <img src="{{ $relImage }}" alt="{{ $relTitle }}" class="showroom-product-img" loading="lazy">
                         </a>
-                        <a href="{{ $relUrl }}" class="showroom-float-btn" title="{{ $isEn ? 'Quick View' : 'عرض التفاصيل' }}">
-                            <i class="bi bi-arrow-left-right"></i>
-                        </a>
+                      
                     </div>
                     <div class="showroom-card-body">
                         <a href="{{ $relUrl }}" class="showroom-product-title" title="{{ $relTitle }}">
@@ -358,22 +356,10 @@
                             <span class="showroom-year-badge">2026</span>
                         </div>
                         <div class="showroom-card-footer">
-                            <a href="{{ $relUrl }}" class="showroom-btn-details">
-                                {{ $isEn ? 'Details' : 'التفاصيل' }}
+                            <a href="{{ $relUrl }}" class="showroom-btn-details w-100">
+                                <span>{{ $isEn ? 'View Details' : 'التفاصيل' }}</span>
+                                <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }} ms-1"></i>
                             </a>
-                            <div class="showroom-price-wrap">
-                                <div class="showroom-main-price">
-                                    @if($relPriceVal)
-                                        <span class="showroom-currency">{{ $isEn ? 'EGP' : 'ج.م' }}</span>
-                                        <strong>{{ $relPriceVal }}</strong>
-                                    @else
-                                        <span class="showroom-rfq-text">{{ $isEn ? 'Request RFQ' : 'طلب تسعير' }}</span>
-                                    @endif
-                                </div>
-                                <div class="showroom-sub-price">
-                                    {{ $isEn ? 'Direct Port Supply' : 'توريد فوري للموانئ' }}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

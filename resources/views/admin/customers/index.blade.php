@@ -8,14 +8,68 @@
 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
         <h4 class="fw-extrabold text-navy mb-1">دليل وقاعدة بيانات العملاء</h4>
-        <small class="text-muted">العملاء والشركات المسجلة مع إمكانية التواصل الفوري عبر الواتساب</small>
+        <small class="text-muted">العملاء والشركات المسجلة مع إمكانية التواصل الفوري عبر الواتساب والبحث المتقدم</small>
     </div>
     
-    <div class="d-flex gap-2">
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge badge-navy px-3 py-2 fs-7 rounded-pill">
+            إجمالي النتائج: <strong class="text-gold ms-1">{{ $customers->total() }}</strong>
+        </span>
         <button type="button" class="btn btn-gold rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
             <i class="bi bi-person-plus-fill me-1"></i> تسجيل عميل جديد
         </button>
     </div>
+</div>
+
+<!-- Search & Filter Toolbar -->
+<div class="card-luxury p-3 mb-4 bg-white">
+    <form action="{{ route('admin.customers.index') }}" method="GET" id="customersFilterForm">
+        <div class="row g-2 align-items-center">
+            
+            <!-- Quick Search Input -->
+            <div class="col-lg-5 col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-gold"></i></span>
+                    <input type="text" name="search" id="customerQuickSearch" class="form-control border-start-0 bg-light" value="{{ $search ?? '' }}" placeholder="بحث سريع بالاسم، الشركة، الهاتف، أو البريد...">
+                </div>
+            </div>
+
+            <!-- Orders Activity Filter -->
+            <div class="col-lg-3 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-funnel"></i></span>
+                    <select name="orders_filter" class="form-select border-start-0 bg-light fw-semibold" onchange="document.getElementById('customersFilterForm').submit()">
+                        <option value="">جميع العملاء</option>
+                        <option value="has_orders" {{ ($ordersFilter ?? '') === 'has_orders' ? 'selected' : '' }}>لديهم أوامر شراء سابقة</option>
+                        <option value="no_orders" {{ ($ordersFilter ?? '') === 'no_orders' ? 'selected' : '' }}>عملاء جدد / بدون طلبات</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Sorting Select -->
+            <div class="col-lg-2 col-md-3">
+                <select name="sort" class="form-select bg-light fw-semibold" onchange="document.getElementById('customersFilterForm').submit()">
+                    <option value="latest" {{ ($sort ?? '') === 'latest' ? 'selected' : '' }}>الأحدث تسجيلاً</option>
+                    <option value="highest_spent" {{ ($sort ?? '') === 'highest_spent' ? 'selected' : '' }}>الأعلى إنفاقاً</option>
+                    <option value="most_orders" {{ ($sort ?? '') === 'most_orders' ? 'selected' : '' }}>الأكثر طلباً</option>
+                    <option value="name_asc" {{ ($sort ?? '') === 'name_asc' ? 'selected' : '' }}>أبجدياً (أ-ي)</option>
+                </select>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-lg-2 col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-navy btn-sm rounded-pill px-3 fw-bold flex-grow-1">
+                    <i class="bi bi-search me-1"></i> بحث
+                </button>
+                @if(!empty($search) || !empty($ordersFilter) || (!empty($sort) && $sort !== 'latest'))
+                    <a href="{{ route('admin.customers.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3" title="إعادة تعيين">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                @endif
+            </div>
+
+        </div>
+    </form>
 </div>
 
 <!-- Customers Directory Table -->
@@ -141,7 +195,28 @@
                 </div>
             </form>
         </div>
-    </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('customerQuickSearch');
+    const tableRows = document.querySelectorAll('.table-luxury tbody tr');
+
+    if (searchInput && tableRows.length > 0) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            if (!query) {
+                tableRows.forEach(row => row.style.display = '');
+                return;
+            }
+
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    }
+});
+</script>
 
 @endsection

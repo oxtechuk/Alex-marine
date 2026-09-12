@@ -56,9 +56,9 @@
                 @forelse($projects as $proj)
                     @php
                         $projTitle = $proj->title;
-                        $hasBA = !empty($proj->before_image) && !empty($proj->after_image);
+                        $hasBA = $proj->has_before_after;
                     @endphp
-                    <div class="col-lg-4 col-md-6">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 60 }}">
                         <div class="card h-100 border border-secondary border-opacity-25 rounded-4 overflow-hidden shadow-lg project-card-hover" style="background: #161E2C;">
                             
                             <!-- Cover Image & Badges -->
@@ -201,15 +201,15 @@
     box-shadow: 0 8px 24px rgba(229, 169, 25, 0.4) !important;
 }
 .project-card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-card-hover:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     border-color: rgba(229, 169, 25, 0.5) !important;
-    box-shadow: 0 16px 36px rgba(0,0,0,0.6) !important;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.5) !important;
 }
 .project-card-hover:hover .transition-transform {
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 .hover-gold:hover {
     color: #E5A919 !important;
@@ -220,7 +220,7 @@
     color: #0A1D37 !important;
 }
 .transition-transform {
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .line-clamp-2 {
     display: -webkit-box;

@@ -25,12 +25,32 @@ class AlexMarineTest extends TestCase
         $response->assertSee('دليل المنتجات والتوريدات');
     }
 
+    protected function getTestProduct(): Product
+    {
+        $product = Product::with('category')->first();
+        if (! $product) {
+            $cat = \App\Models\Category::firstOrCreate(
+                ['slug' => 'test-safety-cat'],
+                ['name_ar' => 'قسم السلامة البحرية', 'name_en' => 'Marine Safety']
+            );
+            $product = Product::create([
+                'category_id' => $cat->id,
+                'name_ar' => 'سترة نجاة بحرية معتمدة',
+                'name_en' => 'SOLAS Marine Life Jacket',
+                'slug' => 'solas-marine-life-jacket',
+                'price' => 500,
+                'sku' => 'SKU-TEST-01',
+                'is_active' => true,
+            ]);
+            $product->load('category');
+        }
+
+        return $product;
+    }
+
     public function test_product_detail_page_loads_with_reference_structure()
     {
-        $product = Product::where('slug', 'solas-marine-life-jacket')->first();
-        if (! $product) {
-            $product = Product::first();
-        }
+        $product = $this->getTestProduct();
 
         $response = $this->get('/products/'.$product->category->slug.'/'.$product->slug);
         $response->assertStatus(200);
@@ -41,7 +61,7 @@ class AlexMarineTest extends TestCase
 
     public function test_rfq_submission_workflow()
     {
-        $product = Product::first();
+        $product = $this->getTestProduct();
 
         // 1. Add to quote cart
         $response = $this->post('/quote/add', [
@@ -121,7 +141,7 @@ class AlexMarineTest extends TestCase
 
     public function test_direct_order_from_product_page_creates_quote_and_customer()
     {
-        $product = Product::first();
+        $product = $this->getTestProduct();
 
         $response = $this->post(route('quote.direct'), [
             'product_id' => $product->id,

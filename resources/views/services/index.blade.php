@@ -8,7 +8,7 @@
 
 @section('content')
 <section class="py-5 bg-white border-bottom">
-    <div class="container text-center">
+    <div class="container text-center" data-aos="fade-up">
         <h1 class="fw-bold text-dark fs-1 mb-3">{{ $isEn ? 'Technical Services & Marine Maintenance' : 'الخدمات والصيانة الفنية' }}</h1>
         <p class="text-muted fs-5 mx-auto" style="max-width: 700px;">
             {{ $isEn
@@ -22,8 +22,8 @@
     <div class="container">
         <div class="row g-4">
             @foreach($services as $service)
-                <div class="col-lg-6">
-                    <div class="alex-card p-4 h-100 d-flex flex-column justify-content-between">
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 2) * 60 }}">
+                    <div class="alex-card p-4 h-100 d-flex flex-column justify-content-between hover-translate">
                         <div>
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="bg-primary text-warning rounded-3 d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; background-color: #0A1D37 !important;">

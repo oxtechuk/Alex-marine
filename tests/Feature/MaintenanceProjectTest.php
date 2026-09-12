@@ -48,7 +48,7 @@ class MaintenanceProjectTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('صيانة شاملة لأجهزة التنفس');
         $response->assertSee('BEFORE / AFTER COMPARISON');
-        $response->assertSee('Inspired by what you see?');
+        $response->assertSee('طلب صيانة مماثلة');
     }
 
     public function test_home_page_displays_maintenance_cases(): void

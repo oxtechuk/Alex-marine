@@ -102,15 +102,63 @@ class MaintenanceProject extends Model
      */
     public function getMainImageUrlAttribute(): string
     {
-        if (empty($this->main_image)) {
-            return 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=80';
+        if (! empty($this->main_image)) {
+            if (Str::startsWith($this->main_image, ['http://', 'https://'])) {
+                return $this->main_image;
+            }
+
+            return asset(ltrim($this->main_image, '/'));
         }
 
-        if (Str::startsWith($this->main_image, ['http://', 'https://'])) {
-            return $this->main_image;
+        if (! empty($this->after_image)) {
+            return $this->after_image_url;
         }
 
-        return asset($this->main_image);
+        if (! empty($this->before_image)) {
+            return $this->before_image_url;
+        }
+
+        return 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=80';
+    }
+
+    /**
+     * Get before maintenance image URL
+     */
+    public function getBeforeImageUrlAttribute(): string
+    {
+        if (! empty($this->before_image)) {
+            if (Str::startsWith($this->before_image, ['http://', 'https://'])) {
+                return $this->before_image;
+            }
+
+            return asset(ltrim($this->before_image, '/'));
+        }
+
+        return 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80';
+    }
+
+    /**
+     * Get after maintenance image URL
+     */
+    public function getAfterImageUrlAttribute(): string
+    {
+        if (! empty($this->after_image)) {
+            if (Str::startsWith($this->after_image, ['http://', 'https://'])) {
+                return $this->after_image;
+            }
+
+            return asset(ltrim($this->after_image, '/'));
+        }
+
+        return 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80';
+    }
+
+    /**
+     * Check if project has custom before and after images
+     */
+    public function getHasBeforeAfterAttribute(): bool
+    {
+        return ! empty($this->before_image) && ! empty($this->after_image);
     }
 
     /**
@@ -127,7 +175,7 @@ class MaintenanceProject extends Model
                 return $img;
             }
 
-            return asset($img);
+            return asset(ltrim($img, '/'));
         }, $this->gallery_images);
     }
 }

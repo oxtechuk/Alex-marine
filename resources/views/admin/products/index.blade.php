@@ -30,25 +30,25 @@
     </div>
 </div>
 
-<!-- 2. Search & Category Filter Toolbar -->
+<!-- 2. Search & Filter Toolbar -->
 <div class="card border-0 shadow-sm rounded-4 bg-white p-3.5 mb-4">
-    <form action="{{ route('admin.products.index') }}" method="GET">
-        <div class="row g-3 align-items-center">
+    <form action="{{ route('admin.products.index') }}" method="GET" id="productsFilterForm">
+        <div class="row g-2 align-items-center">
             
             <!-- Live Search Input -->
-            <div class="col-md-5">
+            <div class="col-lg-3 col-md-6">
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                    <input type="text" name="search" class="form-control border-start-0 bg-light" value="{{ $search }}" placeholder="ابحث باسم المنتج أو كود (SKU)...">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search text-warning"></i></span>
+                    <input type="text" name="search" id="productQuickSearch" class="form-control border-start-0 bg-light" value="{{ $search }}" placeholder="ابحث بالاسم أو SKU...">
                 </div>
             </div>
 
             <!-- Category Filter -->
-            <div class="col-md-4">
+            <div class="col-lg-2 col-md-6">
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-filter"></i></span>
-                    <select name="category_id" class="form-select border-start-0 bg-light fw-semibold" onchange="this.form.submit()">
-                        <option value="">🏢 جميع التصنيفات والأقسام</option>
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-folder"></i></span>
+                    <select name="category_id" class="form-select border-start-0 bg-light fw-semibold" onchange="document.getElementById('productsFilterForm').submit()">
+                        <option value="">جميع التصنيفات</option>
                         @foreach($categories as $c)
                             <option value="{{ $c->id }}" {{ $categoryId == $c->id ? 'selected' : '' }}>
                                 {{ $c->name_ar }}
@@ -58,14 +58,49 @@
                 </div>
             </div>
 
+            <!-- Branch Filter -->
+            <div class="col-lg-2 col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-geo-alt"></i></span>
+                    <select name="branch_id" class="form-select border-start-0 bg-light fw-semibold" onchange="document.getElementById('productsFilterForm').submit()">
+                        <option value="">جميع الفروع</option>
+                        @foreach($branches as $b)
+                            <option value="{{ $b->id }}" {{ ($branchId ?? '') == $b->id ? 'selected' : '' }}>
+                                {{ $b->name_ar }} ({{ $b->code }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <!-- Availability Filter -->
+            <div class="col-lg-2 col-md-4">
+                <select name="availability" class="form-select bg-light fw-semibold" onchange="document.getElementById('productsFilterForm').submit()">
+                    <option value="">حالة التوفر (الكل)</option>
+                    <option value="متوفر في المخزن" {{ ($availability ?? '') === 'متوفر في المخزن' ? 'selected' : '' }}>متوفر في المخزن</option>
+                    <option value="تحت الطلب" {{ ($availability ?? '') === 'تحت الطلب' ? 'selected' : '' }}>تحت الطلب</option>
+                    <option value="غير متوفر" {{ ($availability ?? '') === 'غير متوفر' ? 'selected' : '' }}>غير متوفر</option>
+                </select>
+            </div>
+
+            <!-- Sort Option -->
+            <div class="col-lg-2 col-md-4">
+                <select name="sort" class="form-select bg-light fw-semibold" onchange="document.getElementById('productsFilterForm').submit()">
+                    <option value="latest" {{ ($sort ?? '') === 'latest' ? 'selected' : '' }}>الأحدث إضافة</option>
+                    <option value="name_asc" {{ ($sort ?? '') === 'name_asc' ? 'selected' : '' }}>أبجدياً (أ-ي)</option>
+                    <option value="price_asc" {{ ($sort ?? '') === 'price_asc' ? 'selected' : '' }}>السعر: الأقل للأعلى</option>
+                    <option value="price_desc" {{ ($sort ?? '') === 'price_desc' ? 'selected' : '' }}>السعر: الأعلى للأقل</option>
+                </select>
+            </div>
+
             <!-- Action Buttons -->
-            <div class="col-md-3 d-flex gap-2">
-                <button type="submit" class="btn btn-navy btn-sm rounded-pill px-3 fw-bold flex-grow-1 text-white" style="background-color: #0A1D37;">
-                    تصفية النتائج
+            <div class="col-lg-1 col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-navy btn-sm rounded-pill px-3 fw-bold flex-grow-1 text-white" style="background-color: #0A1D37;" title="تطبيق التصفية">
+                    <i class="bi bi-funnel-fill"></i>
                 </button>
-                @if($search || $categoryId)
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
-                        إعادة ضبط
+                @if($search || $categoryId || !empty($branchId) || !empty($availability) || (!empty($sort) && $sort !== 'latest'))
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-2.5" title="إعادة ضبط الفلاتر">
+                        <i class="bi bi-x-lg"></i>
                     </a>
                 @endif
             </div>
@@ -502,5 +537,27 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('productQuickSearch');
+    const tableRows = document.querySelectorAll('table.table tbody tr');
+
+    if (searchInput && tableRows.length > 0) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim().toLowerCase();
+            if (!query) {
+                tableRows.forEach(row => row.style.display = '');
+                return;
+            }
+
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    }
+});
+</script>
 
 @endsection

@@ -175,11 +175,36 @@ class AdminController extends Controller
     }
 
     // Quotes Management
-    public function quotes()
+    public function quotes(Request $request)
     {
-        $quotes = QuoteRequest::latest()->paginate(15);
+        $search = $request->query('search');
+        $status = $request->query('status');
+        $branchId = $request->query('branch_id');
 
-        return view('admin.quotes.index', compact('quotes'));
+        $query = QuoteRequest::with('branch');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('quote_number', 'like', "%{$search}%")
+                    ->orWhere('customer_name', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($branchId) {
+            $query->where('branch_id', $branchId);
+        }
+
+        $quotes = $query->latest()->paginate(15)->withQueryString();
+        $branches = Branch::where('is_active', true)->get();
+
+        return view('admin.quotes.index', compact('quotes', 'branches', 'search', 'status', 'branchId'));
     }
 
     public function showQuote($id)
@@ -276,11 +301,40 @@ class AdminController extends Controller
     }
 
     // Orders Management
-    public function orders()
+    public function orders(Request $request)
     {
-        $orders = Order::with(['branch', 'user'])->latest()->paginate(15);
+        $search = $request->query('search');
+        $status = $request->query('status');
+        $branchId = $request->query('branch_id');
+        $paymentStatus = $request->query('payment_status');
 
-        return view('admin.orders.index', compact('orders'));
+        $query = Order::with(['branch', 'user']);
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('order_number', 'like', "%{$search}%")
+                    ->orWhere('customer_name', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($branchId) {
+            $query->where('branch_id', $branchId);
+        }
+
+        if ($paymentStatus) {
+            $query->where('payment_status', $paymentStatus);
+        }
+
+        $orders = $query->latest()->paginate(15)->withQueryString();
+        $branches = Branch::where('is_active', true)->get();
+
+        return view('admin.orders.index', compact('orders', 'branches', 'search', 'status', 'branchId', 'paymentStatus'));
     }
 
     public function showOrder($id)
@@ -485,6 +539,9 @@ class AdminController extends Controller
     {
         $search = $request->query('search');
         $categoryId = $request->query('category_id');
+        $branchId = $request->query('branch_id');
+        $availability = $request->query('availability');
+        $sort = $request->query('sort', 'latest');
 
         $query = Product::with(['category', 'branch']);
 
@@ -500,11 +557,29 @@ class AdminController extends Controller
             $query->where('category_id', $categoryId);
         }
 
-        $products = $query->latest()->paginate(15)->withQueryString();
+        if ($branchId) {
+            $query->where('branch_id', $branchId);
+        }
+
+        if ($availability) {
+            $query->where('availability_status', $availability);
+        }
+
+        if ($sort === 'price_asc') {
+            $query->orderBy('price', 'asc');
+        } elseif ($sort === 'price_desc') {
+            $query->orderBy('price', 'desc');
+        } elseif ($sort === 'name_asc') {
+            $query->orderBy('name_ar', 'asc');
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(15)->withQueryString();
         $categories = Category::all();
         $branches = Branch::where('is_active', true)->get();
 
-        return view('admin.products.index', compact('products', 'categories', 'branches', 'search', 'categoryId'));
+        return view('admin.products.index', compact('products', 'categories', 'branches', 'search', 'categoryId', 'branchId', 'availability', 'sort'));
     }
 
     public function storeProduct(Request $request)
@@ -877,15 +952,44 @@ class AdminController extends Controller
     }
 
     // Customers Management
-    public function customers()
+    public function customers(Request $request)
     {
-        $customers = User::where('role', 'customer')
-            ->withCount(['orders', 'quoteRequests'])
-            ->withSum('orders', 'total_amount')
-            ->latest()
-            ->paginate(15);
+        $search = $request->query('search');
+        $ordersFilter = $request->query('orders_filter');
+        $sort = $request->query('sort', 'latest');
 
-        return view('admin.customers.index', compact('customers'));
+        $query = User::where('role', 'customer')
+            ->withCount(['orders', 'quoteRequests'])
+            ->withSum('orders', 'total_amount');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($ordersFilter === 'has_orders') {
+            $query->has('orders');
+        } elseif ($ordersFilter === 'no_orders') {
+            $query->doesntHave('orders');
+        }
+
+        if ($sort === 'highest_spent') {
+            $query->orderByDesc('orders_sum_total_amount');
+        } elseif ($sort === 'most_orders') {
+            $query->orderByDesc('orders_count');
+        } elseif ($sort === 'name_asc') {
+            $query->orderBy('name', 'asc');
+        } else {
+            $query->latest();
+        }
+
+        $customers = $query->paginate(15)->withQueryString();
+
+        return view('admin.customers.index', compact('customers', 'search', 'ordersFilter', 'sort'));
     }
 
     public function storeCustomer(Request $request)

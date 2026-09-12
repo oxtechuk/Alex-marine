@@ -27,7 +27,7 @@
         </nav>
 
         <div class="row align-items-center">
-            <div class="col-lg-8" data-aos="fade-right">
+            <div class="col-lg-8" data-aos="fade-up">
              
                 <h1 class="display-hero text-white mb-3">
                     {{ $isEn ? 'ALEX MARINE Supplies & Safety' : 'شركة أليكس مارين للتوريدات والأمن الصناعي' }}
@@ -49,7 +49,7 @@
 <section class="section-py" style="background:#ffffff;">
     <div class="container">
         <div class="row align-items-center g-5">
-            <div class="col-lg-6" data-aos="fade-right">
+            <div class="col-lg-6" data-aos="fade-up">
               
                 <h2 class="display-section mt-2 mb-3">
                     {{ $isEn ? 'Commercial Marine & Industrial Supplies' : 'توريدات بحرية ومهمات أمن صناعي معتمدة' }}
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-6" data-aos="fade-left">
+            <div class="col-lg-6" data-aos="fade-up" data-aos-delay="80">
                 <div class="alex-card overflow-hidden">
                     <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=900&q=80"
                          alt="Alex Marine Operations"

@@ -90,7 +90,7 @@
         <div class="econ-hero-overlay"></div>
 
         {{-- Top Integrated Header Bar --}}
-        <div class="econ-hero-top-bar">
+        <div class="econ-hero-top-bar hero-anim-nav">
             {{-- Brand Logo --}}
             <a href="{{ route('home') }}" class="econ-hero-brand">
                 @php
@@ -164,7 +164,7 @@
                 <div class="col-lg-9 col-xl-8">
                     {{-- Tagline (Only if provided) --}}
                     @if(!empty($heroTagline))
-                        <div class="hero-tagline-badge mb-3">
+                        <div class="hero-tagline-badge mb-3 hero-anim-tagline">
                             <i class="bi bi-shield-check"></i>
                             <span>{{ $heroTagline }}</span>
                         </div>
@@ -172,7 +172,7 @@
 
                     {{-- Main Headline --}}
                     @if(!empty($heroTitleWhite) || !empty($heroTitleHighlight))
-                        <h1 class="econ-hero-mockup-title">
+                        <h1 class="econ-hero-mockup-title hero-anim-title">
                             @if(!empty($heroTitleWhite))
                                 <span class="hero-title-white-part">{{ $heroTitleWhite }}</span>
                             @endif
@@ -184,13 +184,13 @@
 
                     {{-- Description (Only if provided) --}}
                     @if(!empty($heroDesc))
-                        <p class="econ-hero-mockup-desc">
+                        <p class="econ-hero-mockup-desc hero-anim-desc">
                             {{ $heroDesc }}
                         </p>
                     @endif
 
                     {{-- Action Pill Buttons --}}
-                    <div class="d-flex align-items-center gap-3 flex-wrap mt-4">
+                    <div class="d-flex align-items-center gap-3 flex-wrap mt-4 hero-anim-actions">
                         <a href="{{ route('quote.index') }}" class="btn-hero-pill-gold">
                             <i class="bi bi-file-earmark-plus"></i>
                             <span>{{ $isEn ? 'Request Quote' : 'اطلب عرض سعر' }}</span>
@@ -205,7 +205,7 @@
         </div>
 
         {{-- Bottom Bar: Floating Social Circles --}}
-        <div class="econ-hero-bottom-bar">
+        <div class="econ-hero-bottom-bar hero-anim-footer">
             <div class="d-flex align-items-center gap-2">
                 <a href="https://facebook.com" target="_blank" class="hero-social-circle" title="Facebook">
                     <i class="bi bi-facebook"></i>
@@ -251,22 +251,24 @@
             <p>{{ $isEn ? 'Explore our range of certified vessel supplies and safety gear for ports, ships and industries.' : 'استكشف قائمة المنتجات الجاهزة للتوريد الفوري للموانئ والشركات والسفن.' }}</p>
         </div>
 
-        {{-- Category Pill Filter (Text Only - No Icons) --}}
-        <div class="d-flex align-items-center gap-2 flex-wrap justify-content-center mb-4" data-aos="fade-up" id="fleet-category-pills">
-            <a href="{{ route('home', ['category' => 'all']) }}#categories-section"
-               data-url="{{ route('home', ['category' => 'all']) }}"
-               data-category="all"
-               class="cat-pill {{ ($selectedCategorySlug ?? 'all') == 'all' ? 'active' : '' }}">
-                {{ $isEn ? 'All Equipment' : 'جميع المعدات' }}
-            </a>
-            @foreach($categories as $cat)
-                <a href="{{ route('home', ['category' => $cat->slug]) }}#categories-section"
-                   data-url="{{ route('home', ['category' => $cat->slug]) }}"
-                   data-category="{{ $cat->slug }}"
-                   class="cat-pill {{ ($selectedCategorySlug ?? '') == $cat->slug ? 'active' : '' }}">
-                    {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+        {{-- Category Pill Filter (Horizontal Scroller on Mobile, Centered on Desktop) --}}
+        <div class="category-pills-wrap mb-3 mb-md-4" data-aos="fade-up">
+            <div class="category-pills-scroller fleet-pills-scroller justify-content-lg-center" id="fleet-category-pills">
+                <a href="{{ route('home', ['category' => 'all']) }}#categories-section"
+                   data-url="{{ route('home', ['category' => 'all']) }}"
+                   data-category="all"
+                   class="cat-pill {{ ($selectedCategorySlug ?? 'all') == 'all' ? 'active' : '' }}">
+                    {{ $isEn ? 'All Equipment' : 'جميع المعدات' }}
                 </a>
-            @endforeach
+                @foreach($categories as $cat)
+                    <a href="{{ route('home', ['category' => $cat->slug]) }}#categories-section"
+                       data-url="{{ route('home', ['category' => $cat->slug]) }}"
+                       data-category="{{ $cat->slug }}"
+                       class="cat-pill {{ ($selectedCategorySlug ?? '') == $cat->slug ? 'active' : '' }}">
+                        {{ $isEn ? ($cat->name_en ?: $cat->name_ar) : $cat->name_ar }}
+                    </a>
+                @endforeach
+            </div>
         </div>
 
         {{-- Products Grid Wrapper --}}
@@ -294,8 +296,8 @@
     <div class="container">
         <div class="row align-items-center g-4 g-lg-5">
 
-            {{-- Right Content (in RTL): Rich About Us, Vision, Pillars & Animated Arrow --}}
-            <div class="col-lg-5" data-aos="fade-right">
+            {{-- Right Content (in RTL): Rich About Us, Vision, Pillars & Interactive Arrow --}}
+            <div class="col-lg-5" data-aos="fade-up">
                 @php
                     $aboutTagline = !empty($settings['about_tagline_'.$locale]) ? trim($settings['about_tagline_'.$locale], " .\t\n\r\0\x0B") : ($isEn ? 'About Alex Marine' : 'من نحن ورؤيتنا');
                     $aboutTitle   = !empty($settings['about_title_'.$locale]) ? trim($settings['about_title_'.$locale], " .\t\n\r\0\x0B") : ($isEn ? 'Alex Marine for Marine Supplies & Industrial Safety' : 'شركة أليكس مارين للتوريدات البحرية والأمن الصناعي');
@@ -325,43 +327,7 @@
                     {{ $aboutDesc }}
                 </p>
 
-                <!-- 3 Key Value Pillars (Clean & Well-Spaced) -->
-                <div class="d-flex flex-column gap-3 mb-4">
-                    
-                    <!-- Item 1 -->
-                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
-                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: #0A1D37; color: #E5A919;">
-                            <i class="bi bi-anchor fs-5"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Certified Marine Supplies & Deck Gear' : 'توريدات بحرية ومعدات سطح معتمدة' }}</h6>
-                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Mooring ropes, anchors, navigational & deck tools ready for prompt port delivery.' : 'حبال رسو، مراسي، ومستلزمات ملاحية جاهزة للتسليم الفوري بالأرصفة والموانئ.' }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Item 2 -->
-                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
-                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: #1E6FAE; color: #ffffff;">
-                            <i class="bi bi-shield-shaded fs-5"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Industrial Safety & SOLAS PPE' : 'مهمات الأمن الصناعي والسلامة SOLAS & ISO' }}</h6>
-                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Certified life jackets, SCBA breathing apparatus, and personal protective equipment.' : 'سترات وطوافات نجاة، أجهزة تنفس SCBA، ومعدات وقاية شخصية معتمدة دولياً.' }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Item 3 -->
-                    <div class="d-flex align-items-start gap-3 p-3 rounded-4 bg-white border border-light-subtle shadow-sm transition-all hover-translate">
-                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 44px; height: 44px; background: linear-gradient(135deg, #FAD961, #E5A919); color: #0A1D37;">
-                            <i class="bi bi-tools fs-5"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h6 class="fw-bold text-dark mb-1 fs-6">{{ $isEn ? 'Certified Inspection & Maintenance' : 'صيانة وتفتيش فني معتمد لمحطات الإطفاء' }}</h6>
-                            <p class="text-muted m-0 fs-8 leading-relaxed">{{ $isEn ? 'Hydrostatic testing & annual recertification for CO2 systems and life-saving craft.' : 'إعادة تأهيل واختبارات هيدروستاتيكية معتمدة لمنظومات الإطفاء والإنقاذ.' }}</p>
-                        </div>
-                    </div>
-
-                </div>
+              
 
                 <!-- Action Buttons & Animated Directional Link -->
                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 pt-1">
@@ -392,7 +358,7 @@
             </div>
 
             {{-- Left: Clean & High-Clarity Category Cards --}}
-            <div class="col-lg-7" data-aos="fade-left">
+            <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
                 <div class="d-flex align-items-center justify-content-between mb-3.5 pb-2 border-bottom">
                     <h5 class="fw-extrabold m-0 text-navy fs-6 d-flex align-items-center gap-2">
                         <i class="bi bi-grid-3x3-gap-fill text-warning"></i>
@@ -427,7 +393,7 @@
                                 $desc = $cat->description_en;
                             }
                         @endphp
-                        <div class="col-sm-6" data-aos="fade-up" data-aos-delay="{{ $idx * 80 }}">
+                        <div class="col-sm-6" data-aos="fade-up" data-aos-delay="{{ ($idx % 2) * 60 }}">
                             <a href="{{ route('products.index', ['category' => $cat->slug]) }}"
                                class="category-cover-card-clean rounded-4 overflow-hidden position-relative d-block text-decoration-none shadow-sm"
                                title="{{ $isEn ? 'View ' . ($cat->name_en ?: $cat->name_ar) . ' Products' : 'عرض منتجات ' . $cat->name_ar }}">
@@ -482,14 +448,16 @@
     <div class="container">
         
         <!-- Section Header -->
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 mb-lg-5" data-aos="fade-up">
             <div>
-               
+                <span class="badge bg-warning text-dark px-3 py-1.5 rounded-pill fw-extrabold tracking-widest text-uppercase fs-8 shadow-sm mb-2 d-inline-flex align-items-center gap-1">
+                    <i class="bi bi-sliders"></i> {{ $isEn ? 'INTERACTIVE BEFORE & AFTER' : 'مقارنة تفاعلية قبل وبعد الصيانة' }}
+                </span>
                 <h2 class="display-section text-white mt-1 mb-2 fw-extrabold" style="letter-spacing: -0.5px;">
                     {{ $isEn ? 'Marine Maintenance & Inspection Cases' : 'مشاريع وحالات الصيانة البحرية المعتمدة' }}
                 </h2>
-                <p class="text-white-50 m-0 fs-6" style="max-width: 620px;">
-                    {{ $isEn ? 'Technical inspections, life raft servicing, CO2 suppression overhauls, and SOLAS certifications executed by our marine engineers.' : 'توثيق لمشاريع الصيانة والتفتيش البحري وإعادة تأهيل معدات السلامة ومحطات الإطفاء لسفن وموانئ كبرى.' }}
+                <p class="text-white-50 m-0 fs-6" style="max-width: 650px;">
+                    {{ $isEn ? 'Inspect verified technical overhauls and SOLAS certifications executed by our marine engineers.' : 'اختر أي مشروع من القائمة الجانبية لمعاينة حالة المعدات التفاعلية قبل وبعد الصيانة والتأهيل.' }}
                 </p>
             </div>
             
@@ -499,87 +467,190 @@
             </a>
         </div>
 
-        <!-- Maintenance Cases Cards Grid -->
-        <div class="row g-4">
-            @forelse($maintenanceProjects as $i => $proj)
-                @php
-                    $projTitle = $proj->title;
-                    $hasBA = !empty($proj->before_image) && !empty($proj->after_image);
-                @endphp
-                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $i * 100 }}">
-                    <div class="card h-100 border border-secondary border-opacity-25 rounded-4 overflow-hidden shadow-2xl project-card-hover" style="background: #101926;">
-                        
-                        <!-- Media Cover Box -->
-                        <div class="position-relative overflow-hidden" style="height: 240px;">
-                            <img src="{{ $proj->main_image_url }}" alt="{{ $projTitle }}" class="w-100 h-100 object-fit-cover transition-transform" loading="lazy">
-                            <div class="position-absolute inset-0" style="background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(6,14,26,0.9) 100%);"></div>
+        @php
+            $firstProj = $maintenanceProjects->first();
+        @endphp
 
-                            @if($proj->service)
-                                <span class="position-absolute top-0 start-0 m-3 badge bg-black bg-opacity-75 text-warning border border-warning border-opacity-40 px-2.5 py-1.5 rounded-pill fs-8">
-                                    <i class="bi {{ $proj->service->icon ?? 'bi-gear' }} me-1"></i> {{ $proj->service->name }}
-                                </span>
-                            @endif
-
-                            @if($hasBA)
-                                <span class="position-absolute top-0 end-0 m-3 badge bg-warning text-dark px-2.5 py-1 rounded-pill fs-9 fw-bold shadow-sm">
-                                    <i class="bi bi-sliders me-1"></i> Before / After
-                                </span>
-                            @endif
-
-                            @if($proj->video_url)
-                                <span class="position-absolute bottom-0 end-0 m-3 badge bg-danger text-white px-2 py-1 rounded-pill fs-9 shadow-sm">
-                                    <i class="bi bi-play-fill me-1"></i> Video
-                                </span>
-                            @endif
+        @if($maintenanceProjects->isNotEmpty())
+        <!-- Interactive Split Section: Sidebar (Projects List) + Interactive Before/After Showcase -->
+        <div class="row g-4 align-items-stretch" id="homeMaintenanceShowcase" data-aos="fade-up">
+            
+            <!-- SIDEBAR: List of Projects -->
+            <div class="col-lg-4 col-xl-4 order-2 order-lg-1">
+                <div class="showcase-sidebar rounded-4 p-3 border border-secondary border-opacity-25 h-100 d-flex flex-column justify-content-between" style="background: rgba(16, 25, 38, 0.9); backdrop-filter: blur(14px); box-shadow: 0 16px 36px rgba(0,0,0,0.5);">
+                    
+                    <div>
+                        <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom border-secondary border-opacity-20 px-2">
+                            <span class="text-white fw-bold fs-7 d-flex align-items-center gap-2">
+                                <i class="bi bi-collection-play-fill text-warning"></i>
+                                {{ $isEn ? 'Select Project Case' : 'قائمة مشروعات الصيانة' }}
+                            </span>
+                            <span class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-30 rounded-pill px-2.5 py-1 fs-8 fw-bold">
+                                {{ count($maintenanceProjects) }} {{ $isEn ? 'Projects' : 'مشروعات' }}
+                            </span>
                         </div>
 
-                        <!-- Content Body -->
-                        <div class="card-body p-4 d-flex flex-column justify-content-between">
-                            <div>
-                                <!-- Location & Vessel Subtitle -->
-                                <div class="d-flex align-items-center justify-content-between text-white-50 fs-8 mb-2 pb-2 border-bottom border-secondary border-opacity-25">
-                                    @if($proj->location)
-                                        <span><i class="bi bi-geo-alt-fill text-warning me-1"></i> {{ $proj->location }}</span>
-                                    @endif
-                                    @if($proj->duration)
-                                        <span><i class="bi bi-stopwatch text-warning me-1"></i> {{ $proj->duration }}</span>
-                                    @endif
+                        <!-- Sidebar Projects List -->
+                        <div class="showcase-project-list d-flex flex-column gap-2.5">
+                            @foreach($maintenanceProjects as $idx => $p)
+                                @php
+                                    $isFirst = $idx === 0;
+                                @endphp
+                                <div class="showcase-project-item rounded-3 p-3 transition-all {{ $isFirst ? 'active' : '' }}"
+                                     data-project-id="{{ $p->id }}"
+                                     data-title="{{ $p->title }}"
+                                     data-url="{{ route('projects.show', $p->slug) }}"
+                                     data-before="{{ $p->before_image_url }}"
+                                     data-after="{{ $p->after_image_url }}"
+                                     data-service="{{ $p->service ? $p->service->name : ($isEn ? 'Marine Maintenance' : 'صيانة بحرية') }}"
+                                     data-service-icon="{{ $p->service?->icon ?? 'bi-gear' }}"
+                                     data-location="{{ $p->location ?? '' }}"
+                                     data-duration="{{ $p->duration ?? '' }}"
+                                     data-vessel="{{ $p->vessel_type ?? '' }}"
+                                     data-desc="{{ $p->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($p->description), 110) }}">
+                                    
+                                    <div class="d-flex align-items-start gap-3">
+                                        <!-- Mini Thumb -->
+                                        <div class="showcase-thumb-box rounded-2 overflow-hidden flex-shrink-0 position-relative" style="width: 60px; height: 60px; background: #0A1D37;">
+                                            <img src="{{ $p->main_image_url }}" alt="{{ $p->title }}" class="w-100 h-100 object-fit-cover">
+                                            <span class="position-absolute bottom-0 inset-x-0 bg-warning text-dark text-center fw-bold" style="font-size: 8px; line-height: 13px;">B / A</span>
+                                        </div>
+
+                                        <div class="flex-grow-1 min-w-0">
+                                            <div class="d-flex align-items-center justify-content-between gap-1 mb-1">
+                                                <span class="badge bg-secondary bg-opacity-25 text-white-50 fs-9 rounded-pill px-2 py-0.5 text-truncate" style="max-width: 140px;">
+                                                    <i class="bi {{ $p->service?->icon ?? 'bi-gear' }} me-1 text-warning"></i>
+                                                    {{ $p->service ? $p->service->name : ($isEn ? 'Marine Maintenance' : 'صيانة بحرية') }}
+                                                </span>
+                                                <i class="bi bi-chevron-left showcase-item-arrow fs-8 text-white-50"></i>
+                                            </div>
+
+                                            <!-- Clickable Project Title that goes to project show page -->
+                                            <h6 class="showcase-item-title fw-bold mb-1 text-truncate">
+                                                <a href="{{ route('projects.show', $p->slug) }}" class="text-white text-decoration-none hover-gold transition-colors" title="{{ $isEn ? 'Open project details' : 'فتح تفاصيل المشروع' }}">
+                                                    {{ $p->title }}
+                                                </a>
+                                            </h6>
+
+                                            <div class="d-flex align-items-center gap-2 text-white-50 fs-9">
+                                                @if($p->location)
+                                                    <span><i class="bi bi-geo-alt text-warning me-0.5"></i> {{ $p->location }}</span>
+                                                @endif
+                                                @if($p->duration)
+                                                    <span><i class="bi bi-clock-history text-warning me-0.5"></i> {{ $p->duration }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
+                            @endforeach
+                        </div>
+                    </div>
 
-                                <!-- Project Title -->
-                                <h5 class="fw-bold text-white mb-2 leading-snug">
-                                    <a href="{{ route('projects.show', $proj->slug) }}" class="text-white text-decoration-none hover-gold transition-colors">
-                                        {{ $projTitle }}
-                                    </a>
-                                </h5>
+                    <!-- Sidebar Bottom Link -->
+                    <div class="pt-3 mt-3 border-top border-secondary border-opacity-20 px-2 d-flex align-items-center justify-content-between">
+                        <span class="text-white-50 fs-8">{{ $isEn ? 'Inspect technical cases' : 'فحص الحالات المعتمدة' }}</span>
+                        <a href="{{ route('projects.index') }}" class="text-warning text-decoration-none fs-8 fw-bold d-flex align-items-center gap-1 hover-underline">
+                            <span>{{ $isEn ? 'View all cases' : 'عرض كافة الحالات' }}</span>
+                            <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                        </a>
+                    </div>
 
-                                <!-- Short Description -->
-                                <p class="text-white-50 fs-7 line-clamp-2 mb-0" style="line-height: 1.6;">
-                                    {{ $proj->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($proj->description), 110) }}
-                                </p>
+                </div>
+            </div>
+
+            <!-- MAIN SHOWCASE AREA: Interactive Before / After Slider -->
+            <div class="col-lg-8 col-xl-8 order-1 order-lg-2">
+                @if($firstProj)
+                <div class="showcase-viewer-card rounded-4 overflow-hidden border border-secondary border-opacity-30 position-relative shadow-2xl h-100 d-flex flex-column" style="background: #0D1522; min-height: 520px;">
+                    
+                    <!-- Top Info Header of Active Project -->
+                    <div class="showcase-viewer-header p-3.5 px-4 border-bottom border-secondary border-opacity-20 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #111A28;">
+                        <div class="min-w-0">
+                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                <span id="showcaseActiveServiceBadge" class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-30 px-2.5 py-1 rounded-pill fs-8 fw-bold">
+                                    <i id="showcaseActiveServiceIcon" class="bi {{ $firstProj->service?->icon ?? 'bi-gear' }} me-1"></i>
+                                    <span id="showcaseActiveServiceText">{{ $firstProj->service?->name ?? ($isEn ? 'Marine Maintenance' : 'صيانة بحرية') }}</span>
+                                </span>
+                                <span id="showcaseActiveMetaLocation" class="text-white-50 fs-8 d-flex align-items-center gap-1 {{ empty($firstProj->location) ? 'd-none' : '' }}">
+                                    <i class="bi bi-geo-alt-fill text-danger"></i> <span id="showcaseActiveLocationText">{{ $firstProj->location }}</span>
+                                </span>
+                                <span id="showcaseActiveMetaDuration" class="text-white-50 fs-8 d-flex align-items-center gap-1 {{ empty($firstProj->duration) ? 'd-none' : '' }}">
+                                    <i class="bi bi-stopwatch text-warning"></i> <span id="showcaseActiveDurationText">{{ $firstProj->duration }}</span>
+                                </span>
                             </div>
-
-                            <!-- Card Footer Button -->
-                            <div class="mt-4 pt-3 border-top border-secondary border-opacity-25 d-flex align-items-center justify-content-between">
-                                <a href="{{ route('projects.show', $proj->slug) }}" class="btn btn-outline-warning btn-sm rounded-pill px-3.5 py-1.5 fw-bold fs-7 d-flex align-items-center gap-1.5 hover-glow">
-                                    <span>{{ $isEn ? 'View Case Details' : 'عرض دراسة الحالة' }}</span>
-                                    <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                            <!-- Clickable Title in Viewer -->
+                            <h4 class="fw-extrabold text-white m-0 text-truncate">
+                                <a id="showcaseActiveTitleLink" href="{{ route('projects.show', $firstProj->slug) }}" class="text-white text-decoration-none hover-gold transition-colors" title="{{ $isEn ? 'Click to view full case study' : 'اضغط لعرض تفاصيل دراسة الحالة' }}">
+                                    {{ $firstProj->title }}
                                 </a>
+                            </h4>
+                        </div>
 
-                                @if($proj->vessel_type)
-                                    <span class="text-white-50 fs-8"><i class="bi bi-shield-check text-warning me-1"></i> {{ \Illuminate\Support\Str::limit($proj->vessel_type, 18) }}</span>
-                                @endif
+                        <!-- CTA Button to Project Details -->
+                        <a id="showcaseActiveBtnLink" href="{{ route('projects.show', $firstProj->slug) }}" class="btn btn-case-gold rounded-pill px-3.5 py-2 fs-7 fw-bold d-flex align-items-center gap-1.5 shadow-sm text-nowrap">
+                            <span>{{ $isEn ? 'View Case Details' : 'عرض تفاصيل المشروع' }}</span>
+                            <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
+                        </a>
+                    </div>
+
+                    <!-- Interactive Before / After Slider Box -->
+                    <div class="showcase-slider-container position-relative flex-grow-1 overflow-hidden" style="min-height: 400px; height: 440px; direction: ltr !important; text-align: left; user-select: none;">
+                        
+                        <!-- AFTER Background Image (Full Width Underneath) -->
+                        <img id="showcaseAfterImg" src="{{ $firstProj->after_image_url }}" alt="After Maintenance" class="showcase-img position-absolute w-100 h-100 object-fit-cover user-select-none" style="top: 0; left: 0;">
+
+                        <!-- AFTER Label Pill (Bottom Right) -->
+                        <div class="case-pill-badge position-absolute bottom-0 end-0 m-3.5 badge bg-black bg-opacity-80 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-8 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 5;">
+                            <i class="bi bi-check2-circle text-success me-1"></i> AFTER (بعد الصيانة)
+                        </div>
+
+                        <!-- BEFORE Foreground Clipped Image Container -->
+                        <div id="showcaseBeforeContainer" class="position-absolute overflow-hidden" style="top: 0; bottom: 0; left: 0; width: 50%; z-index: 10;">
+                            <img id="showcaseBeforeImg" src="{{ $firstProj->before_image_url }}" alt="Before Maintenance" class="showcase-img position-absolute user-select-none" style="top: 0; left: 0; height: 100%; object-fit: cover;">
+
+                            <!-- BEFORE Label Pill (Bottom Left) -->
+                            <div class="case-pill-badge position-absolute bottom-0 start-0 m-3.5 badge bg-black bg-opacity-80 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-8 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 15;">
+                                <i class="bi bi-clock-history text-danger me-1"></i> BEFORE (قبل الصيانة)
                             </div>
+                        </div>
+
+                        <!-- Drag Handle -->
+                        <div id="showcaseHandle" class="case-slider-handle position-absolute top-0 bottom-0 d-flex align-items-center justify-content-center" style="left: 50%; width: 4px; background: #E5A919; cursor: ew-resize; z-index: 25; transform: translateX(-50%);">
+                            <div class="case-handle-circle rounded-circle d-flex align-items-center justify-content-center shadow-2xl" style="width: 44px; height: 44px; background: #0A1D37; border: 2.5px solid #E5A919; color: #E5A919;">
+                                <i class="bi bi-arrows fs-5"></i>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Drag Hint Overlay (fades out on interaction) -->
+                        <div id="showcaseDragHint" class="position-absolute top-0 start-50 translate-middle-x mt-3 badge bg-black bg-opacity-75 text-warning border border-warning border-opacity-30 rounded-pill px-3 py-1.5 fs-8 pointer-events-none shadow-lg d-flex align-items-center gap-1.5" style="z-index: 30; transition: opacity 0.5s ease;">
+                            <i class="bi bi-arrows-expand"></i>
+                            <span>{{ $isEn ? 'Drag slider to compare Before & After' : 'اسحب المؤشر للمقارنة قبل وبعد الصيانة' }}</span>
                         </div>
 
                     </div>
+
+                    <!-- Viewer Footer Note / Short Desc -->
+                    <div class="p-3 px-4 bg-dark bg-opacity-70 border-top border-secondary border-opacity-20 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                        <p id="showcaseActiveDesc" class="text-white-50 fs-8 m-0 line-clamp-2" style="max-width: 680px;">
+                            {{ $firstProj->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($firstProj->description), 110) }}
+                        </p>
+                        <span id="showcaseActiveVessel" class="text-warning fs-8 fw-bold text-nowrap {{ empty($firstProj->vessel_type) ? 'd-none' : '' }}">
+                            <i class="bi bi-shield-check me-1"></i> <span id="showcaseActiveVesselText">{{ $firstProj->vessel_type }}</span>
+                        </span>
+                    </div>
+
                 </div>
-            @empty
-                <div class="col-12 py-4 text-center text-white-50">
-                    <p>{{ $isEn ? 'No maintenance cases published yet.' : 'جاري إضافة وتوثيق مشاريع الصيانة قريباً.' }}</p>
-                </div>
-            @endforelse
+                @endif
+            </div>
+
         </div>
+        @else
+        <div class="py-5 text-center text-white-50">
+            <p>{{ $isEn ? 'No maintenance cases published yet.' : 'جاري إضافة وتوثيق مشاريع الصيانة قريباً.' }}</p>
+        </div>
+        @endif
 
     </div>
 </section>
@@ -605,14 +676,14 @@
             </a>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-3 g-md-4">
             @foreach($featuredProducts as $i => $prod)
             @php
                 $prodCatSlug = $prod->category?->slug ?? 'general';
                 $prodCatName = $prod->category ? ($isEn ? ($prod->category->name_en ?: $prod->category->name_ar) : $prod->category->name_ar) : ($isEn ? 'Marine Supplies' : 'توريدات بحرية');
                 $prodUrl = route('products.show', ['category_slug' => $prodCatSlug, 'product_slug' => $prod->slug]);
             @endphp
-            <div class="col-lg-3 col-md-6 col-sm-6" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 80 }}">
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 60 }}">
                 <div class="product-card">
                     <div class="product-card-img-wrap">
                         <span class="product-badge-category">{{ $prodCatName }}</span>
@@ -698,8 +769,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!gridWrapper) return;
 
-            // Subtle opacity change
-            gridWrapper.style.opacity = '0.4';
+            // Silk smooth opacity and transform transition
+            gridWrapper.style.transition = 'opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)';
+            gridWrapper.style.opacity = '0.35';
+            gridWrapper.style.transform = 'translateY(6px)';
 
             fetch(url, {
                 headers: {
@@ -713,18 +786,18 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(html => {
                 gridWrapper.innerHTML = html;
-                gridWrapper.style.opacity = '1';
+                requestAnimationFrame(() => {
+                    gridWrapper.style.opacity = '1';
+                    gridWrapper.style.transform = 'translateY(0)';
+                });
 
                 // Update URL in browser history without reload or page jumping
                 window.history.pushState(null, '', url);
-
-                if (typeof AOS !== 'undefined') {
-                    AOS.refreshHard();
-                }
             })
             .catch(err => {
                 console.error('Failed to load category products:', err);
                 gridWrapper.style.opacity = '1';
+                gridWrapper.style.transform = 'translateY(0)';
             });
         });
     });
@@ -741,15 +814,221 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+    // ═════════════════════════════════════════════════════════════
+    // HOME MAINTENANCE SHOWCASE: SIDEBAR SWITCHING & BEFORE/AFTER SLIDER
+    // ═════════════════════════════════════════════════════════════
+    const showcaseItems = document.querySelectorAll('.showcase-project-item');
+    const showcaseContainer = document.querySelector('.showcase-slider-container');
+    const showcaseBeforeContainer = document.getElementById('showcaseBeforeContainer');
+    const showcaseBeforeImg = document.getElementById('showcaseBeforeImg');
+    const showcaseAfterImg = document.getElementById('showcaseAfterImg');
+    const showcaseHandle = document.getElementById('showcaseHandle');
+    const showcaseHint = document.getElementById('showcaseDragHint');
+
+    // Text & Link elements
+    const titleLink = document.getElementById('showcaseActiveTitleLink');
+    const btnLink = document.getElementById('showcaseActiveBtnLink');
+    const serviceIcon = document.getElementById('showcaseActiveServiceIcon');
+    const serviceText = document.getElementById('showcaseActiveServiceText');
+    const metaLocation = document.getElementById('showcaseActiveMetaLocation');
+    const textLocation = document.getElementById('showcaseActiveLocationText');
+    const metaDuration = document.getElementById('showcaseActiveMetaDuration');
+    const textDuration = document.getElementById('showcaseActiveDurationText');
+    const metaVessel = document.getElementById('showcaseActiveVessel');
+    const textVessel = document.getElementById('showcaseActiveVesselText');
+    const textDesc = document.getElementById('showcaseActiveDesc');
+
+    function syncShowcaseImgWidth() {
+        if (!showcaseContainer || !showcaseBeforeImg) return;
+        const w = showcaseContainer.clientWidth;
+        if (w > 0) {
+            showcaseBeforeImg.style.width = w + 'px';
+            showcaseBeforeImg.style.maxWidth = w + 'px';
+        }
+    }
+
+    function activateShowcaseProject(item) {
+        if (!item) return;
+        showcaseItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        const d = item.dataset;
+        if (titleLink) {
+            titleLink.textContent = d.title;
+            titleLink.href = d.url;
+        }
+        if (btnLink) {
+            btnLink.href = d.url;
+        }
+        if (serviceText) {
+            serviceText.textContent = d.service;
+        }
+        if (serviceIcon && d.serviceIcon) {
+            serviceIcon.className = 'bi ' + d.serviceIcon + ' me-1';
+        }
+        if (textLocation && metaLocation) {
+            if (d.location) {
+                textLocation.textContent = d.location;
+                metaLocation.classList.remove('d-none');
+            } else {
+                metaLocation.classList.add('d-none');
+            }
+        }
+        if (textDuration && metaDuration) {
+            if (d.duration) {
+                textDuration.textContent = d.duration;
+                metaDuration.classList.remove('d-none');
+            } else {
+                metaDuration.classList.add('d-none');
+            }
+        }
+        if (textVessel && metaVessel) {
+            if (d.vessel) {
+                textVessel.textContent = d.vessel;
+                metaVessel.classList.remove('d-none');
+            } else {
+                metaVessel.classList.add('d-none');
+            }
+        }
+        if (textDesc) {
+            textDesc.textContent = d.desc;
+        }
+
+        if (showcaseBeforeImg && d.before) {
+            showcaseBeforeImg.src = d.before;
+        }
+        if (showcaseAfterImg && d.after) {
+            showcaseAfterImg.src = d.after;
+        }
+
+        // Reset handle to center 50%
+        if (showcaseBeforeContainer && showcaseHandle) {
+            showcaseBeforeContainer.style.width = '50%';
+            showcaseHandle.style.left = '50%';
+        }
+        syncShowcaseImgWidth();
+    }
+
+    showcaseItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            // If clicking directly on the title link, let normal link navigation proceed!
+            if (e.target.closest('a')) {
+                return;
+            }
+            activateShowcaseProject(this);
+        });
+
+        // Also switch on hover for fast interactive feedback
+        item.addEventListener('mouseenter', function() {
+            activateShowcaseProject(this);
+        });
     });
+
+    if (showcaseContainer && showcaseBeforeContainer && showcaseHandle) {
+        let isShowcaseDragging = false;
+
+        function updateShowcaseSlider(clientX) {
+            const rect = showcaseContainer.getBoundingClientRect();
+            let posX = clientX - rect.left;
+            if (posX < 0) posX = 0;
+            if (posX > rect.width) posX = rect.width;
+
+            const pct = Math.max(0, Math.min(100, (posX / rect.width) * 100));
+            showcaseBeforeContainer.style.width = pct + '%';
+            showcaseHandle.style.left = pct + '%';
+
+            if (showcaseHint) {
+                showcaseHint.style.opacity = '0';
+            }
+        }
+
+        showcaseContainer.addEventListener('mousedown', function(e) {
+            isShowcaseDragging = true;
+            updateShowcaseSlider(e.clientX);
+        });
+
+        window.addEventListener('mouseup', function() {
+            isShowcaseDragging = false;
+        });
+
+        window.addEventListener('mousemove', function(e) {
+            if (!isShowcaseDragging) return;
+            updateShowcaseSlider(e.clientX);
+        });
+
+        showcaseContainer.addEventListener('touchstart', function(e) {
+            isShowcaseDragging = true;
+            if (e.touches && e.touches.length > 0) {
+                updateShowcaseSlider(e.touches[0].clientX);
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchend', function() {
+            isShowcaseDragging = false;
+        });
+
+        window.addEventListener('touchmove', function(e) {
+            if (!isShowcaseDragging || !e.touches || e.touches.length === 0) return;
+            updateShowcaseSlider(e.touches[0].clientX);
+        }, { passive: true });
+
+        syncShowcaseImgWidth();
+        window.addEventListener('resize', syncShowcaseImgWidth);
+        if (showcaseBeforeImg) {
+            showcaseBeforeImg.addEventListener('load', syncShowcaseImgWidth);
+        }
+    }
 });
 </script>
 <style>
+.showcase-project-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    cursor: pointer;
+    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.showcase-project-item:hover {
+    background: rgba(229, 169, 25, 0.08);
+    border-color: rgba(229, 169, 25, 0.35);
+    transform: translateX(-3px);
+}
+[dir="ltr"] .showcase-project-item:hover {
+    transform: translateX(3px);
+}
+.showcase-project-item.active {
+    background: linear-gradient(135deg, rgba(229, 169, 25, 0.16) 0%, rgba(10, 29, 55, 0.95) 100%);
+    border-color: #E5A919 !important;
+    box-shadow: 0 6px 20px rgba(229, 169, 25, 0.2);
+}
+.showcase-project-item.active .showcase-item-title a {
+    color: #E5A919 !important;
+}
+.showcase-project-item.active .showcase-item-arrow {
+    color: #E5A919 !important;
+    transform: scale(1.15);
+}
+.showcase-thumb-box img {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.showcase-project-item:hover .showcase-thumb-box img {
+    transform: scale(1.05);
+}
+.case-slider-handle {
+    touch-action: none;
+}
+.case-handle-circle {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.case-slider-handle:hover .case-handle-circle,
+.case-slider-handle:active .case-handle-circle {
+    transform: scale(1.08);
+    box-shadow: 0 0 20px rgba(229, 169, 25, 0.8) !important;
+}
 .btn-case-gold {
     background: linear-gradient(135deg, #FAD961 0%, #F7B731 35%, #D49B23 70%, #B37D14 100%);
     color: #061325 !important;
     border: none;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-case-gold:hover {
     background: linear-gradient(135deg, #FFF0B3 0%, #FCD04B 40%, #E5A315 75%, #C48712 100%);
@@ -758,15 +1037,15 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: 0 8px 24px rgba(229, 169, 25, 0.4) !important;
 }
 .project-card-hover {
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .project-card-hover:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     border-color: rgba(229, 169, 25, 0.5) !important;
-    box-shadow: 0 16px 36px rgba(0,0,0,0.6) !important;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.5) !important;
 }
 .project-card-hover:hover .transition-transform {
-    transform: scale(1.06);
+    transform: scale(1.04);
 }
 .hover-gold:hover {
     color: #E5A919 !important;
@@ -777,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #0A1D37 !important;
 }
 .transition-transform {
-    transition: transform 0.4s ease;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .line-clamp-2 {
     display: -webkit-box;
@@ -786,35 +1065,83 @@ document.addEventListener('DOMContentLoaded', function() {
     overflow: hidden;
 }
 
-/* Redesigned Clean Category Cards with High Photo Clarity */
+/* ════════════════════════════════════════════
+   LUXURY CHOREOGRAPHED HERO ENTRANCE
+════════════════════════════════════════════ */
+@keyframes luxuryHeroEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes luxuryNavEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.hero-anim-nav {
+    animation: luxuryNavEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0s;
+}
+.hero-anim-tagline {
+    animation: luxuryHeroEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.08s;
+}
+.hero-anim-title {
+    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.16s;
+}
+.hero-anim-desc {
+    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.24s;
+}
+.hero-anim-actions {
+    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.32s;
+}
+.hero-anim-footer {
+    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.40s;
+}
+
+/* Redesigned Clean Category Cards with High Photo Clarity & Luxury Transitions */
 .category-cover-card-clean {
     height: 240px;
     background-color: #0A1D37;
     border: 1px solid rgba(10, 29, 55, 0.12);
-    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .category-cover-bg-clean {
-    transition: transform 0.5s ease, filter 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* Subtle low-opacity gradient so photos are crisp and vibrant */
 .category-cover-overlay-clean {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(6, 19, 37, 0.45) 65%, rgba(6, 19, 37, 0.9) 100%);
-    transition: background 0.35s ease;
+    transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .category-cover-hover-details {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.35s ease, opacity 0.35s ease, margin-top 0.35s ease;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     margin-top: 0;
 }
 .category-cover-card-clean:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 14px 30px rgba(10, 29, 55, 0.28) !important;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(10, 29, 55, 0.20) !important;
     border-color: var(--alex-gold) !important;
 }
 .category-cover-card-clean:hover .category-cover-bg-clean {
-    transform: scale(1.08);
+    transform: scale(1.04);
 }
 .category-cover-card-clean:hover .category-cover-overlay-clean {
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 15%, rgba(6, 19, 37, 0.6) 55%, rgba(6, 19, 37, 0.95) 100%);
@@ -825,43 +1152,46 @@ document.addEventListener('DOMContentLoaded', function() {
     margin-top: 0.35rem;
 }
 
-.hover-translate {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.hover-translate:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(10, 29, 55, 0.08) !important;
+@media (max-width: 576px) {
+    .category-cover-card-clean {
+        height: 135px !important;
+        border-radius: 12px !important;
+    }
+    .category-cover-content-clean {
+        padding: 0.65rem !important;
+    }
+    .category-cover-title-clean {
+        font-size: 0.82rem !important;
+    }
+    .category-cover-mini-icon {
+        width: 26px !important;
+        height: 26px !important;
+    }
+    .category-cover-mini-icon i {
+        font-size: 0.75rem !important;
+    }
 }
 
-/* Animated Directional SVG Arrow */
+.hover-translate {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-translate:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(10, 29, 55, 0.10) !important;
+}
+
+/* Interactive Directional SVG Arrow (Subtle Luxury Hover Glide — No Twitching) */
+.explore-arrow-link {
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animated-arrow-icon {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
 .explore-arrow-link:hover .animated-arrow-icon {
     transform: translateX(-5px);
 }
 [dir="ltr"] .explore-arrow-link:hover .animated-arrow-icon {
     transform: translateX(5px);
-}
-.animated-arrow-icon {
-    animation: arrowPulse 1.4s infinite ease-in-out;
-    transition: transform 0.2s ease;
-}
-@keyframes arrowPulse {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(-6px);
-    }
-}
-[dir="ltr"] .animated-arrow-icon {
-    animation: arrowPulseLtr 1.4s infinite ease-in-out;
-}
-@keyframes arrowPulseLtr {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    50% {
-        transform: translateX(6px);
-    }
 }
 </style>
 @endpush

@@ -9,13 +9,13 @@
 @section('content')
 <section class="py-5 bg-white border-bottom">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="text-center mb-5" data-aos="fade-up">
             <h1 class="fw-bold text-dark fs-1 mb-2">{{ $isEn ? 'Contact Us' : 'تواصل معنا' }}</h1>
             <p class="text-muted fs-5">{{ $isEn ? 'Our sales and technical support engineering team is available 24/7' : 'فريق المبيعات والدعم الفني في خدمتكم على مدار الساعة' }}</p>
         </div>
 
         <div class="row g-5">
-            <div class="col-lg-5">
+            <div class="col-lg-5" data-aos="fade-up">
                 <div class="alex-card p-4 h-100" style="background-color: #0A1D37; color: #ffffff;">
                     <h3 class="fw-bold text-warning mb-4">{{ $isEn ? 'Contact Information' : 'معلومات الاتصال' }}</h3>
 
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-7" data-aos="fade-up" data-aos-delay="80">
                 <div class="alex-card p-4">
                     <h3 class="fw-bold text-dark mb-4">{{ $isEn ? 'Send Your Inquiry / RFQ' : 'أرسل استفسارك' }}</h3>
                     <form action="#" method="POST" onsubmit="alert('{{ $isEn ? 'Your inquiry has been received. Our team will contact you shortly.' : 'تم استلام رسالتك وسيتم التواصل معك قريباً' }}'); return false;">

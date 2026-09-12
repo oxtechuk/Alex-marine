@@ -15,6 +15,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <style>
+        @font-face {
+            font-family: 'Bahij TheSansArabic';
+            src: url('{{ asset("fonts/Bahij_TheSansArabic-Bold.ttf") }}') format('truetype');
+            font-weight: 300 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
         :root {
             /* Luxury 2-Color Palette */
             --navy-primary: #0A192F;
@@ -31,7 +39,7 @@
             --text-dark: #0A192F;
             --text-muted: #64748B;
             --border-light: #E2E8F0;
-            --font-primary: 'Tajawal', 'Cairo', sans-serif !important;
+            --font-primary: 'Bahij TheSansArabic', 'Tajawal', 'Cairo', sans-serif !important;
         }
 
         body, button, input, select, textarea, .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {

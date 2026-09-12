@@ -28,7 +28,7 @@
         </nav>
 
         <div class="row align-items-center">
-            <div class="col-lg-7" data-aos="fade-right">
+            <div class="col-lg-7" data-aos="fade-up">
               
                 <h1 class="display-section text-white mb-2">
                     {{ $isEn ? 'Marine & Industrial Safety Catalog' : 'دليل المنتجات والتوريدات البحرية' }}
@@ -39,7 +39,7 @@
                         : 'تصفح قائمة المنتجات المعتمدة للتوريدات ومهمات السلامة المهنية، وأضف المنتجات المطلوبة لإصدار عرض سعر رسمي لمؤسستك.' }}
                 </p>
             </div>
-            <div class="col-lg-5 text-{{ $isEn ? 'end' : 'start' }} mt-4 mt-lg-0" data-aos="fade-left">
+            <div class="col-lg-5 text-{{ $isEn ? 'end' : 'start' }} mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="80">
                 {{-- Quick Stats Badges --}}
                 <div class="d-flex flex-wrap gap-2 justify-content-{{ $isEn ? 'end' : 'start' }}">
                     <div class="px-3 py-2 text-center rounded border" style="background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.15) !important; min-width:100px;">
@@ -174,7 +174,7 @@
                 $catName = $product->category ? ($isEn ? ($product->category->name_en ?: $product->category->name_ar) : $product->category->name_ar) : ($isEn ? 'Supplies' : 'توريدات');
                 $productImg = $product->image ?: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80';
             @endphp
-            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12 product-grid-item" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 50 }}">
+            <div class="col-6 col-sm-6 col-md-4 col-lg-3 product-grid-item" data-aos="fade-up" data-aos-delay="{{ ($i % 4) * 60 }}">
                 <div class="product-card practical-card" data-href="{{ $productUrl }}" role="link" tabindex="0">
                     {{-- Product Image Container --}}
                     <div class="product-card-img-wrap">
@@ -220,7 +220,7 @@
                                     data-product-cat="{{ $catName }}"
                                     title="{{ $isEn ? 'Direct Order / Quick Purchase' : 'طلب توريد مباشر وسريع' }}">
                                 <i class="bi bi-lightning-charge-fill"></i>
-                                <span>{{ $isEn ? 'Order Now' : 'اطلب الآن' }}</span>
+                                <span>{{ $isEn ? 'Order' : 'اطلب الآن' }}</span>
                             </button>
 
                             {{-- Button 2: Add to Quote Cart (أضف للسلة مع بوب اب) --}}
@@ -233,7 +233,7 @@
                                     data-product-sku="{{ $product->sku }}"
                                     data-product-img="{{ $productImg }}">
                                 <i class="bi bi-basket2-fill add-icon-default"></i>
-                                <span>{{ $isEn ? 'add Cart' : 'اضافةلسلة' }}</span>
+                                <span>{{ $isEn ? 'Cart' : 'أضف للسلة' }}</span>
                             </button>
                         </div>
                     </div>
@@ -271,7 +271,7 @@
 <section class="cta-section py-4">
     <div class="container">
         <div class="row align-items-center g-4">
-            <div class="col-lg-8" data-aos="fade-right">
+            <div class="col-lg-8" data-aos="fade-up">
                 <h3 class="fw-black text-white mb-2" style="font-size:1.5rem;">
                     {{ $isEn ? "Can't find a specific marine or safety item?" : 'هل تبحث عن صنف أو مقاس بحري خاص؟' }}
                 </h3>
@@ -281,7 +281,7 @@
                         : 'تواصل مع فريق التوريدات الفني مباشرة لتوفير الأصناف الخاصة وتجهيز السفن والموانئ.' }}
                 </p>
             </div>
-            <div class="col-lg-4 text-{{ $isEn ? 'end' : 'start' }}" data-aos="fade-left">
+            <div class="col-lg-4 text-{{ $isEn ? 'end' : 'start' }}" data-aos="fade-up" data-aos-delay="80">
                 <div class="d-flex flex-wrap gap-2 justify-content-{{ $isEn ? 'end' : 'start' }}">
                     <a href="{{ route('quote.index') }}" class="btn-alex-gold px-4 py-2">
                         <i class="bi bi-file-earmark-plus"></i>
@@ -430,19 +430,19 @@
     cursor: pointer;
     position: relative;
     box-shadow: 0 2px 8px rgba(10, 25, 47, 0.04);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.25s ease;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .practical-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(10, 25, 47, 0.12);
+    box-shadow: 0 14px 30px rgba(10, 25, 47, 0.12);
     border-color: var(--alex-navy-dark, #0A1D37);
 }
 
 .practical-card:hover .product-thumb-img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 /* Image Container */
@@ -467,7 +467,7 @@
     object-fit: contain;
     object-position: center;
     display: block;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Badges */

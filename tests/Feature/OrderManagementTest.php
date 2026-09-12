@@ -185,4 +185,112 @@ class OrderManagementTest extends TestCase
             'notes' => 'تم استلام الكاش والتسليم في الميناء',
         ]);
     }
+
+    public function test_admin_can_search_and_filter_orders(): void
+    {
+        $uniquePhone = '010' . rand(10000000, 99999999);
+        $order1 = Order::create([
+            'order_number' => 'ORD-SEARCH-1',
+            'customer_name' => 'محمد الإسكندراني',
+            'company_name' => 'شركة الملاحة البحرية',
+            'email' => 'alexmarine_test1@alex.eg',
+            'phone' => $uniquePhone,
+            'status' => 'قيد التجهيز',
+            'total_amount' => 1500,
+            'payment_status' => 'نقدي',
+        ]);
+
+        $order2 = Order::create([
+            'order_number' => 'ORD-SEARCH-2',
+            'customer_name' => 'أحمد السويسي',
+            'company_name' => 'توكيلات البحر الأحمر',
+            'email' => 'alexmarine_test2@alex.eg',
+            'phone' => '012' . rand(10000000, 99999999),
+            'status' => 'مكتمل',
+            'total_amount' => 3000,
+            'payment_status' => 'آجل',
+        ]);
+
+        // Search by phone
+        $response = $this->actingAs($this->admin)->get(route('admin.orders.index', ['search' => $uniquePhone]));
+        $response->assertStatus(200);
+        $response->assertSee('ORD-SEARCH-1');
+        $response->assertDontSee('ORD-SEARCH-2');
+
+        // Filter by status
+        $response = $this->actingAs($this->admin)->get(route('admin.orders.index', ['status' => 'مكتمل']));
+        $response->assertStatus(200);
+        $response->assertSee('ORD-SEARCH-2');
+    }
+
+    public function test_admin_can_search_and_filter_products_catalog(): void
+    {
+        $cat = Category::create([
+            'name_ar' => 'محركات ومعدات ' . uniqid(),
+            'name_en' => 'Engines',
+            'slug' => 'engines-' . uniqid(),
+        ]);
+
+        $skuTarget = 'SKU-FILTER-' . uniqid();
+        $product1 = Product::create([
+            'category_id' => $cat->id,
+            'name_ar' => 'محرك ياماها بحري أصلي',
+            'name_en' => 'Yamaha Outboard Engine',
+            'slug' => 'yamaha-engine-' . uniqid(),
+            'price' => 50000,
+            'sku' => $skuTarget,
+            'is_active' => true,
+            'availability_status' => 'متوفر في المخزن',
+        ]);
+
+        $product2 = Product::create([
+            'category_id' => $cat->id,
+            'name_ar' => 'بوصلة مغناطيسية بحرية',
+            'name_en' => 'Magnetic Compass',
+            'slug' => 'compass-' . uniqid(),
+            'price' => 1200,
+            'sku' => 'SKU-COMPASS-' . uniqid(),
+            'is_active' => true,
+            'availability_status' => 'تحت الطلب',
+        ]);
+
+        // Search by SKU
+        $response = $this->actingAs($this->admin)->get(route('admin.products.index', ['search' => $skuTarget]));
+        $response->assertStatus(200);
+        $response->assertSee('محرك ياماها بحري أصلي');
+        $response->assertDontSee('بوصلة مغناطيسية بحرية');
+
+        // Filter by availability
+        $response = $this->actingAs($this->admin)->get(route('admin.products.index', [
+            'category_id' => $cat->id,
+            'availability' => 'تحت الطلب',
+        ]));
+        $response->assertStatus(200);
+        $response->assertSee('بوصلة مغناطيسية بحرية');
+        $response->assertDontSee('محرك ياماها بحري أصلي');
+    }
+
+    public function test_admin_can_search_and_filter_customers(): void
+    {
+        $uniqueName = 'شريف البحار ' . uniqid();
+        $customer = User::create([
+            'name' => $uniqueName,
+            'company_name' => 'أسطول الإسكندرية',
+            'email' => 'sharif_' . uniqid() . '@alexmarine.eg',
+            'phone' => '015' . rand(10000000, 99999999),
+            'role' => 'customer',
+            'password' => bcrypt('password123'),
+        ]);
+
+        // Search by customer name
+        $response = $this->actingAs($this->admin)->get(route('admin.customers.index', ['search' => $uniqueName]));
+        $response->assertStatus(200);
+        $response->assertSee($uniqueName);
+        $response->assertSee('أسطول الإسكندرية');
+
+        // Filter by no orders
+        $response = $this->actingAs($this->admin)->get(route('admin.customers.index', ['orders_filter' => 'no_orders']));
+        $response->assertStatus(200);
+        $response->assertSee($uniqueName);
+    }
 }
