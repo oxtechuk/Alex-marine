@@ -45,6 +45,12 @@
                                 <i class="bi bi-youtube me-1 text-danger"></i> فيديو يوتيوب Embed (YouTube)
                             </label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="hero_media_type" id="mediaSlider" value="slider" {{ ($settings['hero_media_type'] ?? '') == 'slider' ? 'checked' : '' }}>
+                            <label class="form-check-label fw-bold" for="mediaSlider">
+                                <i class="bi bi-collection-play-fill me-1 text-warning"></i> سلايدر وشرائح متعددة (Slides / Carousel)
+                            </label>
+                        </div>
                     </div>
                 </div>
 
@@ -132,6 +138,166 @@
                             <label class="form-label fw-bold text-navy"><i class="bi bi-youtube text-danger me-1"></i> معرف فيديو يوتيوب (YouTube Video ID)</label>
                             <input type="text" name="hero_youtube_id" class="form-control form-control-sm" value="{{ $settings['hero_youtube_id'] ?? '' }}" placeholder="مثال: 5W_s42HhVLE (الحروف والقطع الأخيرة بعد v= في رابط يوتيوب)">
                         </div>
+                    </div>
+                </div>
+
+                <!-- HERO SLIDES / SLIDER MANAGEMENT -->
+                @php
+                    $cmsSlides = !empty($settings['hero_slides']) ? json_decode($settings['hero_slides'], true) : [];
+                    if (empty($cmsSlides)) {
+                        $cmsSlides = [
+                            [
+                                'image' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80',
+                                'tagline_ar' => 'معتمدون دولياً SOLAS & ISO 9001',
+                                'tagline_en' => 'Certified SOLAS & ISO 9001',
+                                'title_white_ar' => 'أليكس مارين رائدة',
+                                'title_white_en' => 'ALEX MARINE Leading',
+                                'title_highlight_ar' => 'التوريدات البحرية والموانئ',
+                                'title_highlight_en' => 'Marine & Port Supplies',
+                                'desc_ar' => 'الشريك الاستراتيجي لتموين وتجهيز السفن التجارية وخطوط الملاحة في كافة الموانئ المصرية على مدار الساعة.',
+                                'desc_en' => 'Strategic partner for commercial vessel provisioning and technical safety gear across all Egyptian ports 24/7.',
+                                'btn1_text_ar' => 'اطلب عرض سعر سريع',
+                                'btn1_text_en' => 'Request Instant Quote',
+                                'btn1_url' => '/quote',
+                                'btn2_text_ar' => 'تصفح الكتالوج المعتمد',
+                                'btn2_text_en' => 'Explore Certified Catalog',
+                                'btn2_url' => '/products',
+                            ],
+                            [
+                                'image' => 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1920&q=80',
+                                'tagline_ar' => 'أحدث معدات السلامة ومهمات الإنقاذ البحري',
+                                'tagline_en' => 'Advanced Safety & Marine Rescue Gear',
+                                'title_white_ar' => 'طوافات نجاة وتجهيزات',
+                                'title_white_en' => 'Liferafts & Immersion',
+                                'title_highlight_ar' => 'الأمن الصناعي والسلامة',
+                                'title_highlight_en' => 'Suits & Safety Systems',
+                                'desc_ar' => 'توريد وفحص واختبار كافة معدات النجاة، أطواق وسترات النجاة، وبدلات الغمر الحرارية، ومنظومات مكافحة الحريق البحرية.',
+                                'desc_en' => 'Supplying and inspecting certified liferafts, lifejackets, immersion suits, and advanced vessel firefighting systems.',
+                                'btn1_text_ar' => 'تواصل عبر واتساب',
+                                'btn1_text_en' => 'WhatsApp Support',
+                                'btn1_url' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', $settings['contact_whatsapp'] ?? '+201200001122'),
+                                'btn2_text_ar' => 'مشروعات الصيانة',
+                                'btn2_text_en' => 'Maintenance Cases',
+                                'btn2_url' => '/projects',
+                            ]
+                        ];
+                    }
+                @endphp
+                <div class="mb-4 p-3 bg-white rounded-3 border shadow-sm">
+                    <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom flex-wrap gap-2">
+                        <div>
+                            <h6 class="fw-bold text-navy mb-0 d-flex align-items-center gap-2">
+                                <i class="bi bi-collection-play-fill text-warning fs-5"></i>
+                                <span>إدارة شرائح السلايدر (Hero Slides Manager)</span>
+                            </h6>
+                            <small class="text-muted">تخصيص صور وعناوين وأزرار كل شريحة تظهر في الهيرو سكشن عند اختيار وضع السلايدر</small>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" id="btnAddSlide">
+                            <i class="bi bi-plus-circle me-1"></i> إضافة شريحة جديدة
+                        </button>
+                    </div>
+
+                    <div id="heroSlidesContainer" class="d-flex flex-column gap-3">
+                        @foreach($cmsSlides as $sIdx => $s)
+                            <div class="card border rounded-3 p-3 bg-light hero-slide-card" data-slide-index="{{ $sIdx }}">
+                                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                                    <span class="badge bg-dark text-white px-3 py-1.5 rounded-pill fw-bold fs-7">
+                                        <i class="bi bi-layers me-1 text-warning"></i> الشريحة #<span class="slide-num">{{ $sIdx + 1 }}</span>
+                                    </span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-1 btn-delete-slide" title="حذف هذه الشريحة">
+                                        <i class="bi bi-trash3-fill"></i> حذف
+                                    </button>
+                                </div>
+
+                                <div class="row g-3">
+                                    <!-- Slide Image -->
+                                    <div class="col-md-4">
+                                        <label class="form-label fs-8 fw-bold text-dark">صورة الخلفية للشريحة</label>
+                                        @if(!empty($s['image']))
+                                            <div class="mb-2 p-1 bg-white rounded border text-center">
+                                                @php
+                                                    $sImgP = \Illuminate\Support\Str::startsWith($s['image'], ['http://', 'https://']) ? $s['image'] : asset($s['image']);
+                                                @endphp
+                                                <img src="{{ $sImgP }}" alt="Slide Preview" style="max-height: 75px; width: 100%; object-fit: cover;" class="rounded">
+                                            </div>
+                                        @endif
+                                        <input type="file" name="hero_slide_files[{{ $sIdx }}]" class="form-control form-control-sm mb-1" accept="image/*">
+                                        <input type="text" name="hero_slides[{{ $sIdx }}][image]" class="form-control form-control-sm" value="{{ $s['image'] ?? '' }}" placeholder="أو رابط مباشر: https://...">
+                                    </div>
+
+                                    <!-- Tagline -->
+                                    <div class="col-md-4">
+                                        <label class="form-label fs-8 fw-bold text-dark">التاغ الفرعي (عربي)</label>
+                                        <input type="text" name="hero_slides[{{ $sIdx }}][tagline_ar]" class="form-control form-control-sm mb-2" value="{{ $s['tagline_ar'] ?? '' }}">
+
+                                        <label class="form-label fs-8 fw-bold text-dark">Top Tagline (EN)</label>
+                                        <input type="text" name="hero_slides[{{ $sIdx }}][tagline_en]" class="form-control form-control-sm" value="{{ $s['tagline_en'] ?? '' }}">
+                                    </div>
+
+                                    <!-- Main Title White & Gold Highlight -->
+                                    <div class="col-md-4">
+                                        <label class="form-label fs-8 fw-bold text-dark">العنوان الأبيض (عربي)</label>
+                                        <input type="text" name="hero_slides[{{ $sIdx }}][title_white_ar]" class="form-control form-control-sm mb-1" value="{{ $s['title_white_ar'] ?? '' }}">
+
+                                        <label class="form-label fs-8 fw-bold text-warning">العنوان الذهبي المميز (عربي)</label>
+                                        <input type="text" name="hero_slides[{{ $sIdx }}][title_highlight_ar]" class="form-control form-control-sm" value="{{ $s['title_highlight_ar'] ?? '' }}">
+                                    </div>
+
+                                    <!-- English Title -->
+                                    <div class="col-md-6">
+                                        <div class="p-2 bg-white rounded border">
+                                            <label class="form-label fs-8 fw-bold text-muted">Title White & Highlight (EN)</label>
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <input type="text" name="hero_slides[{{ $sIdx }}][title_white_en]" class="form-control form-control-sm" value="{{ $s['title_white_en'] ?? '' }}" placeholder="White Title (EN)">
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" name="hero_slides[{{ $sIdx }}][title_highlight_en]" class="form-control form-control-sm" value="{{ $s['title_highlight_en'] ?? '' }}" placeholder="Gold Title (EN)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="col-md-6">
+                                        <label class="form-label fs-8 fw-bold text-dark">وصف الشريحة (عربي / EN)</label>
+                                        <textarea name="hero_slides[{{ $sIdx }}][desc_ar]" class="form-control form-control-sm mb-1" rows="1" placeholder="الوصف بالعربي">{{ $s['desc_ar'] ?? '' }}</textarea>
+                                        <textarea name="hero_slides[{{ $sIdx }}][desc_en]" class="form-control form-control-sm" rows="1" placeholder="English Description">{{ $s['desc_en'] ?? '' }}</textarea>
+                                    </div>
+
+                                    <!-- Buttons CTA -->
+                                    <div class="col-md-6">
+                                        <label class="form-label fs-8 fw-bold text-dark">الزر الأول (Gold Button)</label>
+                                        <div class="row g-1">
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn1_text_ar]" class="form-control form-control-sm" value="{{ $s['btn1_text_ar'] ?? '' }}" placeholder="النص بالعربي">
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn1_text_en]" class="form-control form-control-sm" value="{{ $s['btn1_text_en'] ?? '' }}" placeholder="Text EN">
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn1_url]" class="form-control form-control-sm" value="{{ $s['btn1_url'] ?? '' }}" placeholder="الرابط">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label fs-8 fw-bold text-dark">الزر الثاني (Glass Button)</label>
+                                        <div class="row g-1">
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn2_text_ar]" class="form-control form-control-sm" value="{{ $s['btn2_text_ar'] ?? '' }}" placeholder="النص بالعربي">
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn2_text_en]" class="form-control form-control-sm" value="{{ $s['btn2_text_en'] ?? '' }}" placeholder="Text EN">
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" name="hero_slides[{{ $sIdx }}][btn2_url]" class="form-control form-control-sm" value="{{ $s['btn2_url'] ?? '' }}" placeholder="الرابط">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -435,5 +601,168 @@
 
     </div>
 </form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('heroSlidesContainer');
+    const btnAdd = document.getElementById('btnAddSlide');
+    const sliderConfigCard = document.getElementById('heroSliderConfigCard');
+    const mediaRadios = document.querySelectorAll('input[name="hero_media_type"]');
+
+    // Update numbers on slides
+    function updateSlideBadges() {
+        const cards = container.querySelectorAll('.hero-slide-card');
+        cards.forEach((card, idx) => {
+            const badgeNum = card.querySelector('.slide-num');
+            if (badgeNum) {
+                badgeNum.textContent = idx + 1;
+            }
+            // Re-index form field names
+            card.querySelectorAll('input, textarea').forEach(input => {
+                if (input.name) {
+                    input.name = input.name.replace(/hero_slides\[\d+\]/, `hero_slides[${idx}]`)
+                                          .replace(/hero_slide_files\[\d+\]/, `hero_slide_files[${idx}]`);
+                }
+            });
+        });
+    }
+
+    // Add Slide
+    if (btnAdd && container) {
+        btnAdd.addEventListener('click', function() {
+            const currentCount = container.querySelectorAll('.hero-slide-card').length;
+            const newIndex = currentCount;
+
+            const slideCard = document.createElement('div');
+            slideCard.className = 'card border rounded-3 p-3 bg-light hero-slide-card';
+            slideCard.setAttribute('data-slide-index', newIndex);
+
+            slideCard.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                    <span class="badge bg-dark text-white px-3 py-1.5 rounded-pill fw-bold fs-7">
+                        <i class="bi bi-layers me-1 text-warning"></i> الشريحة #<span class="slide-num">${newIndex + 1}</span>
+                    </span>
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2.5 py-1 btn-delete-slide" title="حذف هذه الشريحة">
+                        <i class="bi bi-trash3-fill"></i> حذف
+                    </button>
+                </div>
+
+                <div class="row g-3">
+                    <!-- Slide Image -->
+                    <div class="col-md-4">
+                        <label class="form-label fs-8 fw-bold text-dark">صورة الخلفية للشريحة</label>
+                        <input type="file" name="hero_slide_files[${newIndex}]" class="form-control form-control-sm mb-1" accept="image/*">
+                        <input type="text" name="hero_slides[${newIndex}][image]" class="form-control form-control-sm" placeholder="أو رابط مباشر: https://...">
+                    </div>
+
+                    <!-- Tagline -->
+                    <div class="col-md-4">
+                        <label class="form-label fs-8 fw-bold text-dark">التاغ الفرعي (عربي)</label>
+                        <input type="text" name="hero_slides[${newIndex}][tagline_ar]" class="form-control form-control-sm mb-2" placeholder="مثال: تجهيزات بحرية متطورة">
+
+                        <label class="form-label fs-8 fw-bold text-dark">Top Tagline (EN)</label>
+                        <input type="text" name="hero_slides[${newIndex}][tagline_en]" class="form-control form-control-sm" placeholder="e.g. Advanced Marine Fleet">
+                    </div>
+
+                    <!-- Main Title White & Gold Highlight -->
+                    <div class="col-md-4">
+                        <label class="form-label fs-8 fw-bold text-dark">العنوان الأبيض (عربي)</label>
+                        <input type="text" name="hero_slides[${newIndex}][title_white_ar]" class="form-control form-control-sm mb-1" placeholder="العنوان الرئيسي">
+
+                        <label class="form-label fs-8 fw-bold text-warning">العنوان الذهبي المميز (عربي)</label>
+                        <input type="text" name="hero_slides[${newIndex}][title_highlight_ar]" class="form-control form-control-sm" placeholder="الكلمة المميزة">
+                    </div>
+
+                    <!-- English Title -->
+                    <div class="col-md-6">
+                        <div class="p-2 bg-white rounded border">
+                            <label class="form-label fs-8 fw-bold text-muted">Title White & Highlight (EN)</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="text" name="hero_slides[${newIndex}][title_white_en]" class="form-control form-control-sm" placeholder="White Title (EN)">
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" name="hero_slides[${newIndex}][title_highlight_en]" class="form-control form-control-sm" placeholder="Gold Title (EN)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-md-6">
+                        <label class="form-label fs-8 fw-bold text-dark">وصف الشريحة (عربي / EN)</label>
+                        <textarea name="hero_slides[${newIndex}][desc_ar]" class="form-control form-control-sm mb-1" rows="1" placeholder="الوصف بالعربي"></textarea>
+                        <textarea name="hero_slides[${newIndex}][desc_en]" class="form-control form-control-sm" rows="1" placeholder="English Description"></textarea>
+                    </div>
+
+                    <!-- Buttons CTA -->
+                    <div class="col-md-6">
+                        <label class="form-label fs-8 fw-bold text-dark">الزر الأول (Gold Button)</label>
+                        <div class="row g-1">
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn1_text_ar]" class="form-control form-control-sm" placeholder="النص بالعربي" value="اطلب الآن">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn1_text_en]" class="form-control form-control-sm" placeholder="Text EN" value="Order Now">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn1_url]" class="form-control form-control-sm" placeholder="الرابط" value="#fleet">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fs-8 fw-bold text-dark">الزر الثاني (Glass Button)</label>
+                        <div class="row g-1">
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn2_text_ar]" class="form-control form-control-sm" placeholder="النص بالعربي" value="تواصل معنا">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn2_text_en]" class="form-control form-control-sm" placeholder="Text EN" value="Contact Us">
+                            </div>
+                            <div class="col-4">
+                                <input type="text" name="hero_slides[${newIndex}][btn2_url]" class="form-control form-control-sm" placeholder="الرابط" value="#contact">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(slideCard);
+            updateSlideBadges();
+            slideCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+
+    // Delete Slide Delegation
+    if (container) {
+        container.addEventListener('click', function(e) {
+            const btnDelete = e.target.closest('.btn-delete-slide');
+            if (btnDelete) {
+                const card = btnDelete.closest('.hero-slide-card');
+                if (card) {
+                    if (confirm('هل أنت متأكد من حذف هذه الشريحة؟')) {
+                        card.remove();
+                        updateSlideBadges();
+                    }
+                }
+            }
+        });
+    }
+
+    // Radio change visual hint
+    mediaRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'slider' && sliderConfigCard) {
+                sliderConfigCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                sliderConfigCard.classList.add('border-primary');
+                setTimeout(() => {
+                    sliderConfigCard.classList.remove('border-primary');
+                }, 1500);
+            }
+        });
+    });
+});
+</script>
 
 @endsection

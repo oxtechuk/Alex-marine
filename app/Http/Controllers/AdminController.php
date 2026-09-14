@@ -714,6 +714,8 @@ class AdminController extends Controller
             'site_logo_header_file',
             'category_image_files',
             'category_images',
+            'hero_slides',
+            'hero_slide_files',
         ]);
 
         // Ensure directories exist
@@ -756,6 +758,29 @@ class AdminController extends Controller
             $filename = 'about_logo_'.time().'.'.$file->getClientOriginalExtension();
             $file->move($cmsUploads, $filename);
             $data['about_section_image'] = '/uploads/cms/'.$filename;
+        }
+
+        // Handle Hero Carousel / Slides
+        if ($request->has('hero_slides')) {
+            $slides = $request->input('hero_slides');
+            if (is_array($slides)) {
+                if ($request->hasFile('hero_slide_files')) {
+                    foreach ($request->file('hero_slide_files') as $idx => $slideFile) {
+                        if ($slideFile && isset($slides[$idx])) {
+                            $filename = 'hero_slide_'.$idx.'_'.time().'.'.$slideFile->getClientOriginalExtension();
+                            $slideFile->move($cmsUploads, $filename);
+                            $slides[$idx]['image'] = '/uploads/cms/'.$filename;
+                        }
+                    }
+                }
+                $cleanSlides = [];
+                foreach ($slides as $s) {
+                    if (! empty($s['image']) || ! empty($s['title_white_ar']) || ! empty($s['title_highlight_ar']) || ! empty($s['title_white_en']) || ! empty($s['title_highlight_en'])) {
+                        $cleanSlides[] = $s;
+                    }
+                }
+                Setting::set('hero_slides', json_encode($cleanSlides, JSON_UNESCAPED_UNICODE));
+            }
         }
 
         // Clean YouTube ID from full URL
@@ -1105,9 +1130,10 @@ class AdminController extends Controller
     {
         try {
             Artisan::call('optimize:clear');
+
             return back()->with('success', 'تم تنظيف الكاش وإعادة بناء إعدادات النظام بنجاح.');
         } catch (\Throwable $e) {
-            return back()->with('error', 'حدث خطأ أثناء تنظيف الكاش: ' . $e->getMessage());
+            return back()->with('error', 'حدث خطأ أثناء تنظيف الكاش: '.$e->getMessage());
         }
     }
 
@@ -1118,9 +1144,10 @@ class AdminController extends Controller
     {
         try {
             Artisan::call('storage:link');
+
             return back()->with('success', 'تم ربط مجلد التخزين بالملفات العامة بنجاح (Storage Link Created).');
         } catch (\Throwable $e) {
-            return back()->with('error', 'حدث خطأ أثناء ربط التخزين: ' . $e->getMessage());
+            return back()->with('error', 'حدث خطأ أثناء ربط التخزين: '.$e->getMessage());
         }
     }
 }

@@ -703,6 +703,68 @@
                 font-size: 0.98rem !important;
             }
         }
+
+        /* ─────────────────────────────────────────────────────────────
+           LUXURY ALEX MARINE PAGINATION STYLING & SVG FAILSAFE
+        ───────────────────────────────────────────────────────────── */
+        .pagination svg,
+        nav[role="navigation"] svg {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+            max-width: 20px !important;
+            max-height: 20px !important;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .pagination {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+            padding: 0;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        .page-item .page-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 42px;
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 12px !important;
+            border: 1px solid #E2E8F0;
+            background: #FFFFFF;
+            color: #0A1D37;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            box-shadow: 0 2px 6px rgba(10, 29, 55, 0.04);
+        }
+        .page-item .page-link:hover {
+            background: #F8FAFC;
+            border-color: #E5A919;
+            color: #E5A919;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(229, 169, 25, 0.2);
+        }
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, #0A1D37 0%, #0D3B66 100%) !important;
+            border-color: #0A1D37 !important;
+            color: #FAD961 !important;
+            box-shadow: 0 6px 18px rgba(10, 29, 55, 0.25) !important;
+        }
+        .page-item.disabled .page-link {
+            background: #F1F5F9;
+            border-color: #E2E8F0;
+            color: #94A3B8;
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
     </style>
     @stack('styles')
 </head>

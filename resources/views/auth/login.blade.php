@@ -11,8 +11,14 @@
     <div class="container">
         <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 mx-auto bg-white" style="max-width: 480px;">
             <div class="text-center mb-4">
+                @php
+                    $siteLogo = \App\Models\Setting::get('site_logo_header', '');
+                    $logoUrl = !empty($siteLogo) ? (\Illuminate\Support\Str::startsWith($siteLogo, ['http://', 'https://']) ? $siteLogo : asset($siteLogo)) : asset('uploads/Alex-marin.svg');
+                @endphp
                 <a href="{{ route('home') }}" class="d-inline-flex align-items-center justify-content-center text-decoration-none mb-3">
-                    <div class="d-flex align-items-center gap-2">
+                    <img src="{{ $logoUrl }}" alt="ALEX MARINE" style="max-height: 58px; max-width: 220px; width: auto; object-fit: contain;"
+                         onerror="this.style.display='none'; this.nextElementSibling.classList.remove('d-none'); this.nextElementSibling.classList.add('d-flex');">
+                    <div class="d-none align-items-center gap-2">
                         <div class="d-flex align-items-center justify-content-center rounded-circle shadow-sm" style="width:48px;height:48px;background:var(--alex-navy-dark, #0A1D37);border:1.5px solid var(--alex-gold, #D4AF37);">
                             <i class="bi bi-anchor" style="font-size:1.5rem;color:var(--alex-gold, #D4AF37);"></i>
                         </div>

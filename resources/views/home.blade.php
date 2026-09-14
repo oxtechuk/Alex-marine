@@ -37,6 +37,69 @@
     $heroCtaText           = Setting::get('hero_cta_text_'.$locale, $isEn ? 'Explore Catalog' : 'تصفح خدماتنا ومنتجاتنا');
     $heroCtaText           = trim($heroCtaText, " .\t\n\r\0\x0B");
 
+    // Hero Slides (Multi-Slide Carousel)
+    $heroSlidesRaw = Setting::get('hero_slides', '');
+    $heroSlides = !empty($heroSlidesRaw) ? json_decode($heroSlidesRaw, true) : null;
+    if (empty($heroSlides) || !is_array($heroSlides)) {
+        $defaultLocalHero = file_exists(public_path('uploads/cms/hero_img_1787748190.png'))
+            ? '/uploads/cms/hero_img_1787748190.png'
+            : 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=2560&q=85';
+
+        $heroSlides = [
+            [
+                'image' => $defaultLocalHero,
+                'tagline_ar' => 'معتمدون دولياً SOLAS & ISO 9001',
+                'tagline_en' => 'Certified SOLAS & ISO 9001',
+                'title_white_ar' => 'أليكس مارين لتجهيز',
+                'title_white_en' => 'ALEX MARINE Leading',
+                'title_highlight_ar' => 'السفن والتوريدات البحرية',
+                'title_highlight_en' => 'Marine & Port Supplies',
+                'desc_ar' => 'شريككم الاستراتيجي لتموين وتجهيز السفن التجارية وخطوط الملاحة في كافة الموانئ المصرية على مدار الساعة بأعلى معايير الجودة والسرعة.',
+                'desc_en' => 'Your strategic partner for commercial vessel provisioning and technical safety supplies across all Egyptian ports 24/7.',
+                'btn1_text_ar' => 'اطلب عرض سعر سريع',
+                'btn1_text_en' => 'Request Instant Quote',
+                'btn1_url' => route('quote.index'),
+                'btn2_text_ar' => 'تصفح الكتالوج المعتمد',
+                'btn2_text_en' => 'Explore Certified Catalog',
+                'btn2_url' => route('products.index'),
+            ],
+            [
+                'image' => 'https://images.unsplash.com/photo-1505705694340-019e1e335916?auto=format&fit=crop&w=2560&q=85',
+                'tagline_ar' => 'مهمات سلامة وإنقاذ بحري معتمدة دولياً',
+                'tagline_en' => 'Certified Marine Safety & Rescue Gear',
+                'title_white_ar' => 'طوافات نجاة وتجهيزات',
+                'title_white_en' => 'Liferafts & Immersion',
+                'title_highlight_ar' => 'الأمن الصناعي والسلامة',
+                'title_highlight_en' => 'Suits & Safety Systems',
+                'desc_ar' => 'توريد وفحص واختبار كافة معدات النجاة، أطواق وسترات النجاة، وبدلات الغمر الحرارية، ومنظومات مكافحة الحريق البحرية المتطورة.',
+                'desc_en' => 'Supplying and inspecting certified liferafts, lifejackets, immersion suits, and advanced vessel firefighting systems.',
+                'btn1_text_ar' => 'تواصل عبر واتساب',
+                'btn1_text_en' => 'WhatsApp Support',
+                'btn1_url' => 'https://wa.me/' . preg_replace('/[^0-9]/', '', Setting::get('contact_whatsapp', '+201200001122')),
+                'btn2_text_ar' => 'مشروعات الصيانة',
+                'btn2_text_en' => 'Maintenance Cases',
+                'btn2_url' => route('projects.index'),
+            ],
+            [
+                'image' => 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=2560&q=85',
+                'tagline_ar' => 'فريق هندسي متخصص للمنظومات البحرية',
+                'tagline_en' => 'Specialized Marine Engineering Team',
+                'title_white_ar' => 'صيانة وفحص دوري',
+                'title_white_en' => 'Technical Overhaul &',
+                'title_highlight_ar' => 'شامل للمعدات الملاحية',
+                'title_highlight_en' => 'Vessel Maintenance',
+                'desc_ar' => 'فحص وصيانة أجهزة التنفس SCBA، معايرة أجهزة كشف الغازات، وتعبئة واختبار أسطوانات ثاني أكسيد الكربون CO2 للسفن.',
+                'desc_en' => 'Comprehensive inspection of SCBA breathing apparatus, gas detector calibration, and CO2 fire extinguishing cylinder hydrostatic testing.',
+                'btn1_text_ar' => 'طلب صيانة ومعايرة',
+                'btn1_text_en' => 'Request Maintenance',
+                'btn1_url' => route('quote.index'),
+                'btn2_text_ar' => 'استعراض الخدمات',
+                'btn2_text_en' => 'View All Services',
+                'btn2_url' => route('services.index'),
+            ],
+        ];
+    }
+
     // Stats
     $stat1Num   = Setting::get('hero_stat1_number', '50');
     $stat1Label = Setting::get('hero_stat1_label_'.$locale, $isEn ? 'Ports & Vessels Served' : 'موانئ وسفن مخدومة');
@@ -55,7 +118,21 @@
     $secCta       = Setting::get('section_cta_active',      '1') == '1';
 
     $contactWhatsapp = Setting::get('contact_whatsapp', '+201200001122');
+
+    $firstHeroImage = '';
+    if ($heroMediaType === 'slider' && !empty($heroSlides[0]['image'])) {
+        $firstRaw = $heroSlides[0]['image'];
+        $firstHeroImage = \Illuminate\Support\Str::startsWith($firstRaw, ['http://', 'https://']) ? $firstRaw : asset($firstRaw);
+    } elseif ($heroMediaType === 'image' && !empty($heroBgImage)) {
+        $firstHeroImage = $heroBgImage;
+    }
 @endphp
+
+@push('styles')
+@if(!empty($firstHeroImage))
+    <link rel="preload" as="image" href="{{ $firstHeroImage }}" fetchpriority="high">
+@endif
+@endpush
 
 @section('title', $isEn ? 'ALEX MARINE — Marine & Industrial Safety Supplies' : 'أليكس مارين — التوريدات البحرية والأمن الصناعي')
 
@@ -66,31 +143,124 @@
 ═══════════════════════════════════════════════ --}}
 @if($secHero)
 <div class="econ-hero-frame-wrap">
-    <section class="econ-hero-container" id="hero-section">
+    <section class="econ-hero-container {{ $heroMediaType === 'slider' ? 'econ-hero-slider-active' : '' }}" id="hero-section">
 
-        {{-- Background Media --}}
-        <div class="econ-hero-media-wrapper">
-            @if($heroMediaType === 'video' && !empty($heroBgVideo))
-                <video class="econ-hero-bg-video" autoplay loop muted playsinline>
-                    <source src="{{ $heroBgVideo }}" type="video/mp4">
-                </video>
-            @elseif($heroMediaType === 'youtube' && !empty($heroYoutubeId))
-                <iframe class="econ-hero-youtube-iframe"
-                        src="https://www.youtube-nocookie.com/embed/{{ $heroYoutubeId }}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist={{ $heroYoutubeId }}&playsinline=1"
-                        frameborder="0"
-                        allow="autoplay; encrypted-media; picture-in-picture"
-                        allowfullscreen>
-                </iframe>
-            @else
-                <div class="econ-hero-bg-img" style="background-image: url('{{ $heroBgImage }}');"></div>
-            @endif
-        </div>
+        @if($heroMediaType === 'slider')
+            {{-- MULTI-SLIDE CAROUSEL HERO --}}
+            <div id="econHeroCarousel" class="carousel slide carousel-fade econ-hero-carousel position-absolute inset-0 w-100 h-100" data-bs-ride="carousel" data-bs-interval="6500" style="z-index: 1;">
+                
+                {{-- Carousel Indicators --}}
+                <div class="carousel-indicators econ-hero-indicators" style="z-index: 22;">
+                    @foreach($heroSlides as $idx => $slide)
+                        <button type="button" data-bs-target="#econHeroCarousel" data-bs-slide-to="{{ $idx }}" class="{{ $idx === 0 ? 'active' : '' }}" aria-current="{{ $idx === 0 ? 'true' : 'false' }}" aria-label="Slide {{ $idx + 1 }}"></button>
+                    @endforeach
+                </div>
 
-        {{-- Overlay Gradient --}}
-        <div class="econ-hero-overlay"></div>
+                {{-- Carousel Inner --}}
+                <div class="carousel-inner w-100 h-100">
+                    @foreach($heroSlides as $idx => $slide)
+                        @php
+                            $sImgRaw = $slide['image'] ?? 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1920&q=80';
+                            $sImg = \Illuminate\Support\Str::startsWith($sImgRaw, ['http://', 'https://']) ? $sImgRaw : asset($sImgRaw);
+                            $sTagline = $isEn ? ($slide['tagline_en'] ?? $slide['tagline_ar'] ?? '') : ($slide['tagline_ar'] ?? $slide['tagline_en'] ?? '');
+                            $sTitleWhite = $isEn ? ($slide['title_white_en'] ?? $slide['title_white_ar'] ?? '') : ($slide['title_white_ar'] ?? $slide['title_white_en'] ?? '');
+                            $sTitleHighlight = $isEn ? ($slide['title_highlight_en'] ?? $slide['title_highlight_ar'] ?? '') : ($slide['title_highlight_ar'] ?? $slide['title_highlight_en'] ?? '');
+                            $sDesc = $isEn ? ($slide['desc_en'] ?? $slide['desc_ar'] ?? '') : ($slide['desc_ar'] ?? $slide['desc_en'] ?? '');
+                            $sBtn1Text = $isEn ? ($slide['btn1_text_en'] ?? $slide['btn1_text_ar'] ?? 'Request Quote') : ($slide['btn1_text_ar'] ?? $slide['btn1_text_en'] ?? 'اطلب عرض سعر');
+                            $sBtn1Url = !empty($slide['btn1_url']) ? $slide['btn1_url'] : route('quote.index');
+                            $sBtn2Text = $isEn ? ($slide['btn2_text_en'] ?? $slide['btn2_text_ar'] ?? 'Our Products') : ($slide['btn2_text_ar'] ?? $slide['btn2_text_en'] ?? 'تصفح خدماتنا ومنتجاتنا');
+                            $sBtn2Url = !empty($slide['btn2_url']) ? $slide['btn2_url'] : route('products.index');
+                        @endphp
+                        <div class="carousel-item {{ $idx === 0 ? 'active' : '' }} w-100 h-100">
+                            <!-- Background Image with First-Slide Priority & Next-Slide Lazy Load -->
+                            <div class="econ-hero-media-wrapper">
+                                @if($idx === 0)
+                                    <div class="econ-hero-bg-img is-loaded" style="background-image: url('{{ $sImg }}');"></div>
+                                @else
+                                    <div class="econ-hero-bg-img econ-hero-lazy-bg" data-bg="{{ $sImg }}"></div>
+                                @endif
+                            </div>
+                            <!-- Overlay Gradient -->
+                            <div class="econ-hero-overlay"></div>
+
+                            <!-- Slide Middle Content -->
+                            <div class="econ-hero-slide-middle">
+                                <div class="row align-items-center h-100 m-0">
+                                    <div class="col-12 col-md-11 col-lg-8 col-xl-7 p-0 econ-hero-text-col">
+                                        @if(!empty($sTagline))
+                                            <div class="hero-tagline-badge mb-2 mb-md-3 hero-anim-tagline">
+                                                <i class="bi bi-shield-check"></i>
+                                                <span>{{ $sTagline }}</span>
+                                            </div>
+                                        @endif
+
+                                        @if(!empty($sTitleWhite) || !empty($sTitleHighlight))
+                                            <h1 class="econ-hero-mockup-title hero-anim-title">
+                                                @if(!empty($sTitleWhite))
+                                                    <span class="hero-title-white-part">{{ $sTitleWhite }}</span>
+                                                @endif
+                                                @if(!empty($sTitleHighlight))
+                                                    <span class="hero-title-gold-part">{{ $sTitleHighlight }}</span>
+                                                @endif
+                                            </h1>
+                                        @endif
+
+                                        @if(!empty($sDesc))
+                                            <p class="econ-hero-mockup-desc hero-anim-desc">
+                                                {{ $sDesc }}
+                                            </p>
+                                        @endif
+
+                                        <div class="d-flex align-items-center gap-2 gap-sm-3 flex-wrap mt-3 mt-md-4 hero-anim-actions">
+                                            <a href="{{ $sBtn1Url }}" class="btn-hero-pill-gold">
+                                                <i class="bi bi-file-earmark-plus"></i>
+                                                <span>{{ $sBtn1Text }}</span>
+                                            </a>
+                                            <a href="{{ $sBtn2Url }}" class="btn-hero-pill-glass">
+                                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                                                <span>{{ $sBtn2Text }}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <!-- Slider Arrows (hidden on mobile) -->
+                <button class="carousel-control-prev econ-hero-arrow-btn econ-hero-arrow-prev d-none d-md-flex" type="button" data-bs-target="#econHeroCarousel" data-bs-slide="prev" aria-label="Previous Slide">
+                    <i class="bi bi-chevron-{{ $isEn ? 'left' : 'right' }}"></i>
+                </button>
+                <button class="carousel-control-next econ-hero-arrow-btn econ-hero-arrow-next d-none d-md-flex" type="button" data-bs-target="#econHeroCarousel" data-bs-slide="next" aria-label="Next Slide">
+                    <i class="bi bi-chevron-{{ $isEn ? 'right' : 'left' }}"></i>
+                </button>
+            </div>
+
+        @else
+            {{-- SINGLE MEDIA HERO (IMAGE / VIDEO / YOUTUBE) --}}
+            <div class="econ-hero-media-wrapper">
+                @if($heroMediaType === 'video' && !empty($heroBgVideo))
+                    <video class="econ-hero-bg-video" autoplay loop muted playsinline>
+                        <source src="{{ $heroBgVideo }}" type="video/mp4">
+                    </video>
+                @elseif($heroMediaType === 'youtube' && !empty($heroYoutubeId))
+                    <iframe class="econ-hero-youtube-iframe"
+                            src="https://www.youtube-nocookie.com/embed/{{ $heroYoutubeId }}?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist={{ $heroYoutubeId }}&playsinline=1"
+                            frameborder="0"
+                            allow="autoplay; encrypted-media; picture-in-picture"
+                            allowfullscreen>
+                    </iframe>
+                @else
+                    <div class="econ-hero-bg-img is-loaded" style="background-image: url('{{ $heroBgImage }}');"></div>
+                @endif
+            </div>
+
+            <div class="econ-hero-overlay"></div>
+        @endif
 
         {{-- Top Integrated Header Bar --}}
-        <div class="econ-hero-top-bar hero-anim-nav">
+        <div class="econ-hero-top-bar hero-anim-nav position-relative" style="z-index: 25;">
             {{-- Brand Logo --}}
             <a href="{{ route('home') }}" class="econ-hero-brand">
                 @php
@@ -158,13 +328,14 @@
             </div>
         </div>
 
-        {{-- Center / Middle Content Area --}}
-        <div class="econ-hero-middle-content">
-            <div class="row">
-                <div class="col-lg-9 col-xl-8">
+        @if($heroMediaType !== 'slider')
+        {{-- Center / Middle Content Area for Single Media Mode --}}
+        <div class="econ-hero-middle-content position-relative" style="z-index: 10;">
+            <div class="row align-items-center h-100 m-0">
+                <div class="col-12 col-md-11 col-lg-8 col-xl-7 p-0 econ-hero-text-col">
                     {{-- Tagline (Only if provided) --}}
                     @if(!empty($heroTagline))
-                        <div class="hero-tagline-badge mb-3 hero-anim-tagline">
+                        <div class="hero-tagline-badge mb-2 mb-md-3 hero-anim-tagline">
                             <i class="bi bi-shield-check"></i>
                             <span>{{ $heroTagline }}</span>
                         </div>
@@ -190,7 +361,7 @@
                     @endif
 
                     {{-- Action Pill Buttons --}}
-                    <div class="d-flex align-items-center gap-3 flex-wrap mt-4 hero-anim-actions">
+                    <div class="d-flex align-items-center gap-2 gap-sm-3 flex-wrap mt-3 mt-md-4 hero-anim-actions">
                         <a href="{{ route('quote.index') }}" class="btn-hero-pill-gold">
                             <i class="bi bi-file-earmark-plus"></i>
                             <span>{{ $isEn ? 'Request Quote' : 'اطلب عرض سعر' }}</span>
@@ -203,9 +374,10 @@
                 </div>
             </div>
         </div>
+        @endif
 
         {{-- Bottom Bar: Floating Social Circles --}}
-        <div class="econ-hero-bottom-bar hero-anim-footer">
+        <div class="econ-hero-bottom-bar hero-anim-footer position-relative" style="z-index: 25;">
             <div class="d-flex align-items-center gap-2">
                 <a href="https://facebook.com" target="_blank" class="hero-social-circle" title="Facebook">
                     <i class="bi bi-facebook"></i>
@@ -278,7 +450,7 @@
 
         {{-- View All CTA --}}
         <div class="text-center mt-4" data-aos="fade-up">
-            <a href="{{ route('products.index') }}" class="btn-alex-outline px-4 py-2.5">
+            <a href="{{ route('products.index') }}" class="btn-alex-primary px-4 py-2.5">
                 {{ $isEn ? 'View Full Product Catalog' : 'عرض جميع المنتجات' }}
                 <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }} ms-1"></i>
             </a>
@@ -485,7 +657,7 @@
                                 <i class="bi bi-collection-play-fill text-warning"></i>
                                 {{ $isEn ? 'Select Project Case' : 'قائمة مشروعات الصيانة' }}
                             </span>
-                            <span class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-30 rounded-pill px-2.5 py-1 fs-8 fw-bold">
+                            <span class="badge rounded-pill px-2.5 py-1 fs-8 fw-bold" style="background: rgba(229, 169, 25, 0.15); color: #F5BD2C; border: 1px solid rgba(229, 169, 25, 0.35);">
                                 {{ count($maintenanceProjects) }} {{ $isEn ? 'Projects' : 'مشروعات' }}
                             </span>
                         </div>
@@ -496,7 +668,7 @@
                                 @php
                                     $isFirst = $idx === 0;
                                 @endphp
-                                <div class="showcase-project-item rounded-3 p-3 transition-all {{ $isFirst ? 'active' : '' }}"
+                                <div class="showcase-project-item rounded-3 p-2.5 transition-all {{ $isFirst ? 'active' : '' }}"
                                      data-project-id="{{ $p->id }}"
                                      data-title="{{ $p->title }}"
                                      data-url="{{ route('projects.show', $p->slug) }}"
@@ -509,24 +681,24 @@
                                      data-vessel="{{ $p->vessel_type ?? '' }}"
                                      data-desc="{{ $p->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($p->description), 110) }}">
                                     
-                                    <div class="d-flex align-items-start gap-3">
+                                    <div class="d-flex align-items-start gap-2.5">
                                         <!-- Mini Thumb -->
-                                        <div class="showcase-thumb-box rounded-2 overflow-hidden flex-shrink-0 position-relative" style="width: 60px; height: 60px; background: #0A1D37;">
-                                            <img src="{{ $p->main_image_url }}" alt="{{ $p->title }}" class="w-100 h-100 object-fit-cover">
-                                            <span class="position-absolute bottom-0 inset-x-0 bg-warning text-dark text-center fw-bold" style="font-size: 8px; line-height: 13px;">B / A</span>
+                                        <div class="showcase-thumb-box rounded-3 overflow-hidden flex-shrink-0 position-relative" style="width: 66px; height: 66px; background: #0A1D37; border: 1px solid rgba(255,255,255,0.12);">
+                                            <img src="{{ $p->main_image_url }}" alt="{{ $p->title }}" class="w-100 h-100 object-fit-cover" loading="lazy">
+                                            <span class="position-absolute bottom-0 inset-x-0 text-center fw-bold" style="font-size: 8px; line-height: 14px; background: rgba(6,14,26,0.88); color: #E5A919; border-top: 1px solid rgba(229,169,25,0.25);">B / A</span>
                                         </div>
 
                                         <div class="flex-grow-1 min-w-0">
                                             <div class="d-flex align-items-center justify-content-between gap-1 mb-1">
-                                                <span class="badge bg-secondary bg-opacity-25 text-white-50 fs-9 rounded-pill px-2 py-0.5 text-truncate" style="max-width: 140px;">
+                                                <span class="badge rounded-pill px-2 py-0.5 text-truncate" style="background: rgba(255, 255, 255, 0.08); color: #cbd5e1; font-size: 0.72rem; max-width: 150px;">
                                                     <i class="bi {{ $p->service?->icon ?? 'bi-gear' }} me-1 text-warning"></i>
                                                     {{ $p->service ? $p->service->name : ($isEn ? 'Marine Maintenance' : 'صيانة بحرية') }}
                                                 </span>
                                                 <i class="bi bi-chevron-left showcase-item-arrow fs-8 text-white-50"></i>
                                             </div>
 
-                                            <!-- Clickable Project Title that goes to project show page -->
-                                            <h6 class="showcase-item-title fw-bold mb-1 text-truncate">
+                                            <!-- Project Title -->
+                                            <h6 class="showcase-item-title fw-bold mb-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.35; font-size: 0.88rem;">
                                                 <a href="{{ route('projects.show', $p->slug) }}" class="text-white text-decoration-none hover-gold transition-colors" title="{{ $isEn ? 'Open project details' : 'فتح تفاصيل المشروع' }}">
                                                     {{ $p->title }}
                                                 </a>
@@ -534,10 +706,10 @@
 
                                             <div class="d-flex align-items-center gap-2 text-white-50 fs-9">
                                                 @if($p->location)
-                                                    <span><i class="bi bi-geo-alt text-warning me-0.5"></i> {{ $p->location }}</span>
+                                                    <span class="text-truncate" style="max-width: 130px;"><i class="bi bi-geo-alt text-warning me-0.5"></i> {{ $p->location }}</span>
                                                 @endif
                                                 @if($p->duration)
-                                                    <span><i class="bi bi-clock-history text-warning me-0.5"></i> {{ $p->duration }}</span>
+                                                    <span class="text-nowrap"><i class="bi bi-clock-history text-warning me-0.5"></i> {{ $p->duration }}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -566,11 +738,11 @@
                 <div class="showcase-viewer-card rounded-4 overflow-hidden border border-secondary border-opacity-30 position-relative shadow-2xl h-100 d-flex flex-column" style="background: #0D1522; min-height: 520px;">
                     
                     <!-- Top Info Header of Active Project -->
-                    <div class="showcase-viewer-header p-3.5 px-4 border-bottom border-secondary border-opacity-20 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #111A28;">
-                        <div class="min-w-0">
-                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                <span id="showcaseActiveServiceBadge" class="badge bg-warning bg-opacity-15 text-warning border border-warning border-opacity-30 px-2.5 py-1 rounded-pill fs-8 fw-bold">
-                                    <i id="showcaseActiveServiceIcon" class="bi {{ $firstProj->service?->icon ?? 'bi-gear' }} me-1"></i>
+                    <div class="showcase-viewer-header p-3 px-4 border-bottom border-secondary border-opacity-20 d-flex flex-wrap align-items-center justify-content-between gap-3" style="background: #111A28;">
+                        <div class="min-w-0 flex-grow-1">
+                            <div class="d-flex align-items-center gap-2 mb-1.5 flex-wrap">
+                                <span id="showcaseActiveServiceBadge" class="badge rounded-pill px-3 py-1 fs-8 fw-bold d-inline-flex align-items-center gap-1.5" style="background: rgba(229, 169, 25, 0.15); color: #F5BD2C; border: 1px solid rgba(229, 169, 25, 0.35);">
+                                    <i id="showcaseActiveServiceIcon" class="bi {{ $firstProj->service?->icon ?? 'bi-gear' }}"></i>
                                     <span id="showcaseActiveServiceText">{{ $firstProj->service?->name ?? ($isEn ? 'Marine Maintenance' : 'صيانة بحرية') }}</span>
                                 </span>
                                 <span id="showcaseActiveMetaLocation" class="text-white-50 fs-8 d-flex align-items-center gap-1 {{ empty($firstProj->location) ? 'd-none' : '' }}">
@@ -581,7 +753,7 @@
                                 </span>
                             </div>
                             <!-- Clickable Title in Viewer -->
-                            <h4 class="fw-extrabold text-white m-0 text-truncate">
+                            <h4 class="fw-extrabold text-white m-0 text-truncate fs-5 fs-md-4">
                                 <a id="showcaseActiveTitleLink" href="{{ route('projects.show', $firstProj->slug) }}" class="text-white text-decoration-none hover-gold transition-colors" title="{{ $isEn ? 'Click to view full case study' : 'اضغط لعرض تفاصيل دراسة الحالة' }}">
                                     {{ $firstProj->title }}
                                 </a>
@@ -589,42 +761,42 @@
                         </div>
 
                         <!-- CTA Button to Project Details -->
-                        <a id="showcaseActiveBtnLink" href="{{ route('projects.show', $firstProj->slug) }}" class="btn btn-case-gold rounded-pill px-3.5 py-2 fs-7 fw-bold d-flex align-items-center gap-1.5 shadow-sm text-nowrap">
+                        <a id="showcaseActiveBtnLink" href="{{ route('projects.show', $firstProj->slug) }}" class="btn btn-case-gold rounded-pill px-3.5 py-2 fs-7 fw-bold d-inline-flex align-items-center gap-1.5 shadow-sm text-nowrap">
                             <span>{{ $isEn ? 'View Case Details' : 'عرض تفاصيل المشروع' }}</span>
                             <i class="bi bi-arrow-{{ $isEn ? 'right' : 'left' }}"></i>
                         </a>
                     </div>
 
                     <!-- Interactive Before / After Slider Box -->
-                    <div class="showcase-slider-container position-relative flex-grow-1 overflow-hidden" style="min-height: 400px; height: 440px; direction: ltr !important; text-align: left; user-select: none;">
+                    <div class="showcase-slider-container position-relative flex-grow-1 overflow-hidden" style="min-height: 420px; height: 460px; direction: ltr !important; text-align: left; user-select: none; background: #060E1A; cursor: ew-resize;" tabindex="0">
                         
                         <!-- AFTER Background Image (Full Width Underneath) -->
-                        <img id="showcaseAfterImg" src="{{ $firstProj->after_image_url }}" alt="After Maintenance" class="showcase-img position-absolute w-100 h-100 object-fit-cover user-select-none" style="top: 0; left: 0;">
+                        <img id="showcaseAfterImg" src="{{ $firstProj->after_image_url }}" alt="After Maintenance" class="showcase-img position-absolute w-100 h-100 user-select-none" style="top: 0; left: 0; object-fit: cover; object-position: center; pointer-events: none;" draggable="false" loading="lazy" decoding="async">
 
                         <!-- AFTER Label Pill (Bottom Right) -->
-                        <div class="case-pill-badge position-absolute bottom-0 end-0 m-3.5 badge bg-black bg-opacity-80 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-8 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 5;">
-                            <i class="bi bi-check2-circle text-success me-1"></i> AFTER (بعد الصيانة)
+                        <div class="case-pill-badge position-absolute bottom-0 end-0 m-3 px-3 py-1.5 rounded-pill fs-8 fw-bold shadow-lg" style="background: rgba(6, 14, 26, 0.88); backdrop-filter: blur(8px); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.4); z-index: 5; pointer-events: none;">
+                            <i class="bi bi-check2-circle me-1"></i> AFTER (بعد الصيانة)
                         </div>
 
                         <!-- BEFORE Foreground Clipped Image Container -->
-                        <div id="showcaseBeforeContainer" class="position-absolute overflow-hidden" style="top: 0; bottom: 0; left: 0; width: 50%; z-index: 10;">
-                            <img id="showcaseBeforeImg" src="{{ $firstProj->before_image_url }}" alt="Before Maintenance" class="showcase-img position-absolute user-select-none" style="top: 0; left: 0; height: 100%; object-fit: cover;">
+                        <div id="showcaseBeforeContainer" class="position-absolute overflow-hidden" style="top: 0; bottom: 0; left: 0; width: 50%; z-index: 10; border-right: 2px solid #E5A919; pointer-events: none;">
+                            <img id="showcaseBeforeImg" src="{{ $firstProj->before_image_url }}" alt="Before Maintenance" class="showcase-img position-absolute user-select-none" style="top: 0; left: 0; height: 100%; object-fit: cover; object-position: center; max-width: none !important; pointer-events: none;" draggable="false" loading="lazy" decoding="async">
 
                             <!-- BEFORE Label Pill (Bottom Left) -->
-                            <div class="case-pill-badge position-absolute bottom-0 start-0 m-3.5 badge bg-black bg-opacity-80 text-white border border-secondary border-opacity-50 px-3.5 py-2 rounded-pill fs-8 fw-bold letter-spacing-1 shadow-lg" style="direction: {{ $isEn ? 'ltr' : 'rtl' }}; z-index: 15;">
-                                <i class="bi bi-clock-history text-danger me-1"></i> BEFORE (قبل الصيانة)
+                            <div class="case-pill-badge position-absolute bottom-0 start-0 m-3 px-3 py-1.5 rounded-pill fs-8 fw-bold shadow-lg" style="background: rgba(6, 14, 26, 0.88); backdrop-filter: blur(8px); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.4); z-index: 15; pointer-events: none;">
+                                <i class="bi bi-clock-history me-1"></i> BEFORE (قبل الصيانة)
                             </div>
                         </div>
 
                         <!-- Drag Handle -->
-                        <div id="showcaseHandle" class="case-slider-handle position-absolute top-0 bottom-0 d-flex align-items-center justify-content-center" style="left: 50%; width: 4px; background: #E5A919; cursor: ew-resize; z-index: 25; transform: translateX(-50%);">
-                            <div class="case-handle-circle rounded-circle d-flex align-items-center justify-content-center shadow-2xl" style="width: 44px; height: 44px; background: #0A1D37; border: 2.5px solid #E5A919; color: #E5A919;">
+                        <div id="showcaseHandle" class="case-slider-handle position-absolute top-0 bottom-0 d-flex align-items-center justify-content-center" style="left: 50%; width: 4px; background: #E5A919; cursor: ew-resize; z-index: 25; transform: translateX(-50%); box-shadow: 0 0 12px rgba(229, 169, 25, 0.75);">
+                            <div class="case-handle-circle rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: #0A1D37; border: 2.5px solid #E5A919; color: #E5A919; box-shadow: 0 4px 20px rgba(0,0,0,0.8), 0 0 16px rgba(229, 169, 25, 0.6);">
                                 <i class="bi bi-arrows fs-5"></i>
                             </div>
                         </div>
 
                         <!-- Interactive Drag Hint Overlay (fades out on interaction) -->
-                        <div id="showcaseDragHint" class="position-absolute top-0 start-50 translate-middle-x mt-3 badge bg-black bg-opacity-75 text-warning border border-warning border-opacity-30 rounded-pill px-3 py-1.5 fs-8 pointer-events-none shadow-lg d-flex align-items-center gap-1.5" style="z-index: 30; transition: opacity 0.5s ease;">
+                        <div id="showcaseDragHint" class="position-absolute top-0 start-50 translate-middle-x mt-3 badge bg-black bg-opacity-75 text-warning border border-warning border-opacity-30 rounded-pill px-3.5 py-2 fs-8 pointer-events-none shadow-lg d-flex align-items-center gap-1.5" style="z-index: 30; transition: opacity 0.4s ease; backdrop-filter: blur(8px); pointer-events: none;">
                             <i class="bi bi-arrows-expand"></i>
                             <span>{{ $isEn ? 'Drag slider to compare Before & After' : 'اسحب المؤشر للمقارنة قبل وبعد الصيانة' }}</span>
                         </div>
@@ -633,10 +805,10 @@
 
                     <!-- Viewer Footer Note / Short Desc -->
                     <div class="p-3 px-4 bg-dark bg-opacity-70 border-top border-secondary border-opacity-20 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
-                        <p id="showcaseActiveDesc" class="text-white-50 fs-8 m-0 line-clamp-2" style="max-width: 680px;">
+                        <p id="showcaseActiveDesc" class="text-white-50 fs-8 m-0 line-clamp-2" style="max-width: 680px; line-height: 1.5;">
                             {{ $firstProj->short_desc ?: \Illuminate\Support\Str::limit(strip_tags($firstProj->description), 110) }}
                         </p>
-                        <span id="showcaseActiveVessel" class="text-warning fs-8 fw-bold text-nowrap {{ empty($firstProj->vessel_type) ? 'd-none' : '' }}">
+                        <span id="showcaseActiveVessel" class="badge rounded-pill px-3 py-1.5 fs-8 text-nowrap {{ empty($firstProj->vessel_type) ? 'd-none' : '' }}" style="background: rgba(229, 169, 25, 0.12); color: #F5BD2C; border: 1px solid rgba(229, 169, 25, 0.25);">
                             <i class="bi bi-shield-check me-1"></i> <span id="showcaseActiveVesselText">{{ $firstProj->vessel_type }}</span>
                         </span>
                     </div>
@@ -698,7 +870,6 @@
                         </a>
                         <div class="product-card-sku">SKU: {{ $prod->sku }}</div>
                         <div class="product-card-footer">
-                            
                             <a href="{{ $prodUrl }}"
                                class="btn-alex-primary py-1 px-2.5" style="font-size:0.8rem;">
                                 {{ $isEn ? 'Details' : 'تفاصيل' }}
@@ -722,7 +893,6 @@
 @if($secCta)
 <section class="cta-section" id="cta-section">
     <div class="container text-center" data-aos="fade-up">
-      
         <h2 class="cta-title">
             {{ $isEn ? 'Ready to Equip Your Vessel or Facility?' : 'جاهز لتجهيز سفينتك أو منشأتك الصناعية؟' }}
         </h2>
@@ -755,54 +925,59 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // ═════════════════════════════════════════════════════════════
+    // 1. FLEET CATEGORY PILLS AJAX FILTER
+    // ═════════════════════════════════════════════════════════════
     const pills = document.querySelectorAll('#fleet-category-pills .cat-pill');
     const gridWrapper = document.getElementById('fleet-grid-wrapper');
 
-    pills.forEach(pill => {
-        pill.addEventListener('click', function(e) {
-            e.preventDefault();
-            const url = this.getAttribute('data-url') || this.getAttribute('href');
+    if (pills.length && gridWrapper) {
+        pills.forEach(pill => {
+            pill.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = this.getAttribute('data-url') || this.getAttribute('href');
 
-            // Set active class
-            pills.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
+                // Set active class
+                pills.forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
 
-            if (!gridWrapper) return;
+                // Silk smooth opacity and transform transition
+                gridWrapper.style.transition = 'opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)';
+                gridWrapper.style.opacity = '0.35';
+                gridWrapper.style.transform = 'translateY(6px)';
 
-            // Silk smooth opacity and transform transition
-            gridWrapper.style.transition = 'opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)';
-            gridWrapper.style.opacity = '0.35';
-            gridWrapper.style.transform = 'translateY(6px)';
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'text/html'
+                    }
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Network error');
+                    return res.text();
+                })
+                .then(html => {
+                    gridWrapper.innerHTML = html;
+                    requestAnimationFrame(() => {
+                        gridWrapper.style.opacity = '1';
+                        gridWrapper.style.transform = 'translateY(0)';
+                    });
 
-            fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'text/html'
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Network error');
-                return res.text();
-            })
-            .then(html => {
-                gridWrapper.innerHTML = html;
-                requestAnimationFrame(() => {
+                    // Update URL in browser history without reload or page jumping
+                    window.history.pushState(null, '', url);
+                })
+                .catch(err => {
+                    console.error('Failed to load category products:', err);
                     gridWrapper.style.opacity = '1';
                     gridWrapper.style.transform = 'translateY(0)';
                 });
-
-                // Update URL in browser history without reload or page jumping
-                window.history.pushState(null, '', url);
-            })
-            .catch(err => {
-                console.error('Failed to load category products:', err);
-                gridWrapper.style.opacity = '1';
-                gridWrapper.style.transform = 'translateY(0)';
             });
         });
-    });
+    }
 
-    // Update carousel dot active styles on slide change
+    // ═════════════════════════════════════════════════════════════
+    // 2. CAROUSEL DOT ACTIVE STYLES ON SLIDE CHANGE
+    // ═════════════════════════════════════════════════════════════
     document.addEventListener('slid.bs.carousel', function(e) {
         if (e.target.id === 'fleetProductsCarousel') {
             const dots = e.target.querySelectorAll('[data-bs-slide-to]');
@@ -814,8 +989,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+    });
+
     // ═════════════════════════════════════════════════════════════
-    // HOME MAINTENANCE SHOWCASE: SIDEBAR SWITCHING & BEFORE/AFTER SLIDER
+    // 3. HERO CAROUSEL LAZY LOADING & PROGRESSIVE PREFETCHING
+    // ═════════════════════════════════════════════════════════════
+    const heroCarousel = document.getElementById('econHeroCarousel');
+    if (heroCarousel) {
+        const loadSlideBg = function(slideEl) {
+            if (!slideEl) return;
+            const lazyBg = slideEl.querySelector('.econ-hero-lazy-bg[data-bg]');
+            if (lazyBg && lazyBg.dataset.bg) {
+                const bgUrl = lazyBg.dataset.bg;
+                lazyBg.style.backgroundImage = `url('${bgUrl}')`;
+                lazyBg.removeAttribute('data-bg');
+                lazyBg.classList.add('is-loaded');
+            }
+        };
+
+        // When sliding to the next slide, load background instantly
+        heroCarousel.addEventListener('slide.bs.carousel', function(e) {
+            if (e.relatedTarget) {
+                loadSlideBg(e.relatedTarget);
+            }
+        });
+
+        // Background prefetch remaining slides during browser idle time (never blocks initial render)
+        const prefetchRemainingSlides = function() {
+            const lazySlides = heroCarousel.querySelectorAll('.econ-hero-lazy-bg[data-bg]');
+            lazySlides.forEach(function(lazyEl, index) {
+                setTimeout(function() {
+                    if (lazyEl.dataset.bg) {
+                        const preloader = new Image();
+                        preloader.src = lazyEl.dataset.bg;
+                        preloader.onload = function() {
+                            lazyEl.style.backgroundImage = `url('${lazyEl.dataset.bg}')`;
+                            lazyEl.removeAttribute('data-bg');
+                            lazyEl.classList.add('is-loaded');
+                        };
+                    }
+                }, 800 + (index * 600));
+            });
+        };
+
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(prefetchRemainingSlides, { timeout: 2500 });
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(prefetchRemainingSlides, 1000);
+            });
+        }
+    }
+
+    // ═════════════════════════════════════════════════════════════
+    // 4. HOME MAINTENANCE SHOWCASE: SIDEBAR SWITCHING & BEFORE/AFTER SLIDER
     // ═════════════════════════════════════════════════════════════
     const showcaseItems = document.querySelectorAll('.showcase-project-item');
     const showcaseContainer = document.querySelector('.showcase-slider-container');
@@ -980,218 +1207,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-<style>
-.showcase-project-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    cursor: pointer;
-    transition: background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.showcase-project-item:hover {
-    background: rgba(229, 169, 25, 0.08);
-    border-color: rgba(229, 169, 25, 0.35);
-    transform: translateX(-3px);
-}
-[dir="ltr"] .showcase-project-item:hover {
-    transform: translateX(3px);
-}
-.showcase-project-item.active {
-    background: linear-gradient(135deg, rgba(229, 169, 25, 0.16) 0%, rgba(10, 29, 55, 0.95) 100%);
-    border-color: #E5A919 !important;
-    box-shadow: 0 6px 20px rgba(229, 169, 25, 0.2);
-}
-.showcase-project-item.active .showcase-item-title a {
-    color: #E5A919 !important;
-}
-.showcase-project-item.active .showcase-item-arrow {
-    color: #E5A919 !important;
-    transform: scale(1.15);
-}
-.showcase-thumb-box img {
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.showcase-project-item:hover .showcase-thumb-box img {
-    transform: scale(1.05);
-}
-.case-slider-handle {
-    touch-action: none;
-}
-.case-handle-circle {
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.case-slider-handle:hover .case-handle-circle,
-.case-slider-handle:active .case-handle-circle {
-    transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(229, 169, 25, 0.8) !important;
-}
-.btn-case-gold {
-    background: linear-gradient(135deg, #FAD961 0%, #F7B731 35%, #D49B23 70%, #B37D14 100%);
-    color: #061325 !important;
-    border: none;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.btn-case-gold:hover {
-    background: linear-gradient(135deg, #FFF0B3 0%, #FCD04B 40%, #E5A315 75%, #C48712 100%);
-    color: #000000 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(229, 169, 25, 0.4) !important;
-}
-.project-card-hover {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.project-card-hover:hover {
-    transform: translateY(-4px);
-    border-color: rgba(229, 169, 25, 0.5) !important;
-    box-shadow: 0 16px 32px rgba(0,0,0,0.5) !important;
-}
-.project-card-hover:hover .transition-transform {
-    transform: scale(1.04);
-}
-.hover-gold:hover {
-    color: #E5A919 !important;
-}
-.hover-glow:hover {
-    box-shadow: 0 0 14px rgba(229, 169, 25, 0.5);
-    background-color: #E5A919;
-    color: #0A1D37 !important;
-}
-.transition-transform {
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* ════════════════════════════════════════════
-   LUXURY CHOREOGRAPHED HERO ENTRANCE
-════════════════════════════════════════════ */
-@keyframes luxuryHeroEntrance {
-    0% {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-@keyframes luxuryNavEntrance {
-    0% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.hero-anim-nav {
-    animation: luxuryNavEntrance 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0s;
-}
-.hero-anim-tagline {
-    animation: luxuryHeroEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.08s;
-}
-.hero-anim-title {
-    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.16s;
-}
-.hero-anim-desc {
-    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.24s;
-}
-.hero-anim-actions {
-    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.32s;
-}
-.hero-anim-footer {
-    animation: luxuryHeroEntrance 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.40s;
-}
-
-/* Redesigned Clean Category Cards with High Photo Clarity & Luxury Transitions */
-.category-cover-card-clean {
-    height: 240px;
-    background-color: #0A1D37;
-    border: 1px solid rgba(10, 29, 55, 0.12);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.category-cover-bg-clean {
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-/* Subtle low-opacity gradient so photos are crisp and vibrant */
-.category-cover-overlay-clean {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(6, 19, 37, 0.45) 65%, rgba(6, 19, 37, 0.9) 100%);
-    transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.category-cover-hover-details {
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    margin-top: 0;
-}
-.category-cover-card-clean:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 32px rgba(10, 29, 55, 0.20) !important;
-    border-color: var(--alex-gold) !important;
-}
-.category-cover-card-clean:hover .category-cover-bg-clean {
-    transform: scale(1.04);
-}
-.category-cover-card-clean:hover .category-cover-overlay-clean {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 15%, rgba(6, 19, 37, 0.6) 55%, rgba(6, 19, 37, 0.95) 100%);
-}
-.category-cover-card-clean:hover .category-cover-hover-details {
-    max-height: 80px;
-    opacity: 1;
-    margin-top: 0.35rem;
-}
-
-@media (max-width: 576px) {
-    .category-cover-card-clean {
-        height: 135px !important;
-        border-radius: 12px !important;
-    }
-    .category-cover-content-clean {
-        padding: 0.65rem !important;
-    }
-    .category-cover-title-clean {
-        font-size: 0.82rem !important;
-    }
-    .category-cover-mini-icon {
-        width: 26px !important;
-        height: 26px !important;
-    }
-    .category-cover-mini-icon i {
-        font-size: 0.75rem !important;
-    }
-}
-
-.hover-translate {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hover-translate:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(10, 29, 55, 0.10) !important;
-}
-
-/* Interactive Directional SVG Arrow (Subtle Luxury Hover Glide — No Twitching) */
-.explore-arrow-link {
-    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.animated-arrow-icon {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.explore-arrow-link:hover .animated-arrow-icon {
-    transform: translateX(-5px);
-}
-[dir="ltr"] .explore-arrow-link:hover .animated-arrow-icon {
-    transform: translateX(5px);
-}
-</style>
 @endpush
